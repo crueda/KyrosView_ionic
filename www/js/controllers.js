@@ -43,11 +43,11 @@ angular.module('starter.controllers', [])
     Notifications.remove(notification);
   };*/
 
-  var URL = "http://localhost:3000/api/notification?username=crueda";
-  //var URL = "http://view.kyroslbs.com/api/notification?username="+$scope.data.username;
+  //var URL = "http://localhost:3000/api/notification?username=crueda";
+  var URL = "http://view.kyroslbs.com/api/notification?username="+localStorage.getItem("username");
   $http.get(URL)
     .success(function(data, status, headers,config){
-      //console.log('OK!'+data);
+      //console.log('>>'+localStorage.getItem("username"));
               
       for (var i=0; i<data.length; i++) {
                 notification = { id: i,
@@ -101,6 +101,7 @@ angular.module('starter.controllers', [])
           $http.get(URL)
             .success(function(data, status, headers,config){            
               if (data=="ok") {
+                localStorage.setItem("username", $scope.data.username);
                 $state.go('tab.notifications');
               } else {
                 var alertPopup = $ionicPopup.alert({
