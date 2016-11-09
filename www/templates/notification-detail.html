@@ -4,11 +4,44 @@
   The FriendsCtrl pulls data from the Friends service (service.js)
   The Friends service returns an array of friend data
 -->
-<ion-view view-title="{{notification.name}}">
+<ion-view view-title="{{notification.vehicleLicense}}">
   <ion-content class="padding">
-    <img ng-src="{{notification.face}}" style="width: 64px; height: 64px">
-    <p>
-      {{notification.lastText}}
-    </p>
+
+
+    <img ng-src="{{notification.icon}}" class="center" style="width: 64px; height: 64px">
+    <br>
+    <p align="center"><b>
+      {{notification.name}}
+    </b></p>
+    <ion-list>
+
+    <ion-item>
+      <b>Latitud</b> <span class="item-note">{{notification.latitude}}</span>
+    </ion-item>
+    <ion-item>
+      <b>Longitud</b> <span class="item-note">{{notification.longitude}}</span>
+    </ion-item>
+    <ion-item>
+      <b>Velocidad</b> <span class="item-note">{{notification.speed}}</span>
+    </ion-item>
+    <ion-item>
+      <b>Altitud</b> <span class="item-note">{{notification.altitude}}</span>
+    </ion-item>
+    <ion-item>
+      <b>Dirección</b> <span class="item-note">{{notification.geocoding}}</span>
+    </ion-item>
+
+    
+
+
+    </ion-list>
+
+<br>
+    <ion-list>
+    <ion-toggle  ng-model="settings.enableStartStop">
+        Archivar
+    </ion-toggle>
+    </ion-list>
+
   </ion-content>
 </ion-view>

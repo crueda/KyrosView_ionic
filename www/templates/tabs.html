@@ -6,20 +6,24 @@ navigation history that also transitions its views in and out.
 <ion-tabs class="tabs-icon-top tabs-color-active-positive">
 
   <!-- Tab. Ultimas notificaciones -->
-  <ion-tab title="Últimas notificaciones" icon-off="ion-ios-pulse" icon-on="ion-ios-pulse-strong" href="#/tab/notifications">
+  <ion-tab title="Notificaciones" icon-off="ion-ios-pulse" icon-on="ion-ios-pulse-strong" href="#/tab/notifications">
     <ion-nav-view name="tab-notifications"></ion-nav-view>
   </ion-tab>
 
-  <!-- Account Tab -->
-  <ion-tab title="Recibir notificaciones" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/config">
+  <!-- Configurar -->
+  <ion-tab title="Configurar" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/config">
     <ion-nav-view name="tab-config"></ion-nav-view>
   </ion-tab>
 
-  <!-- Dashboard Tab -->
+  <!-- Horario -->
   <ion-tab title="Horario" icon-off="ion-ios-time-outline" icon-on="ion-ios-time" href="#/tab/schedule">
     <ion-nav-view name="tab-schedule"></ion-nav-view>
   </ion-tab>
 
+  <!-- Horario -->
+  <ion-tab title="Desconectar" icon-off="ion-power" icon-on="ion-power" href="#/login">
+    <ion-nav-view name="login"></ion-nav-view>
+  </ion-tab>
 
 
 </ion-tabs>
