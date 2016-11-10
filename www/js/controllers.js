@@ -19,8 +19,21 @@ var notifications = [];
       } else {
         return "";
       }
-
     }
+  }
+
+  function archiveNotification ($http, notificationId) {
+    //var URL = "http://view.kyroslbs.com/api/login?username=crueda&password=dat1234";
+    var URL = "http://localhost:3000/api/notification/archive?username="+ localStorage.getItem("username") + "&notificationId="+notificationId;
+    $http.get(URL).success(function(data, status, headers,config){            
+        //console.log(data); // for browser console
+      })
+      .error(function(data, status, headers,config){
+        //console.log('error:'+data);
+      })
+      .then(function(result){
+        things = result.data;
+      });
   }
 
 angular.module('starter.controllers', [])
@@ -43,16 +56,21 @@ angular.module('starter.controllers', [])
     Notifications.remove(notification);
   };*/
 
-  //var URL = "http://localhost:3000/api/notification?username=crueda";
-  var URL = "http://view.kyroslbs.com/api/notification?username="+localStorage.getItem("username");
+  $scope.remove = function(notification) {
+    notifications.splice(notifications.indexOf(notification), 1);
+    archiveNotification($http, notification['mongoId']);
+  }
+
+  var URL = "http://localhost:3000/api/notification?username=crueda";
+  //var URL = "http://view.kyroslbs.com/api/notification?username="+localStorage.getItem("username");
   $http.get(URL)
     .success(function(data, status, headers,config){
       //console.log('>>'+localStorage.getItem("username"));
               
       for (var i=0; i<data.length; i++) {
-                notification = { id: i,
+                notification = { mongoId: data[i]._id,
+                  id: i,
                   vehicleLicense: data[i].vehicle_license,
-                  //name: 'Arranque',
                   name: getEventDescription(data[i].subtype),
                   icon: getEventIcon(data[i].subtype),
                   latitude: data[i].latitude,
@@ -96,8 +114,8 @@ angular.module('starter.controllers', [])
 .controller('LoginCtrl', function($scope, $http, LoginService, $ionicPopup, $state) {
     $scope.data = {};
     $scope.login = function() {
-          var URL = "http://view.kyroslbs.com/api/login?username="+$scope.data.username+"&password="+$scope.data.password;
-          //var URL = "http://localhost:3000/api/login?username=crueda&password=dat1234";
+          //var URL = "http://view.kyroslbs.com/api/login?username="+$scope.data.username+"&password="+$scope.data.password;
+          var URL = "http://view.kyroslbs.com/api/login?username=crueda&password=dat1234";
           $http.get(URL)
             .success(function(data, status, headers,config){            
               if (data=="ok") {
