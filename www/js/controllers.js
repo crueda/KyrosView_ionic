@@ -11,11 +11,11 @@ var notifications = [];
 
   function getEventIcon(eventType) {
     if (eventType==0) {
-      return '/img/event.png'; 
+      return 'img/event.png'; 
     } else {
        var evento = EventEnum[eventType];
        if (evento!=undefined) {
-        return '/img/events/' + EventEnum.properties[evento].icon; 
+        return 'img/events/' + EventEnum.properties[evento].icon; 
       } else {
         return "";
       }
@@ -23,8 +23,8 @@ var notifications = [];
   }
 
   function archiveNotification ($http, notificationId) {
-    //var URL = "http://view.kyroslbs.com/api/login?username=crueda&password=dat1234";
-    var URL = "http://localhost:3000/api/notification/archive?username="+ localStorage.getItem("username") + "&notificationId="+notificationId;
+    var URL = "http://view.kyroslbs.com/api/notification/archive?username="+ localStorage.getItem("username") + "&notificationId="+notificationId;
+    //var URL = "http://localhost:3000/api/notification/archive?username="+ localStorage.getItem("username") + "&notificationId="+notificationId;
     $http.get(URL).success(function(data, status, headers,config){            
         //console.log(data); // for browser console
       })
@@ -38,7 +38,63 @@ var notifications = [];
 
 angular.module('starter.controllers', [])
 
-.controller('ScheduleCtrl', function($scope) {})
+//.controller('MapCtrl', function($scope) {})
+.controller('MapCtrl', function($scope, $state, $cordovaGeolocation) {
+
+
+  var options = {timeout: 10000, enableHighAccuracy: true};
+ 
+  $cordovaGeolocation.getCurrentPosition(options).then(function(position){
+ 
+    var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+ 
+    var mapOptions = {
+      center: latLng,
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+ 
+    $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+    // Cuando el mapa esta cargado, pintar los eventos
+    google.maps.event.addListenerOnce($scope.map, 'idle', function(){
+     
+     var bounds = new google.maps.LatLngBounds();
+     for (var i=0; i<notifications.length; i++) {
+      var latLngNotification = new google.maps.LatLng(notifications[i].latitude, notifications[i].longitude);
+      var image = {
+        url: notifications[i].icon,
+        size: new google.maps.Size(40, 40),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(0, 0),
+        scaledSize: new google.maps.Size(25, 25)
+      };
+      var marker = new google.maps.Marker({
+          map: $scope.map,
+          icon: image,
+          animation: google.maps.Animation.DROP,
+          position: latLngNotification
+      });   
+      
+      var infoWindow = new google.maps.InfoWindow({
+          content: notifications[i].name
+      });
+     
+      google.maps.event.addListener(marker, 'click', function () {
+          infoWindow.open($scope.map, marker);
+      });   
+
+      bounds.extend(marker.position);
+    }
+    $scope.map.fitBounds(bounds);
+     
+    });
+
+ 
+  }, function(error){
+    console.log("Could not get location");
+  });
+})
 
 .controller('NotificationsCtrl', function($scope, $http, Notifications) {
   // With the new view caching in Ionic, Controllers are only called
@@ -61,8 +117,8 @@ angular.module('starter.controllers', [])
     archiveNotification($http, notification['mongoId']);
   }
 
-  var URL = "http://localhost:3000/api/notification?username=crueda";
   //var URL = "http://view.kyroslbs.com/api/notification?username="+localStorage.getItem("username");
+  var URL = "http://localhost:3000/api/notification?username=crueda";
   $http.get(URL)
     .success(function(data, status, headers,config){
       //console.log('>>'+localStorage.getItem("username"));
@@ -115,7 +171,8 @@ angular.module('starter.controllers', [])
     $scope.data = {};
     $scope.login = function() {
           //var URL = "http://view.kyroslbs.com/api/login?username="+$scope.data.username+"&password="+$scope.data.password;
-          var URL = "http://view.kyroslbs.com/api/login?username=crueda&password=dat1234";
+          //var URL = "http://view.kyroslbs.com/api/login?username=crueda&password=dat1234"
+          var URL = "http://localhost:3000/api/login?username=crueda&password=dat1234";
           $http.get(URL)
             .success(function(data, status, headers,config){            
               if (data=="ok") {

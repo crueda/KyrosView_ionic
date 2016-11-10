@@ -7,7 +7,8 @@
 // 'starter.controllers' is found in controllers.jso
 //angular.module("starter", ["ionic", "ion-datetime-picker"]);
 
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova'])
+//angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -24,6 +25,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   });
 })
+
+
 
 .config(function($stateProvider, $urlRouterProvider) {
 
@@ -49,12 +52,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   })
 
 
-  .state('tab.schedule', {
-    url: '/schedule',
+  .state('tab.map', {
+    url: '/map',
     views: {
-      'tab-schedule': {
-        templateUrl: 'templates/tab-schedule.html',
-        controller: 'ScheduleCtrl'
+      'tab-map': {
+        templateUrl: 'templates/tab-map.html',
+        controller: 'MapCtrl'
       }
     }
   })
@@ -95,3 +98,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   $urlRouterProvider.otherwise('login');
 
 });
+
+
+
