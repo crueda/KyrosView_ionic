@@ -7,11 +7,23 @@
 // 'starter.controllers' is found in controllers.jso
 //angular.module("starter", ["ionic", "ion-datetime-picker"]);
 
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova', 'ion-tree-list'])
 //angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $http) {
   $ionicPlatform.ready(function() {
+    var push = new Ionic.Push({
+      "debug": true
+    });
+
+    push.register(function(token) {
+      console.log("My Device token:",token.token);
+      push.saveToken(token);  // persist the token in the Ionic Platform
+
+      localStorage.setItem("token", token.token);
+
+    });
+
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
@@ -58,6 +70,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       'tab-map': {
         templateUrl: 'templates/tab-map.html',
         controller: 'MapCtrl'
+      }
+    }
+  })
+
+  .state('tab.devices', {
+    url: '/devices',
+    views: {
+      'tab-devices': {
+        templateUrl: 'templates/tab-devices.html',
+        controller: 'DevicesCtrl'
       }
     }
   })

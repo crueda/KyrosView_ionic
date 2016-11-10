@@ -1,5 +1,5 @@
 <ion-view view-title="Recibir notificaciones">
-  <ion-content>
+  <ion-content class="padding">
     <ion-list>
     <ion-toggle  ng-model="settings.enableStartStop">
         Arranques y paradas
@@ -17,5 +17,10 @@
         Pois
     </ion-toggle>
     </ion-list>
+
+
+
+<button class="button button-block button-assertive" ng-click="logout()">Desconectar</button>
+
   </ion-content>
 </ion-view>

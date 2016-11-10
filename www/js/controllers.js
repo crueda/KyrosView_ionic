@@ -1,5 +1,6 @@
 var notifications = [];
 
+
   function getEventDescription(eventType) {
     //var evento = EVENT_ENUM.getByValue('value', eventType);
     var evento = EventEnum[eventType];
@@ -23,25 +24,40 @@ var notifications = [];
   }
 
   function archiveNotification ($http, notificationId) {
-    var URL = "http://view.kyroslbs.com/api/notification/archive?username="+ localStorage.getItem("username") + "&notificationId="+notificationId;
-    //var URL = "http://localhost:3000/api/notification/archive?username="+ localStorage.getItem("username") + "&notificationId="+notificationId;
-    $http.get(URL).success(function(data, status, headers,config){            
-        //console.log(data); // for browser console
+    urlArchiveNotification = urlArchiveNotification + "?username="+ localStorage.getItem("username") + "&notificationId="+notificationId;
+    $http.get(urlArchiveNotification).success(function(data, status, headers,config){            
       })
       .error(function(data, status, headers,config){
-        //console.log('error:'+data);
       })
       .then(function(result){
         things = result.data;
       });
   }
 
+  function saveToken ($http) {
+    urlSaveToken = urlSaveToken + "?username="+ localStorage.getItem("username") + "&token="+ localStorage.getItem("token");
+    $http.get(urlSaveToken).success(function(data, status, headers,config){            
+      })
+      .error(function(data, status, headers,config){
+      })
+      .then(function(result){
+        things = result.data;
+      });
+  }
+  
+ function pad(value) {
+    if(value < 10) {
+        return '0' + value;
+    } else {
+        return value;
+    }
+  }
+
+
 angular.module('starter.controllers', [])
 
 //.controller('MapCtrl', function($scope) {})
 .controller('MapCtrl', function($scope, $state, $cordovaGeolocation) {
-
-
   var options = {timeout: 10000, enableHighAccuracy: true};
  
   $cordovaGeolocation.getCurrentPosition(options).then(function(position){
@@ -117,18 +133,27 @@ angular.module('starter.controllers', [])
     archiveNotification($http, notification['mongoId']);
   }
 
-  //var URL = "http://view.kyroslbs.com/api/notification?username="+localStorage.getItem("username");
-  var URL = "http://localhost:3000/api/notification?username=crueda";
-  $http.get(URL)
+  urlGetNotifications = urlGetNotifications + "?username="+localStorage.getItem("username");
+  $http.get(urlGetNotifications)
     .success(function(data, status, headers,config){
       //console.log('>>'+localStorage.getItem("username"));
               
       for (var i=0; i<data.length; i++) {
-                notification = { mongoId: data[i]._id,
+        var date = new Date(data[i].timestamp);
+        var year = date.getFullYear();
+        var month = pad(date.getMonth() + 1);
+        var day = pad(date.getDate());
+        var hours = pad(date.getHours());
+        var minutes = pad(date.getMinutes());
+        var seconds = pad(date.getSeconds());
+        var strDate = day + "/" + month + "/" + year + " - " + hours + ":" + minutes + ":" + seconds;
+
+        notification = { mongoId: data[i]._id,
                   id: i,
                   vehicleLicense: data[i].vehicle_license,
                   name: getEventDescription(data[i].subtype),
                   icon: getEventIcon(data[i].subtype),
+                  date: strDate,
                   latitude: data[i].latitude,
                   longitude: data[i].longitude,
                   speed: data[i].speed,
@@ -136,25 +161,57 @@ angular.module('starter.controllers', [])
                   altitude: data[i].altitude,
                   geocoding: data[i].geocoding,
                   battery: data[i].battery
-                }
-                notifications.push(notification);
-              }
-              $scope.notifications = notifications;
-              //$scope.notifications = Notifications.all();
-           })
-          .error(function(data, status, headers,config){
-            //console.log('api error');
-            $state.go('login');            
-          })
-          .then(function(result){
-            things = result.data;
+                  
+          }
+        notifications.push(notification);
+        }
+          $scope.notifications = notifications;
+        })
+        .error(function(data, status, headers,config){
+          $state.go('login');            
+        })
+        .then(function(result){
+          things = result.data;
   });
-
 })
 
 .controller('NotificationDetailCtrl', function($scope, $stateParams, Notifications) {
   //$scope.notification = Notifications.get($stateParams.notificationId);
   $scope.notification = notifications[$stateParams.notificationId];
+
+  /*
+  $scope.tasks = [
+    {
+      name: 'first task 1',
+      checked: false,
+      tree: [
+        {
+          name: 'first task 1.1',
+           checked: true
+        }
+      ]
+    },
+    {
+      name: 'first task 2',
+       checked: false
+
+    }
+  ];
+  */
+
+/*
+$scope.$on('$ionTreeList:ItemClicked', function(event, item) {
+  // process 'item'
+  console.log(item);
+});
+
+$scope.$on('$ionTreeList:LoadComplete', function(event, items) {
+  // process 'items'
+  console.log(items);
+});
+*/
+  
+
 })
 
 .controller('ConfigCtrl', function($scope) {
@@ -167,16 +224,30 @@ angular.module('starter.controllers', [])
   };
 })
 
+.controller('DevicesCtrl', function($scope, $http) {
+  urlTreeDevices = urlTreeDevices + "/" + localStorage.getItem("username");
+  $http.get(urlTreeDevices)
+    .success(function(data, status, headers,config){            
+        $scope.tasks = data[0].monitor;
+    })
+    .error(function(data, status, headers,config){
+        //console.log('login error');
+    })
+    .then(function(result){
+      things = result.data;
+  });
+})
+
 .controller('LoginCtrl', function($scope, $http, LoginService, $ionicPopup, $state) {
-    $scope.data = {};
+    //$scope.data = {};
+    $scope.data = {username: 'crueda', password: 'dat1234'};
     $scope.login = function() {
-          //var URL = "http://view.kyroslbs.com/api/login?username="+$scope.data.username+"&password="+$scope.data.password;
-          //var URL = "http://view.kyroslbs.com/api/login?username=crueda&password=dat1234"
-          var URL = "http://localhost:3000/api/login?username=crueda&password=dat1234";
-          $http.get(URL)
+          urlLogin = urlLogin + "?username="+ $scope.data.username +"&password="+$scope.data.password;
+          $http.get(urlLogin)
             .success(function(data, status, headers,config){            
               if (data=="ok") {
                 localStorage.setItem("username", $scope.data.username);
+                saveToken($http);
                 $state.go('tab.notifications');
               } else {
                 var alertPopup = $ionicPopup.alert({
@@ -184,7 +255,6 @@ angular.module('starter.controllers', [])
                   template: 'Por favor, compruebe sus credenciales'
                 });
               }
-              //console.log(data); // for browser console
               //$scope.result = data; // for UI
           })
           .error(function(data, status, headers,config){

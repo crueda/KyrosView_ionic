@@ -13,8 +13,17 @@
     <p align="center"><b>
       {{notification.name}}
     </b></p>
+
+
+    <!--ion-tree-list items="tasks" collapsed="true" template-url="templates/ion-item.tmpl.html"></ion-tree-list-->
+    <!--ion-tree-list items="tasks" collapsed="true"></ion-tree-list-->
+
+
     <ion-list>
 
+    <ion-item>
+      <b>Fecha</b> <span class="item-note">{{notification.date}}</span>
+    </ion-item>
     <ion-item>
       <b>Latitud</b> <span class="item-note">{{notification.latitude}}</span>
     </ion-item>
