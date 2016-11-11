@@ -1,5 +1,6 @@
 <ion-view view-title="Últimas notificaciones">
   <ion-content>
+    <ion-refresher on-refresh="doRefresh()"> </ion-refresher>
     <ion-list>
       <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="notification in notifications" type="item-text-wrap" href="#/tab/notifications/{{notification.id}}">
         <img ng-src="{{notification.icon}}">

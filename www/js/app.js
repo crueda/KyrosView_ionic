@@ -12,8 +12,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
 .run(function($ionicPlatform, $http) {
   $ionicPlatform.ready(function() {
+    
     var push = new Ionic.Push({
-      "debug": true
+      "debug": false
     });
 
     push.register(function(token) {
@@ -23,6 +24,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       localStorage.setItem("token", token.token);
 
     });
+    
+
 
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -66,16 +69,19 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
   .state('tab.map', {
     url: '/map',
+    cache: false,
     views: {
       'tab-map': {
         templateUrl: 'templates/tab-map.html',
-        controller: 'MapCtrl'
+        controller: 'MapCtrl',
+        cache: false
       }
     }
   })
 
   .state('tab.devices', {
     url: '/devices',
+    cache: false,
     views: {
       'tab-devices': {
         templateUrl: 'templates/tab-devices.html',
@@ -86,15 +92,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
   .state('tab.notifications', {
       url: '/notifications',
+      cache: false,
       views: {
         'tab-notifications': {
-          templateUrl: 'templates/tab-notifications.html',
+          templateUrl: 'templates/tab-notifications.html',         
           controller: 'NotificationsCtrl'
         }
       }
     })
     .state('tab.notification-detail', {
       url: '/notifications/:notificationId',
+      cache: false,
       views: {
         'tab-notifications': {
           templateUrl: 'templates/notification-detail.html',
@@ -105,6 +113,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
   .state('tab.config', {
     url: '/config',
+    cache: false,
     views: {
       'tab-config': {
         templateUrl: 'templates/tab-config.html',

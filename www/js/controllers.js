@@ -24,8 +24,8 @@ var notifications = [];
   }
 
   function archiveNotification ($http, notificationId) {
-    urlArchiveNotification = urlArchiveNotification + "?username="+ localStorage.getItem("username") + "&notificationId="+notificationId;
-    $http.get(urlArchiveNotification).success(function(data, status, headers,config){            
+    var urlArchiveNotification_complete = urlArchiveNotification + "?username="+ localStorage.getItem("username") + "&notificationId="+notificationId;
+    $http.get(urlArchiveNotification_complete).success(function(data, status, headers,config){            
       })
       .error(function(data, status, headers,config){
       })
@@ -35,8 +35,9 @@ var notifications = [];
   }
 
   function saveToken ($http) {
-    urlSaveToken = urlSaveToken + "?username="+ localStorage.getItem("username") + "&token="+ localStorage.getItem("token");
-    $http.get(urlSaveToken).success(function(data, status, headers,config){            
+    var urlSaveToken_complete = urlSaveToken + "?username="+ localStorage.getItem("username") + "&token="+ localStorage.getItem("token");
+    console.log(urlSaveToken_complete);
+    $http.get(urlSaveToken_complete).success(function(data, status, headers,config){            
       })
       .error(function(data, status, headers,config){
       })
@@ -102,7 +103,9 @@ angular.module('starter.controllers', [])
 
       bounds.extend(marker.position);
     }
-    $scope.map.fitBounds(bounds);
+    if (notifications.length>0) {
+      $scope.map.fitBounds(bounds);      
+    }
      
     });
 
@@ -112,7 +115,7 @@ angular.module('starter.controllers', [])
   });
 })
 
-.controller('NotificationsCtrl', function($scope, $http, Notifications) {
+.controller('NotificationsCtrl', function($scope, $http, Notifications, $ionicLoading, $timeout) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -128,16 +131,41 @@ angular.module('starter.controllers', [])
     Notifications.remove(notification);
   };*/
 
+
+$scope.doRefresh = function() {
+    
+    console.log('Refreshing!');
+    $timeout( function() {
+      console.log("aa");
+      //simulate async response
+      //scope.items.push('New Item ' + Math.floor(Math.random() * 1000) + 4);
+
+      //Stop the ion-refresher from spinning
+      //$scope.$broadcast('scroll.refreshComplete');
+    
+    }, 1000);
+  };
+
   $scope.remove = function(notification) {
+    //console.log("-->"+ notifications.indexOf(notification));
     notifications.splice(notifications.indexOf(notification), 1);
     archiveNotification($http, notification['mongoId']);
   }
 
-  urlGetNotifications = urlGetNotifications + "?username="+localStorage.getItem("username");
-  $http.get(urlGetNotifications)
+  var urlGetNotifications_complete = urlGetNotifications + "?username="+localStorage.getItem("username");
+  console.log(urlGetNotifications_complete);
+  notifications = [];
+  $ionicLoading.show({
+    content: 'Loading',
+    animation: 'fade-in',
+    showBackdrop: true,
+    maxWidth: 200,
+    showDelay: 0
+  });
+  $http.get(urlGetNotifications_complete)
     .success(function(data, status, headers,config){
-      //console.log('>>'+localStorage.getItem("username"));
-              
+      $ionicLoading.hide(); 
+
       for (var i=0; i<data.length; i++) {
         var date = new Date(data[i].timestamp);
         var year = date.getFullYear();
@@ -168,16 +196,38 @@ angular.module('starter.controllers', [])
           $scope.notifications = notifications;
         })
         .error(function(data, status, headers,config){
-          $state.go('login');            
+          //$scope.notifications = notifications;
+          $ionicLoading.hide();
+          $ionicLoading.show({
+            template: 'Error de red',
+            scope: $scope
+          });
+          $timeout(function() {
+             $ionicLoading.hide();
+             $state.go('login');
+          }, 1500);
+          //$state.go('login');            
         })
         .then(function(result){
           things = result.data;
   });
 })
 
-.controller('NotificationDetailCtrl', function($scope, $stateParams, Notifications) {
+.controller('NotificationDetailCtrl', function($scope, $http, $state, $stateParams, Notifications) {
   //$scope.notification = Notifications.get($stateParams.notificationId);
   $scope.notification = notifications[$stateParams.notificationId];
+
+$scope.notificationArchiveChange = function() {
+  //console.log("archive:" + $scope.notification.value);
+
+  if ($scope.notification.value) {
+    //notifications.splice($stateParams.notificationId, 1);
+
+    archiveNotification($http, $scope.notification['mongoId']);
+    $state.go('tab.notifications');
+  }
+
+};
 
   /*
   $scope.tasks = [
@@ -214,7 +264,7 @@ $scope.$on('$ionTreeList:LoadComplete', function(event, items) {
 
 })
 
-.controller('ConfigCtrl', function($scope) {
+.controller('ConfigCtrl', function($scope, $state) {
   $scope.settings = {
     enableStartStop: true,
     enableAlarm: true,
@@ -222,32 +272,57 @@ $scope.$on('$ionTreeList:LoadComplete', function(event, items) {
     enableRoute: true,
     enablePoi: true
   };
+
+  $scope.logout = function() {
+    localStorage.setItem("username", "");
+    $scope.data = {};
+    $state.go('login');
+  };
+
+
 })
 
-.controller('DevicesCtrl', function($scope, $http) {
-  urlTreeDevices = urlTreeDevices + "/" + localStorage.getItem("username");
-  $http.get(urlTreeDevices)
-    .success(function(data, status, headers,config){            
+.controller('DevicesCtrl', function($scope, $http, $ionicLoading, $timeout) {
+    var urlTreeDevices_complete = urlTreeDevices + "/" + localStorage.getItem("username");
+    console.log(urlTreeDevices_complete);
+    $ionicLoading.show({
+                content: 'Loading',
+                animation: 'fade-in',
+                showBackdrop: true,
+                maxWidth: 200,
+                showDelay: 0
+              });
+    $http.get(urlTreeDevices_complete)
+    .success(function(data, status, headers,config){   
+        $ionicLoading.hide();         
         $scope.tasks = data[0].monitor;
     })
     .error(function(data, status, headers,config){
-        //console.log('login error');
+        $ionicLoading.hide();
+          $ionicLoading.show({
+            template: 'Error de red',
+            scope: $scope
+          });
+        $timeout(function() {
+             $ionicLoading.hide();
+          }, 1500);
     })
-    .then(function(result){
-      things = result.data;
-  });
 })
 
 .controller('LoginCtrl', function($scope, $http, LoginService, $ionicPopup, $state) {
     //$scope.data = {};
     $scope.data = {username: 'crueda', password: 'dat1234'};
     $scope.login = function() {
-          urlLogin = urlLogin + "?username="+ $scope.data.username +"&password="+$scope.data.password;
-          $http.get(urlLogin)
+          var urlLogin_complete = urlLogin + "?username="+ $scope.data.username +"&password="+$scope.data.password;
+          console.log(urlLogin_complete);
+          $http.get(urlLogin_complete)
             .success(function(data, status, headers,config){            
               if (data=="ok") {
                 localStorage.setItem("username", $scope.data.username);
                 saveToken($http);
+                console.log("nuevo username:" +  localStorage.getItem("username"));
+
+                console.log("ir a notificaciones");
                 $state.go('tab.notifications');
               } else {
                 var alertPopup = $ionicPopup.alert({
