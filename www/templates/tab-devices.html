@@ -1,5 +1,11 @@
 <ion-view view-title="Dispositivos">
 <ion-content>
-       <ion-tree-list items="tasks" collapsed="true"></ion-tree-list>
+    <ion-list>
+    <ion-toggle  ng-model=notification.value ng-change="notificationArchiveChange()" toggle-class="toggle-calm">
+        Todos
+    </ion-toggle>
+    </ion-list>
+
+        <ion-tree-list items="tasks" collapsed="true"></ion-tree-list>
     </ion-content>
 </ion-view>

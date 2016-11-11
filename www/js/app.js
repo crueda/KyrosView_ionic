@@ -89,6 +89,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     }
   })
 
+  .state('tab.device-detail', {
+    url: '/device-detail',
+    cache: false,
+    views: {
+      'tab-devices': {
+        templateUrl: 'templates/device-detail.html',
+        controller: 'DeviceDetailCtrl'
+      }
+    }
+  })
+
   .state('tab.notifications', {
       url: '/notifications',
       cache: false,
