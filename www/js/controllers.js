@@ -58,25 +58,114 @@ var notifications = [];
 angular.module('starter.controllers', [])
 
 //.controller('MapCtrl', function($scope) {})
-.controller('MapCtrl', function($scope, $state, $cordovaGeolocation) {
+.controller('MapCtrl', function($scope, $http, $state, $cordovaGeolocation) {
+  var vl = localStorage.getItem("vehicleLicense");
+  if (vl!="") {
+    $scope.titulo = localStorage.getItem("vehicleLicense");
+  }
+  else {
+    $scope.titulo = "Mapa";
+  }
+
   var options = {timeout: 10000, enableHighAccuracy: true};
  
   $cordovaGeolocation.getCurrentPosition(options).then(function(position){
  
-    var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
- 
+    var latLng = new google.maps.LatLng(41, -3);
     var mapOptions = {
-      center: latLng,
-      zoom: 15,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
- 
+        center: latLng,
+        zoom: 5,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
     $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-    // Cuando el mapa esta cargado, pintar los eventos
+    // Cuando el mapa esta cargado, pintar el vehiculo 
     google.maps.event.addListenerOnce($scope.map, 'idle', function(){
      
-     var bounds = new google.maps.LatLngBounds();
+    if (localStorage.getItem("notificationSelected")!="") {    
+        var latLngNotification = new google.maps.LatLng(localStorage.getItem("notificationSelectedLatitude"), localStorage.getItem("notificationSelectedLongitude"));
+        var image = {
+          url: localStorage.getItem("notificationSelectedIcon"),
+          size: new google.maps.Size(40, 40),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(0, 0),
+          scaledSize: new google.maps.Size(30, 30)
+        };
+      var marker = new google.maps.Marker({
+          map: $scope.map,
+          icon: image,
+          animation: google.maps.Animation.DROP,
+          position: latLngNotification
+      });   
+      var infoWindow = new google.maps.InfoWindow({
+          content: localStorage.getItem("notificationSelectedName")
+      });
+     
+      google.maps.event.addListener(marker, 'click', function () {
+          infoWindow.open($scope.map, marker);
+      }); 
+      $scope.map.setCenter(latLngNotification);  
+      $scope.map.setZoom(15);
+
+      localStorage.setItem("notificationSelected", "");  
+
+    }
+    else if (localStorage.getItem("vehicleLicense")!="") {    
+
+      var bounds = new google.maps.LatLngBounds();
+      var urlTracking_complete = urlTracking + "/" + localStorage.getItem("vehicleLicense");
+      console.log(urlTracking_complete);
+      $http.get(urlTracking_complete).success(function(data, status, headers,config){  
+        var latLngVehicle = new google.maps.LatLng(data[0].location.coordinates[1], data[0].location.coordinates[0]);
+        var image = {
+          url: 'img/devices/' + data[0].icon,
+          size: new google.maps.Size(40, 40),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(0, 0),
+          scaledSize: new google.maps.Size(30, 30)
+        };
+      var marker = new google.maps.Marker({
+          map: $scope.map,
+          icon: image,
+          animation: google.maps.Animation.DROP,
+          position: latLngVehicle
+      });   
+      var infoWindow = new google.maps.InfoWindow({
+          content: data[0].alias
+      });
+     
+      google.maps.event.addListener(marker, 'click', function () {
+          infoWindow.open($scope.map, marker);
+      }); 
+      bounds.extend(marker.position);
+       $scope.map.setCenter(bounds.getCenter());  
+      $scope.map.setZoom(15);
+
+      })
+      .error(function(data, status, headers,config){
+      })
+      .then(function(result){
+        things = result.data;
+      });
+
+    } else {
+      var actualLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+      $scope.map.setCenter(actualLatLng);
+      $scope.map.setZoom(15);
+      var marker = new google.maps.Marker({
+          map: $scope.map,
+          animation: google.maps.Animation.DROP,
+          position: actualLatLng
+      });   
+      var infoWindow = new google.maps.InfoWindow({
+          content: "Estoy aqui"
+      });
+      google.maps.event.addListener(marker, 'click', function () {
+          infoWindow.open($scope.map, marker);
+      }); 
+    }
+
+      /*
      for (var i=0; i<notifications.length; i++) {
       var latLngNotification = new google.maps.LatLng(notifications[i].latitude, notifications[i].longitude);
       var image = {
@@ -106,6 +195,7 @@ angular.module('starter.controllers', [])
     if (notifications.length>0) {
       $scope.map.fitBounds(bounds);      
     }
+    */
      
     });
 
@@ -132,6 +222,9 @@ angular.module('starter.controllers', [])
   };*/
 
 
+
+
+
 $scope.doRefresh = function() {
     
     console.log('Refreshing!');
@@ -156,12 +249,25 @@ $scope.doRefresh = function() {
   console.log(urlGetNotifications_complete);
   notifications = [];
   $ionicLoading.show({
+    //template: '<ion-spinner icon="bubbles"></ion-spinner><p>LOADING...</p>'
+    //templateUrl: 'loading.html',
     content: 'Loading',
     animation: 'fade-in',
     showBackdrop: true,
     maxWidth: 200,
     showDelay: 0
   });
+
+/*
+  $scope.notifications = Notifications.all();
+  NotificationService.all().success(function(data) {
+
+      $ionicLoading.hide(); 
+    }).error(function(data) {
+      $ionicLoading.hide(); 
+  });
+*/
+
   $http.get(urlGetNotifications_complete)
     .success(function(data, status, headers,config){
       $ionicLoading.hide(); 
@@ -216,6 +322,19 @@ $scope.doRefresh = function() {
 .controller('NotificationDetailCtrl', function($scope, $http, $state, $stateParams, Notifications) {
   //$scope.notification = Notifications.get($stateParams.notificationId);
   $scope.notification = notifications[$stateParams.notificationId];
+
+  
+$scope.showMapNotification = function() {
+    
+    $scope.notification = notifications[$stateParams.notificationId];
+    localStorage.setItem("notificationSelected", $scope.notification.id);  
+    localStorage.setItem("notificationSelectedLatitude", $scope.notification.latitude);  
+    localStorage.setItem("notificationSelectedLongitude", $scope.notification.longitude);  
+    localStorage.setItem("notificationSelectedIcon", $scope.notification.icon);  
+    localStorage.setItem("notificationSelectedName", $scope.notification.name);  
+    $state.go('tab.map');
+
+  };
 
 $scope.notificationArchiveChange = function() {
   //console.log("archive:" + $scope.notification.value);
@@ -317,12 +436,16 @@ $scope.$on('$ionTreeList:LoadComplete', function(event, items) {
           console.log(urlLogin_complete);
           $http.get(urlLogin_complete)
             .success(function(data, status, headers,config){            
-              if (data=="ok") {
+              if (data!="nok") {
+                if (data[0].vehicle_license!=undefined) {
+                  localStorage.setItem("vehicleLicense", data[0].vehicle_license);                  
+                } else {
+                  localStorage.setItem("vehicleLicense", "");                  
+                }
                 localStorage.setItem("username", $scope.data.username);
+                localStorage.setItem("notificationSelected", "");  
                 saveToken($http);
-                console.log("nuevo username:" +  localStorage.getItem("username"));
-
-                console.log("ir a notificaciones");
+                //console.log("nuevo username:" +  localStorage.getItem("username"));
                 $state.go('tab.notifications');
               } else {
                 var alertPopup = $ionicPopup.alert({

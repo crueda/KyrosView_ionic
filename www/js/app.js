@@ -73,8 +73,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     views: {
       'tab-map': {
         templateUrl: 'templates/tab-map.html',
-        controller: 'MapCtrl',
-        cache: false
+        controller: 'MapCtrl'
       }
     }
   })
