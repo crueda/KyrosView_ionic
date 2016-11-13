@@ -1,24 +1,13 @@
-<ion-view view-title="Recibir notificaciones">
+<ion-view view-title="Configurar">
   <ion-content class="padding">
+
     <ion-list>
     <ion-toggle  ng-model="settings.enableStartStop">
-        Arranques y paradas
+        Recibir notificaciones
     </ion-toggle>
-    <ion-toggle  ng-model="settings.enableAlarm">
-        Alarmas
-    </ion-toggle>
-    <ion-toggle  ng-model="settings.enableZone">
-        Zonas
-    </ion-toggle>
-    <ion-toggle  ng-model="settings.enableRoute">
-        Rutas
-    </ion-toggle>
-    <ion-toggle  ng-model="settings.enablePoi">
-        Pois
-    </ion-toggle>
-    </ion-list>
-
-
+    <ion-list>
+    
+    <br>
 
     <button class="button button-block button-assertive" ng-click="logout()">Desconectar</button>
 

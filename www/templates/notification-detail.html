@@ -9,11 +9,11 @@
 
 
     <img ng-src="{{notification.icon}}" class="center" style="width: 64px; height: 64px">
-    <br>
+    <h4>
     <p align="center"><b>
       {{notification.name}}
     </b></p>
-
+    </h4>
 
     <!--ion-tree-list items="tasks" collapsed="true" template-url="templates/ion-item.tmpl.html"></ion-tree-list-->
     <!--ion-tree-list items="tasks" collapsed="true"></ion-tree-list-->
@@ -25,10 +25,7 @@
       <b>Fecha</b> <span class="item-note">{{notification.date}}</span>
     </ion-item>
     <ion-item>
-      <b>Latitud</b> <span class="item-note">{{notification.latitude}}</span>
-    </ion-item>
-    <ion-item>
-      <b>Longitud</b> <span class="item-note">{{notification.longitude}}</span>
+      <b>Coordenadas</b> <span class="item-note">{{notification.latitude}}, {{notification.longitude}}</span>
     </ion-item>
     <ion-item>
       <b>Velocidad</b> <span class="item-note">{{notification.speed}}</span>

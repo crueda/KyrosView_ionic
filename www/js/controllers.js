@@ -106,13 +106,58 @@ angular.module('starter.controllers', [])
           animation: google.maps.Animation.DROP,
           position: latLngNotification
       });   
+
+
+      // InfoWindow content
+  var content = '<div id="iw-container">' +
+                    '<div class="iw-title">' + localStorage.getItem("notificationSelectedName") + '</div>' +
+                    '<div class="iw-content">' +
+                      '<div class="iw-subTitle">Matricula:</div>' +
+                      '<p>' + localStorage.getItem("notificationSelectedVehicleLicense") + '</p>' +
+                      '<div class="iw-subTitle">Fecha:</div>' +
+                      '<p>' + localStorage.getItem("notificationSelectedDate") + '</p>' + 
+                      //'<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>' +
+                      '<br>'+
+                    '</div>' +
+                    '<div class="iw-bottom-gradient"></div>' +
+                  '</div>';
+
+
       var infoWindow = new google.maps.InfoWindow({
-          content: localStorage.getItem("notificationSelectedName")
+          //content: localStorage.getItem("notificationSelectedName")
+          content: content,
+          maxWidth: 180
       });
      
       google.maps.event.addListener(marker, 'click', function () {
           infoWindow.open($scope.map, marker);
       }); 
+      google.maps.event.addListener($scope.map, 'click', function() {
+        infoWindow.close();
+      });
+     
+        google.maps.event.addListener(infoWindow, 'domready', function() {
+
+    var iwOuter = $('.gm-style-iw');
+    var iwBackground = iwOuter.prev();
+    iwBackground.children(':nth-child(2)').css({'display' : 'none'});
+    iwBackground.children(':nth-child(4)').css({'display' : 'none'});
+    iwOuter.parent().parent().css({left: '10px'});
+    iwBackground.children(':nth-child(1)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
+    iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
+    iwBackground.children(':nth-child(3)').find('div').children().css({'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 1px 6px', 'z-index' : '1'});
+    var iwCloseBtn = iwOuter.next();
+    iwCloseBtn.css({opacity: '1', right: '18px', top: '3px', border: '7px solid #48b5e9', 'border-radius': '13px', 'box-shadow': '0 0 5px #3990B9'});
+
+    if($('.iw-content').height() < 140){
+      $('.iw-bottom-gradient').css({display: 'none'});
+    } 
+
+    iwCloseBtn.mouseout(function(){
+      $(this).css({opacity: '1'});
+    });
+  });
+
       $scope.map.setCenter(latLngNotification);  
       $scope.map.setZoom(15);
 
@@ -360,8 +405,8 @@ $scope.doRefresh = function() {
                   name: getEventDescription(data[i].subtype),
                   icon: getEventIcon(data[i].subtype),
                   date: strDate,
-                  latitude: data[i].latitude,
-                  longitude: data[i].longitude,
+                  latitude: data[i].latitude.toFixed(4),
+                  longitude: data[i].longitude.toFixed(4),
                   speed: data[i].speed,
                   heading: data[i].heading,
                   altitude: data[i].altitude,
@@ -405,6 +450,7 @@ $scope.doRefresh = function() {
     localStorage.setItem("notificationSelectedLongitude", $scope.notification.longitude);  
     localStorage.setItem("notificationSelectedIcon", $scope.notification.icon);  
     localStorage.setItem("notificationSelectedName", $scope.notification.name); 
+    localStorage.setItem("notificationSelectedDate", $scope.notification.date); 
 
     //$scope.titulo_mapa = localStorage.getItem("notificationSelected");          
     $state.go('tab.map');
@@ -445,6 +491,7 @@ $scope.notificationArchiveChange = function() {
 })
 
 .controller('DevicesCtrl', function($scope, $state, $http, $ionicLoading, $timeout) {
+
     var urlTreeDevices_complete = urlTreeDevices + "/" + localStorage.getItem("username");
     console.log(urlTreeDevices_complete);
     $ionicLoading.show({
@@ -484,6 +531,14 @@ $scope.notificationArchiveChange = function() {
 })
 
 .controller('DeviceDetailCtrl', function($scope, $state, $http, $ionicPopup, $timeout) {
+    $scope.settings = {
+    enableStartStop: true,
+    enableAlarm: true,
+    enableZone: true,
+    enableRoute: true,
+    enablePoi: true
+  };
+
    $scope.titulo_device = localStorage.getItem("deviceSelected");
    //console.log (localStorage.getItem("deviceSelected"));
 

@@ -1,8 +1,30 @@
 <ion-view view-title="{{titulo_device}}">
   <ion-content class="padding">
 
+    <ion-list>
+    <ion-toggle  ng-model="settings.enableStartStop">
+        Arranques y paradas
+    </ion-toggle>
+    <ion-toggle  ng-model="settings.enableAlarm">
+        Alarmas
+    </ion-toggle>
+    <ion-toggle  ng-model="settings.enableZone">
+        Zonas
+    </ion-toggle>
+    <ion-toggle  ng-model="settings.enableRoute">
+        Rutas
+    </ion-toggle>
+    <ion-toggle  ng-model="settings.enablePoi">
+        Pois
+    </ion-toggle>
+    </ion-list>
 
-  
+    <br>
+    
+    <button class="button button-block button-calm" ng-click="showMapDevice()">Seleccionar por defecto</button>
+
+    <br>
+
     <button class="button button-block button-balanced" ng-click="showMapDevice()">Ver en mapa</button>
 
 
