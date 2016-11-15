@@ -1,5 +1,17 @@
 <ion-view view-title="Últimas notificaciones">
+      <ion-nav-bar class="bar-assertive"  align-title="center">
+        <ion-nav-back-button></ion-nav-back-button>
+      </ion-nav-bar>
 
+ <ion-header-bar align-title="left" class="bar-positive">
+ <div class="buttons">
+     
+   </div>
+    <h1 class="title"></h1>
+   <div class="buttons">
+     <button class="button ion-trash-b" ng-click="archiveNotifications()"></button>
+    </div>
+  </ion-header-bar>
 <!--Sub-Header -->
       <div class="bar bar-subheader item-input-inset bar-light">
         <label class="item-input-wrapper">
@@ -13,12 +25,12 @@
     <ion-refresher on-refresh="doRefresh()"> </ion-refresher>
 
     <ion-list>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="notification in notifications" type="item-text-wrap" href="#/tab/notifications/{{notification.id}}">
+      <ion-item class="item-remove-animate item-avatar item-icon-right" 
+        ng-repeat="notification in notifications | filter: busqueda" type="item-text-wrap" href="#/tab/notifications/{{notification.id}}">
         <img ng-src="{{notification.icon}}">
         <h2>{{notification.vehicleLicense}}</h2>
         <p>{{notification.date}}</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
-
 
         <ion-option-button class="button-assertive" ng-click="remove(notification)">
           Archivar

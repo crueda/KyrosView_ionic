@@ -5,16 +5,16 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.jso
-//angular.module("starter", ["ionic", "ion-datetime-picker"]);
 
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova', 'ion-tree-list'])
-//angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notification', 'main.device', 'main.map', 'main.config', 'main.services', 'ngCordova', 'ion-tree-list'])
 
 .run(function($ionicPlatform, $http) {
   $ionicPlatform.ready(function() {
     
+    /*
     var push = new Ionic.Push({
-      "debug": false
+
+      "debug": true
     });
 
     push.register(function(token) {
@@ -24,7 +24,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       localStorage.setItem("token", token.token);
 
     });
-    
+*/
 
 
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -43,7 +43,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
 
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $ionicConfigProvider, $urlRouterProvider) {
+
+$ionicConfigProvider.tabs.position('bottom');
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -131,7 +133,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       }
     }
   });
-
 
 
   // if none of the above states are matched, use this as the fallback

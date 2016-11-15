@@ -1,8 +1,12 @@
 <ion-view view-title="Configurar">
+      <ion-nav-bar class="bar-dark"  align-title="center">
+        <ion-nav-back-button></ion-nav-back-button>
+      </ion-nav-bar>
+
   <ion-content class="padding">
 
     <ion-list>
-    <ion-toggle  ng-model="settings.enableStartStop">
+    <ion-toggle  ng-model="settings.enableNotifications" ng-change="configNotificationsChange()">
         Recibir notificaciones
     </ion-toggle>
     <ion-list>
