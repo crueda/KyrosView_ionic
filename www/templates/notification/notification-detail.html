@@ -1,0 +1,60 @@
+<!--
+  This template loads for the 'tab.friend-detail' state (app.js)
+  'friend' is a $scope variable created in the FriendsCtrl controller (controllers.js)
+  The FriendsCtrl pulls data from the Friends service (service.js)
+  The Friends service returns an array of friend data
+-->
+<ion-view view-title="{{notification.vehicleLicense}}">
+      <ion-nav-bar class="bar-assertive">
+        <ion-nav-back-button></ion-nav-back-button>
+      </ion-nav-bar>
+      
+  <ion-content class="padding">
+
+
+    <img ng-src="{{notification.icon}}" class="center" style="width: 64px; height: 64px">
+    <h4>
+    <p align="center"><b>
+      {{notification.name}}
+    </b></p>
+    </h4>
+
+    <!--ion-tree-list items="tasks" collapsed="true" template-url="templates/ion-item.tmpl.html"></ion-tree-list-->
+    <!--ion-tree-list items="tasks" collapsed="true"></ion-tree-list-->
+
+
+    <ion-list>
+
+    <ion-item>
+      <b>Fecha</b> <span class="item-note">{{notification.date}}</span>
+    </ion-item>
+    <ion-item>
+      <b>Coordenadas</b> <span class="item-note">{{notification.latitude}}, {{notification.longitude}}</span>
+    </ion-item>
+    <ion-item>
+      <b>Velocidad</b> <span class="item-note">{{notification.speed}}</span>
+    </ion-item>
+    <ion-item>
+      <b>Altitud</b> <span class="item-note">{{notification.altitude}}</span>
+    </ion-item>
+    <ion-item>
+      <b>Dirección</b> <span class="item-note">{{notification.geocoding}}</span>
+    </ion-item>
+
+    
+
+
+    </ion-list>
+
+    <button class="button button-block button-balanced" ng-click="showMapNotification()">Ver en mapa</button>
+
+
+<br>
+    <ion-list>
+    <ion-toggle  ng-model=notification.value ng-change="notificationArchiveChange()" toggle-class="toggle-calm">
+        Archivar
+    </ion-toggle>
+    </ion-list>
+
+  </ion-content>
+</ion-view>

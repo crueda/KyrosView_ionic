@@ -1,0 +1,47 @@
+<ion-view view-title="{{titulo_device}}">
+      <ion-nav-bar class="bar-calm">
+        <ion-nav-back-button></ion-nav-back-button>
+      </ion-nav-bar>
+      
+
+  <ion-content class="padding">
+
+    <ion-list>
+
+    <div class="item item-divider">
+    Configuración de notificaciones:
+    </div>
+
+    <ion-toggle  ng-model="settings.enablePanic" ng-change="configNotificationPanicChange()">
+        Pánicos y robos
+    </ion-toggle>
+    <ion-toggle  ng-model="settings.enableStartStop" ng-change="configNotificationStartStopChange()">
+        Arranques y paradas
+    </ion-toggle>
+    <ion-toggle  ng-model="settings.enableZone" ng-change="configNotificationZonesChange()">
+        Zonas
+    </ion-toggle>
+    <ion-toggle  ng-model="settings.enableRoute" ng-change="configNotificationRoutesChange()">
+        Rutas
+    </ion-toggle>
+    <ion-toggle  ng-model="settings.enablePoi" ng-change="configNotificationPoisChange()">
+        Pois
+    </ion-toggle>
+    <ion-toggle  ng-model="settings.enableOther" ng-change="configNotificationOtherChange()">
+        Otros
+    </ion-toggle>
+    </ion-list>
+
+    <br>
+    
+
+    <button class="button button-block button-calm" ng-click="setAsDefault()">Seleccionar por defecto</button>
+
+    <br>
+
+    <button class="button button-block button-balanced" ng-click="showMapDevice()">Ver en mapa</button>
+
+
+
+  </ion-content>
+</ion-view>

@@ -1,0 +1,19 @@
+<ion-view view-title="Kyros LBS" name="login-view" >
+<ion-nav-bar   align-title="center">
+        <ion-nav-back-button></ion-nav-back-button>
+      </ion-nav-bar>
+
+  <ion-content class="padding">
+  <br><br>
+  <img ng-src="img/kyros.png" class="center" style="width: 64px; height: 64px">
+      <div class="list list-inset">
+          <label class="item item-input">
+              <input type="text" placeholder="Username" ng-model="data.username">
+          </label>
+          <label class="item item-input">
+              <input type="password" placeholder="Password" ng-model="data.password">
+          </label>
+      </div>
+      <button class="button button-block button-calm" ng-click="login()">Entrar</button>
+  </ion-content>
+</ion-view>
