@@ -12,8 +12,8 @@
 
 angular.module('main.login', [])
 .controller('LoginCtrl', function($scope, $http, LoginService, $ionicPopup, $state, URL, MAP_MODE) {
-    $scope.data = {};
-    //$scope.data = {username: 'crueda', password: 'dat1234'};
+    //$scope.data = {};
+    $scope.data = {username: 'crueda', password: 'dat1234'};
     $scope.login = function() {      
           var urlLogin_complete = URL.login + "?username="+ $scope.data.username +"&password="+$scope.data.password;
           console.log(urlLogin_complete);

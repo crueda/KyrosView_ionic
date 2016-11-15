@@ -64,7 +64,7 @@ $ionicConfigProvider.tabs.position('bottom');
 
   .state('login', {
       url: '/login',
-      templateUrl: 'templates/login.html',
+      templateUrl: 'templates/login/login.html',
       controller: 'LoginCtrl'
   })
 
@@ -74,7 +74,7 @@ $ionicConfigProvider.tabs.position('bottom');
     cache: false,
     views: {
       'tab-map': {
-        templateUrl: 'templates/tab-map.html',
+        templateUrl: 'templates/map/tab-map.html',
         controller: 'MapCtrl'
       }
     }
@@ -85,7 +85,7 @@ $ionicConfigProvider.tabs.position('bottom');
     cache: false,
     views: {
       'tab-devices': {
-        templateUrl: 'templates/tab-devices.html',
+        templateUrl: 'templates/device/tab-devices.html',
         controller: 'DevicesCtrl'
       }
     }
@@ -96,7 +96,7 @@ $ionicConfigProvider.tabs.position('bottom');
     cache: false,
     views: {
       'tab-devices': {
-        templateUrl: 'templates/device-detail.html',
+        templateUrl: 'templates/device/device-detail.html',
         controller: 'DeviceDetailCtrl'
       }
     }
@@ -107,7 +107,7 @@ $ionicConfigProvider.tabs.position('bottom');
       cache: false,
       views: {
         'tab-notifications': {
-          templateUrl: 'templates/tab-notifications.html',         
+          templateUrl: 'templates/notification/tab-notifications.html',         
           controller: 'NotificationsCtrl'
         }
       }
@@ -117,7 +117,7 @@ $ionicConfigProvider.tabs.position('bottom');
       cache: false,
       views: {
         'tab-notifications': {
-          templateUrl: 'templates/notification-detail.html',
+          templateUrl: 'templates/notification/notification-detail.html',
           controller: 'NotificationDetailCtrl'
         }
       }
@@ -128,7 +128,7 @@ $ionicConfigProvider.tabs.position('bottom');
     cache: false,
     views: {
       'tab-config': {
-        templateUrl: 'templates/tab-config.html',
+        templateUrl: 'templates/config/tab-config.html',
         controller: 'ConfigCtrl'
       }
     }
