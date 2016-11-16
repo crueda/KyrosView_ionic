@@ -71,7 +71,7 @@ $ionicConfigProvider.tabs.position('bottom');
 
   .state('tab.map', {
     url: '/map',
-    cache: false,
+    cache: true,
     views: {
       'tab-map': {
         templateUrl: 'templates/map/tab-map.html',
@@ -82,7 +82,7 @@ $ionicConfigProvider.tabs.position('bottom');
 
   .state('tab.devices', {
     url: '/devices',
-    cache: false,
+    cache: true,
     views: {
       'tab-devices': {
         templateUrl: 'templates/device/tab-devices.html',
@@ -93,7 +93,7 @@ $ionicConfigProvider.tabs.position('bottom');
 
   .state('tab.device-detail', {
     url: '/device-detail',
-    cache: false,
+    cache: true,
     views: {
       'tab-devices': {
         templateUrl: 'templates/device/device-detail.html',
@@ -104,7 +104,7 @@ $ionicConfigProvider.tabs.position('bottom');
 
   .state('tab.notifications', {
       url: '/notifications',
-      cache: false,
+      cache: true,
       views: {
         'tab-notifications': {
           templateUrl: 'templates/notification/tab-notifications.html',         
@@ -114,7 +114,7 @@ $ionicConfigProvider.tabs.position('bottom');
     })
     .state('tab.notification-detail', {
       url: '/notifications/:notificationId',
-      cache: false,
+      cache: true,
       views: {
         'tab-notifications': {
           templateUrl: 'templates/notification/notification-detail.html',
@@ -125,7 +125,7 @@ $ionicConfigProvider.tabs.position('bottom');
 
   .state('tab.config', {
     url: '/config',
-    cache: false,
+    cache: true,
     views: {
       'tab-config': {
         templateUrl: 'templates/config/tab-config.html',

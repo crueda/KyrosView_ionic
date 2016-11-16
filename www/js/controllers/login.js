@@ -11,17 +11,23 @@
   }
 
 angular.module('main.login', [])
-.controller('LoginCtrl', function($scope, $http, LoginService, $ionicPopup, $state, URL, MAP_MODE) {
-    //$scope.data = {};
-    $scope.data = {username: 'crueda', password: 'dat1234'};
+.controller('LoginCtrl', function($scope, $http, LoginService, $ionicLoading, $timeout, $ionicPopup, $state, URL, MAP_MODE) {
+    $scope.data = {};
+    //$scope.data = {username: 'crueda', password: 'dat1234'};
     $scope.login = function() {      
-          var urlLogin_complete = URL.login + "?username="+ $scope.data.username +"&password="+$scope.data.password;
-          console.log(urlLogin_complete);
-          $http.get(urlLogin_complete)
-            .success(function(data, status, headers,config){            
+          $ionicLoading.show({
+            content: 'Loading',
+            animation: 'fade-in',
+            showBackdrop: true,
+            maxWidth: 200,
+            showDelay: 0
+          });
+          var url = URL.login + "?username="+ $scope.data.username +"&password="+$scope.data.password;
+          $http.get(url)
+            .success(function(data, status, headers,config){     
+              $ionicLoading.hide();        
               if (data!="nok") {
                 if (data[0].vehicle_license!=undefined) {
-                  //localStorage.setItem("defaultVehicleLicense", data[0].vehicle_license);                  
                   localStorage.setItem("vehicleLicense", data[0].vehicle_license);                  
                 } else {
                   localStorage.setItem("vehicleLicense", "");                  
@@ -42,11 +48,15 @@ angular.module('main.login', [])
               //$scope.result = data; // for UI
           })
           .error(function(data, status, headers,config){
-            //console.log('login error');
-            var alertPopup = $ionicPopup.alert({
-                title: 'Login incorrecto!',
-                template: 'Por favor, compruebe sus credenciales'
+            //console.log('login error');       
+            $ionicLoading.hide();
+            $ionicLoading.show({
+              template: 'Error de red',
+              scope: $scope
             });
+            $timeout(function() {
+               $ionicLoading.hide();
+            }, 1500);
           })
           .then(function(result){
             things = result.data;

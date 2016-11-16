@@ -38,19 +38,34 @@ $scope.search = function() {
 
 */
 
-    var urlTreeDevices_complete = URL.treeDevices + "/" + localStorage.getItem("username");
-    console.log(urlTreeDevices_complete);
     $ionicLoading.show({
-                content: 'Loading',
-                animation: 'fade-in',
-                showBackdrop: true,
-                maxWidth: 200,
-                showDelay: 0
-              });
-    $http.get(urlTreeDevices_complete)
+      content: 'Loading',
+      animation: 'fade-in',
+      showBackdrop: true,
+      maxWidth: 200,
+      showDelay: 0
+    });
+    var url = URL.treeDevices + "/" + localStorage.getItem("username");
+    $http.get(url)
     .success(function(data, status, headers,config){   
-        $ionicLoading.hide();         
+      
         $scope.tasks = data[0].monitor;
+
+        /* $scope.tasks = [
+    {
+      name: 'first task 1',
+      tree: [
+        {
+          name: 'first task 1.1'
+        }
+      ]
+    },
+    {
+      name: 'first task 2'
+    }
+  ];    */
+
+       //$ionicLoading.hide();         
     })
     .error(function(data, status, headers,config){
         $ionicLoading.hide();
@@ -62,6 +77,10 @@ $scope.search = function() {
              $ionicLoading.hide();
           }, 1500);
     })
+
+$scope.$on('$ionTreeList:LoadComplete', function(event, items) {
+   $ionicLoading.hide();
+});
 
     $scope.$on('$ionTreeList:ItemClicked', function(event, item) {
   // process 'item'
@@ -77,8 +96,14 @@ $scope.search = function() {
 })
 
 
-.controller('DeviceDetailCtrl', function($scope, $state, $http, $ionicPopup, $timeout, URL, MAP_MODE, NOTIFICATION_EVENTS) {
-    
+.controller('DeviceDetailCtrl', function($scope, $state, $http, $ionicPopup, $ionicLoading, $timeout, URL, MAP_MODE, NOTIFICATION_EVENTS) {
+    $ionicLoading.show({
+      content: 'Loading',
+      animation: 'fade-in',
+      showBackdrop: true,
+      maxWidth: 200,
+      showDelay: 0
+    });    
     var url = URL.getStatusNotificationsUserVehicle + "?username=" + localStorage.getItem("username") + "&vehicleLicense="+ localStorage.getItem("deviceSelected");
     $http.get(url).success(function(data, status, headers,config){   
         if (data!=undefined) {
@@ -90,9 +115,18 @@ $scope.search = function() {
             enablePoi: data.poi,
             enableOther: data.other
           };             
-        }         
+        }   
+        $ionicLoading.hide();        
       })
       .error(function(data, status, headers,config){
+        $ionicLoading.hide();
+            $ionicLoading.show({
+              template: 'Error de red',
+              scope: $scope
+            });
+            $timeout(function() {
+               $ionicLoading.hide();
+            }, 1500);
       });
 
 

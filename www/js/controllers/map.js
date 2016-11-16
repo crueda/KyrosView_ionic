@@ -1,6 +1,85 @@
-angular.module('main.map', [])
-.controller('MapCtrl', function($scope, $http, $state, $ionicPopup, $cordovaGeolocation, URL, MAP_MODE) {
+ function pad(value) {
+    if(value < 10) {
+        return '0' + value;
+    } else {
+        return value;
+    }
+  }
 
+  var infoWindowDict = {};
+
+angular.module('main.map', [])
+.controller('MapCtrl', function($scope, $compile, $http, $state, $ionicPopup, $cordovaGeolocation, URL, MAP_MODE) {
+
+  $scope.historic = function() {
+    //console.log("-->");
+    var vehicleLicense="";
+     if (localStorage.getItem("mapmode") == MAP_MODE.notification) { 
+      vehicleLicense = localStorage.getItem("notificationSelectedVehicleLicense");
+      var actualDate = new Date().getTime();
+      var initDate = actualDate - (86400000/12)*3;
+      //console.log(initDate);
+      //console.log(actualDate);
+
+      var bounds = new google.maps.LatLngBounds();
+      var url = URL.trackingVehicle + "/" + localStorage.getItem("vehicleLicense") + "?initDate=" + initDate + "&endDate=" + actualDate;
+      console.log(url);
+      $http.get(url).success(function(data, status, headers,config){  
+        //console.log("-->"+ data.result.length);
+        var pathCoordinates = [];
+        for (var i=0; i<data.result.length; i++) {
+ 
+          var point = {lat: data.result[i].location.coordinates[1], lng: data.result[i].location.coordinates[0]};
+          pathCoordinates.push(point);
+          var latLng = new google.maps.LatLng(data.result[i].location.coordinates[1], data.result[i].location.coordinates[0]);
+         
+         var image = {
+            url: 'img/beacon_ball_blue.gif',
+            //size: new google.maps.Size(32, 32),
+            //origin: new google.maps.Point(16, 16),
+            anchor: new google.maps.Point(10, 10),
+            scaledSize: new google.maps.Size(20, 20)
+          };
+          var marker = new google.maps.Marker({
+              map: $scope.map,
+              icon: image,
+              animation: google.maps.Animation.DROP,
+              position: latLng
+          });   
+                   
+          bounds.extend(latLng);
+
+          /*
+          var datePos = new Date(data.result[i].pos_date);
+          var hours = pad(datePos.getHours());
+          var minutes = pad(datePos.getMinutes());
+          var seconds = pad(datePos.getSeconds());
+
+          infoWindowDict[marker] = new google.maps.InfoWindow({
+            content: hours + ":" + minutes + ":" + seconds,
+            maxWidth: 180
+          });
+          google.maps.event.addListener(marker, 'click', function () {
+              infoWindowDict[marker].open($scope.map, marker);
+          }); 
+          */
+        }
+        var historicPath = new google.maps.Polyline({
+          path: pathCoordinates,
+          //geodesic: true,
+          strokeColor: '#0000FF',
+          strokeOpacity: 1.0,
+          strokeWeight: 3
+        });
+
+        historicPath.setMap($scope.map);
+        $scope.map.fitBounds(bounds);
+      })
+      .error(function(data, status, headers,config){
+      });
+
+     }
+  };
 
   var titulo = "Mapa";
   //if (localStorage.getItem("notificationSelected")!="") { 
@@ -40,9 +119,9 @@ angular.module('main.map', [])
         var latLngNotification = new google.maps.LatLng(localStorage.getItem("notificationSelectedLatitude"), localStorage.getItem("notificationSelectedLongitude"));
         var image = {
           url: localStorage.getItem("notificationSelectedIcon"),
-          size: new google.maps.Size(40, 40),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(0, 0),
+          //size: new google.maps.Size(40, 40),
+          //origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(15, 15),
           scaledSize: new google.maps.Size(30, 30)
         };
       var marker = new google.maps.Marker({
@@ -53,6 +132,9 @@ angular.module('main.map', [])
       });   
 
 
+var htmlElement = '<div ng-click="historic()" class="infowindow"></div>';
+var compiled0 = $compile(htmlElement)($scope);
+
       // InfoWindow content
       var content = '<div id="iw-container">' +
                     '<div class="iw-title">' + localStorage.getItem("notificationSelectedName") + '</div>' +
@@ -62,15 +144,17 @@ angular.module('main.map', [])
                       '<div class="iw-subTitle">Fecha:</div>' +
                       '<p>' + localStorage.getItem("notificationSelectedDate") + '</p>' + 
                       //'<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>' +
-                      '<br>'+
+                      '<button class="button button-block button-balanced tooltipButton" ng-click="historic()">Histórico 3h.</button>'+
                     '</div>' +
                     '<div class="iw-bottom-gradient"></div>' +
                   '</div>';
 
+var compiled = $compile(content)($scope);
 
       var infoWindow = new google.maps.InfoWindow({
           //content: localStorage.getItem("notificationSelectedName")
-          content: content,
+          //content: content,
+          content: compiled[0],
           maxWidth: 180
       });
      
@@ -118,9 +202,9 @@ angular.module('main.map', [])
         var latLngDevice = new google.maps.LatLng(localStorage.getItem("deviceSelectedLatitude"), localStorage.getItem("deviceSelectedLongitude"));
         var image = {
           url: 'img/devices/' + localStorage.getItem("deviceSelectedIcon"),
-          size: new google.maps.Size(40, 40),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(0, 0),
+          //size: new google.maps.Size(40, 40),
+          //origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(15, 15),
           scaledSize: new google.maps.Size(30, 30)
         };
         var marker = new google.maps.Marker({
@@ -174,15 +258,15 @@ angular.module('main.map', [])
       //console.log("titulo a:"+localStorage.getItem("vehicleLicense"));
 
       var bounds = new google.maps.LatLngBounds();
-      var urlTracking_complete = URL.tracking1vehicle + "/" + localStorage.getItem("vehicleLicense");
-      console.log(urlTracking_complete);
-      $http.get(urlTracking_complete).success(function(data, status, headers,config){  
+      var url = URL.tracking1vehicle + "/" + localStorage.getItem("vehicleLicense");
+      //console.log(url);
+      $http.get(url).success(function(data, status, headers,config){  
         var latLngVehicle = new google.maps.LatLng(data[0].location.coordinates[1], data[0].location.coordinates[0]);
         var image = {
           url: 'img/devices/' + data[0].icon,
-          size: new google.maps.Size(40, 40),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(0, 0),
+          //size: new google.maps.Size(40, 40),
+          //origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(15, 15),
           scaledSize: new google.maps.Size(30, 30)
         };
       var marker = new google.maps.Marker({

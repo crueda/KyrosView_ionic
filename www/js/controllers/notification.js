@@ -24,10 +24,15 @@ var notifications = [];
   }
 
   //todo
-  function archiveAllNotification ($http, URL) {
+  function archiveAllNotification ($http, $scope, URL) {
+    //console.log('You are not sure');
+    var url = URL.archiveAllNotifications + "/" + localStorage.getItem("username");
+    console.log(url);
+    $http.get(url).success(function(data, status, headers,config){            
+      
+      notifications = [];
+      $scope.notifications = notifications;
 
-    var urlArchiveNotification_complete = URL.archiveNotification + "?username="+ localStorage.getItem("username") + "&notificationId="+notificationId;
-    $http.get(urlArchiveNotification_complete).success(function(data, status, headers,config){            
       })
       .error(function(data, status, headers,config){
       });
@@ -35,8 +40,8 @@ var notifications = [];
   }
 
   function archiveNotification ($http, notificationId, URL) {
-    var urlArchiveNotification_complete = URL.archiveNotification + "?username="+ localStorage.getItem("username") + "&notificationId="+notificationId;
-    $http.get(urlArchiveNotification_complete).success(function(data, status, headers,config){            
+    var url = URL.archiveNotification + "?username="+ localStorage.getItem("username") + "&notificationId="+notificationId;
+    $http.get(url).success(function(data, status, headers,config){            
       })
       .error(function(data, status, headers,config){
       })
@@ -66,9 +71,9 @@ angular.module('main.notification', [])
 
    confirmPopup.then(function(res) {
      if(res) {
-       console.log('You are sure');
+        archiveAllNotification ($http, $scope, URL);
      } else {
-       console.log('You are not sure');
+       //console.log('You are not sure');
      }
    });
 
@@ -76,9 +81,71 @@ angular.module('main.notification', [])
 
   $scope.doRefresh = function() {
     
-    console.log('Refreshing!');
+    //console.log('Refreshing!');
     $timeout( function() {
-      console.log("aa");
+      notifications = [];
+
+  var url = URL.getNotifications + "?username="+localStorage.getItem("username");
+  console.log(url);
+  notifications = [];
+  $ionicLoading.show({
+    //template: '<ion-spinner icon="bubbles"></ion-spinner><p>LOADING...</p>'
+    //templateUrl: 'loading.html',
+    content: 'Loading',
+    animation: 'fade-in',
+    showBackdrop: true,
+    maxWidth: 200,
+    showDelay: 0
+  });
+  $http.get(url)
+    .success(function(data, status, headers,config){
+      $ionicLoading.hide(); 
+
+      for (var i=0; i<data.length; i++) {
+        var date = new Date(data[i].timestamp);
+        var year = date.getFullYear();
+        var month = pad(date.getMonth() + 1);
+        var day = pad(date.getDate());
+        var hours = pad(date.getHours());
+        var minutes = pad(date.getMinutes());
+        var seconds = pad(date.getSeconds());
+        var strDate = day + "/" + month + "/" + year + " - " + hours + ":" + minutes + ":" + seconds;
+
+        notification = { mongoId: data[i]._id,
+                  id: i,
+                  vehicleLicense: data[i].vehicle_license,
+                  name: getEventDescription(data[i].subtype),
+                  icon: getEventIcon(data[i].subtype),
+                  date: strDate,
+                  latitude: data[i].location.coordinates[1].toFixed(4),
+                  longitude: data[i].location.coordinates[0].toFixed(4),
+                  speed: data[i].speed.toFixed(1),
+                  heading: data[i].heading.toFixed(1),
+                  altitude: data[i].altitude.toFixed(0),
+                  geocoding: data[i].geocoding,
+                  battery: data[i].battery
+                  
+          }
+        notifications.push(notification);
+        }
+          $scope.notifications = notifications;
+          $scope.$broadcast('scroll.refreshComplete');
+        })
+        .error(function(data, status, headers,config){
+          //$scope.notifications = notifications;
+          $ionicLoading.hide();
+          $ionicLoading.show({
+            template: 'Error de red',
+            scope: $scope
+          });
+          $timeout(function() {
+             $ionicLoading.hide();
+             $scope.$broadcast('scroll.refreshComplete');
+             //$state.go('login');
+          }, 1500);
+          //$state.go('login');            
+        });
+
       //simulate async response
       //scope.items.push('New Item ' + Math.floor(Math.random() * 1000) + 4);
 
@@ -102,8 +169,8 @@ angular.module('main.notification', [])
 
   }
 
-  var urlGetNotifications_complete = URL.getNotifications + "?username="+localStorage.getItem("username");
-  console.log(urlGetNotifications_complete);
+  var url = URL.getNotifications + "?username="+localStorage.getItem("username");
+  console.log(url);
   notifications = [];
   $ionicLoading.show({
     //template: '<ion-spinner icon="bubbles"></ion-spinner><p>LOADING...</p>'
@@ -114,9 +181,7 @@ angular.module('main.notification', [])
     maxWidth: 200,
     showDelay: 0
   });
-
-
-  $http.get(urlGetNotifications_complete)
+  $http.get(url)
     .success(function(data, status, headers,config){
       $ionicLoading.hide(); 
 
@@ -138,9 +203,9 @@ angular.module('main.notification', [])
                   date: strDate,
                   latitude: data[i].location.coordinates[1].toFixed(4),
                   longitude: data[i].location.coordinates[0].toFixed(4),
-                  speed: data[i].speed,
-                  heading: data[i].heading,
-                  altitude: data[i].altitude,
+                  speed: data[i].speed.toFixed(1),
+                  heading: data[i].heading.toFixed(1),
+                  altitude: data[i].altitude.toFixed(0),
                   geocoding: data[i].geocoding,
                   battery: data[i].battery
                   
