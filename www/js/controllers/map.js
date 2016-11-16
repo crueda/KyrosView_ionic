@@ -25,6 +25,8 @@ angular.module('main.map', [])
       var url = URL.trackingVehicle + "/" + localStorage.getItem("vehicleLicense") + "?initDate=" + initDate + "&endDate=" + actualDate;
       console.log(url);
       $http.get(url).success(function(data, status, headers,config){  
+
+        if (data.status=="ok" && data.result.length > 0) {
         //console.log("-->"+ data.result.length);
         var pathCoordinates = [];
         for (var i=0; i<data.result.length; i++) {
@@ -74,9 +76,16 @@ angular.module('main.map', [])
 
         historicPath.setMap($scope.map);
         $scope.map.fitBounds(bounds);
+      } else {
+        var alertPopup = $ionicPopup.alert({
+            title: 'Tracking últimas 3 horas',
+            template: 'No existen puntos de tracking'
+        });
+      }
       })
       .error(function(data, status, headers,config){
       });
+
 
      }
   };
