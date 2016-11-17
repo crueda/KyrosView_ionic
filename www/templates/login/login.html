@@ -1,12 +1,20 @@
-<ion-view view-title="Kyros LBS" name="login-view" >
-<ion-nav-bar   align-title="center">
-  <ion-nav-back-button></ion-nav-back-button>
+<ion-view view-title="Kyros LBS" name="login-view">
+
+<ion-nav-bar class="nav-title-slide-ios7">
+    <ion-nav-back-button class="button-icon icon  ion-ios7-arrow-back">
+        Back
+    </ion-nav-back-button>
+    <ion-nav-buttons side="right">
+        <button class="button ion-wand customButtonIcon" ng-click="clean()">            
+        </button>
+    </ion-nav-buttons>
 </ion-nav-bar>
 
+
+
   <ion-content class="padding">
-  <br><br>
-  <img ng-src="img/kyros.png" class="center" style="width: 64px; height: 64px">
-  <br>
+ 
+  
     <div class="list list-inset">
       <label class="item item-input item-floating-label">
         <span class="input-label">Usuario:</span>
@@ -21,7 +29,29 @@
     <ion-list>
       <ion-checkbox ng-model="settings.remember" ng-change="remember()">Recordar</ion-checkbox>
     </ion-list>
+    <br>
 
     <button class="button button-block button-calm" ng-click="login()">Entrar</button>
+
+<br><br><br>
+    <img ng-src="img/kyros.png" class="center" style="width: 64px; height: 64px">
+
+   <div class="col text-center">
+      <span text-center>
+      <a href="#" onclick="window.open('https://www.kyroslbs.com', '_system', 'location=yes'); return false;">
+                www.kyroslbs.com
+            </a>
+      </span>
+    </div>
+
+
+<div class="row" style="height: 900px;">
+  <div class="col col-center">
+  </div>
+</div>
+
   </ion-content>
+
+
+
 </ion-view>

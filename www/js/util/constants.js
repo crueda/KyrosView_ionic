@@ -1,5 +1,9 @@
 angular.module('main')
 
+.constant('APP', {
+  version: 1,
+})
+
 .constant('MAP_MODE', {
   init: 0,
   notification: 1,
@@ -21,6 +25,7 @@ angular.module('main')
   archiveAllNotifications: 'http://view.kyroslbs.com/api/app/notification/archive/user',
   getNotifications: 'http://view.kyroslbs.com/api/app/notification',
   treeDevices: 'http://view.kyroslbs.com/api/app/monitor',
+  listDevices: 'http://view.kyroslbs.com/api/app/monitorList',
   saveToken: 'http://view.kyroslbs.com/api/app/notification/setToken',
   tracking1vehicle: 'http://view.kyroslbs.com/api/app/tracking1/vehicle',
   trackingVehicle: 'http://view.kyroslbs.com/api/app/tracking/vehicle',
@@ -39,6 +44,7 @@ angular.module('main')
   archiveAllNotifications: 'http://localhost:3000/api/app/notification/archive/user',
   getNotifications: 'http://localhost:3000/api/app/notification',
   treeDevices: 'http://localhost:3000/api/app/monitor',
+  listDevices: 'http://localhost:3000/api/app/monitorList',
   saveToken: 'http://localhost:3000/api/app/notification/setToken',
   tracking1vehicle: 'http://localhost:3000/api/app/tracking1/vehicle',
   trackingVehicle: 'http://localhost:3000/api/app/tracking/vehicle',

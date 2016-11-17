@@ -11,7 +11,15 @@
   }
 
 angular.module('main.login', [])
-.controller('LoginCtrl', function($scope, $http, LoginService, $ionicLoading, $timeout, $ionicPopup, $state, URL, MAP_MODE) {
+.controller('LoginCtrl', function($scope, $http, LoginService, $ionicLoading, $timeout, $ionicPopup, $state, URL, MAP_MODE, APP) {
+
+  $scope.clean = function() {
+      $scope.data = {}; 
+       $scope.settings = {
+        remember: false
+      };  
+  }
+
     if (localStorage.getItem("check_remember")=="true") {
       $scope.data = {username: localStorage.getItem("login_username"), password: localStorage.getItem("login_password")};
     } else {
@@ -40,44 +48,54 @@ angular.module('main.login', [])
     }
 
     $scope.login = function() {      
-          $ionicLoading.show({
-            content: 'Loading',
-            animation: 'fade-in',
-            showBackdrop: true,
-            maxWidth: 200,
-            showDelay: 0
-          });
-          var url = URL.login + "?username="+ $scope.data.username +"&password="+$scope.data.password;
-          $http.get(url)
-            .success(function(data, status, headers,config){     
-              $ionicLoading.hide();        
-              if (data!="nok") {
-                if (data[0].vehicle_license!=undefined) {
-                  localStorage.setItem("vehicleLicense", data[0].vehicle_license);                  
-                } else {
-                  localStorage.setItem("vehicleLicense", "");                  
-                }
-                localStorage.setItem("username", $scope.data.username);
-                localStorage.setItem("notificationSelected", "");  
-                localStorage.setItem("deviceSelected", "");  
-                localStorage.setItem("mapmode", MAP_MODE.init);  
-                saveToken($http, URL);
-
-                if (localStorage.getItem("check_remember")=="true") {
-                  localStorage.setItem("login_username", $scope.data.username); 
-                  localStorage.setItem("login_password", $scope.data.password); 
-                }
-                $state.go('tab.notifications');
+      // Mostrar loading
+      $ionicLoading.show({
+        content: 'Loading',
+        animation: 'fade-in',
+        showBackdrop: true,
+        maxWidth: 200,
+        showDelay: 0
+      });
+      
+      // peticion de login
+      var url = URL.login + "?version="+APP.version+"&username="+ $scope.data.username +"&password="+$scope.data.password;
+      console.log(url);
+        $http.get(url)
+          .success(function(data, status, headers,config){     
+            $ionicLoading.hide();        
+            if (data.status=="msg") {
+              var alertPopup = $ionicPopup.alert({
+                  title: data.title,
+                  template: data.message
+              });
+            }
+            else if (data.status=="ok") {
+              if (data.result[0].vehicle_license!=undefined) {
+                localStorage.setItem("vehicleLicense", data.result[0].vehicle_license);                  
               } else {
-                var alertPopup = $ionicPopup.alert({
-                  title: 'Login incorrecto!',
-                  template: 'Por favor, compruebe sus credenciales'
-                });
+                localStorage.setItem("vehicleLicense", "");                  
               }
-              //$scope.result = data; // for UI
+              localStorage.setItem("username", $scope.data.username);
+              localStorage.setItem("notificationSelected", "");  
+              localStorage.setItem("deviceSelected", "");  
+              localStorage.setItem("mapmode", MAP_MODE.init);  
+              saveToken($http, URL);
+
+              if (localStorage.getItem("check_remember")=="true") {
+                localStorage.setItem("login_username", $scope.data.username); 
+                localStorage.setItem("login_password", $scope.data.password); 
+              }
+
+              // ir a estaña de notificaciones
+              $state.go('tab.notifications');
+            } else {
+              var alertPopup = $ionicPopup.alert({
+                title: 'Login incorrecto!',
+                template: 'Por favor, compruebe sus credenciales'
+              });
+            }
           })
           .error(function(data, status, headers,config){
-            //console.log('login error');       
             $ionicLoading.hide();
             $ionicLoading.show({
               template: 'Error de red',
@@ -86,9 +104,6 @@ angular.module('main.login', [])
             $timeout(function() {
                $ionicLoading.hide();
             }, 1500);
-          })
-          .then(function(result){
-            things = result.data;
           });
 
       /*

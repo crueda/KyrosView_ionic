@@ -14,7 +14,7 @@ angular.module('main.map', [])
   $scope.historic = function() {
      if (localStorage.getItem("mapmode") == MAP_MODE.notification) { 
       var actualDate = new Date().getTime();
-      var initDate = actualDate - (86400000/12)*3;
+      var initDate = actualDate - (86400000/12)*8;
 
       var bounds = new google.maps.LatLngBounds();
       var url = URL.trackingVehicle + "/" + localStorage.getItem("notificationSelectedVehicleLicense") + "?initDate=" + initDate + "&endDate=" + actualDate;
@@ -73,15 +73,13 @@ angular.module('main.map', [])
         $scope.map.fitBounds(bounds);
       } else {
         var alertPopup = $ionicPopup.alert({
-            title: 'Tracking últimas 3 horas',
+            title: 'Tracking últimas 8 horas',
             template: 'No existen puntos de tracking'
         });
       }
       })
       .error(function(data, status, headers,config){
       });
-
-
      }
   };
 
@@ -130,8 +128,6 @@ angular.module('main.map', [])
       });   
 
 
-var htmlElement = '<div ng-click="historic()" class="infowindow"></div>';
-var compiled0 = $compile(htmlElement)($scope);
 
       // InfoWindow content
       var content = '<div id="iw-container">' +
@@ -141,17 +137,13 @@ var compiled0 = $compile(htmlElement)($scope);
                       '<p>' + localStorage.getItem("notificationSelectedVehicleLicense") + '</p>' +
                       '<div class="iw-subTitle">Fecha:</div>' +
                       '<p>' + localStorage.getItem("notificationSelectedDate") + '</p>' + 
-                      //'<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>' +
-                      '<button class="button button-block button-balanced tooltipButton" ng-click="historic()">Histórico 3h.</button>'+
+                      '<button class="button button-block button-balanced tooltipButton" ng-click="historic()">Histórico 8h.</button>'+
                     '</div>' +
                     '<div class="iw-bottom-gradient"></div>' +
                   '</div>';
 
-var compiled = $compile(content)($scope);
-
+      var compiled = $compile(content)($scope);
       var infoWindow = new google.maps.InfoWindow({
-          //content: localStorage.getItem("notificationSelectedName")
-          //content: content,
           content: compiled[0],
           maxWidth: 180
       });
@@ -163,27 +155,26 @@ var compiled = $compile(content)($scope);
         infoWindow.close();
       });
      
-        google.maps.event.addListener(infoWindow, 'domready', function() {
+      google.maps.event.addListener(infoWindow, 'domready', function() {
+        var iwOuter = $('.gm-style-iw');
+        var iwBackground = iwOuter.prev();
+        iwBackground.children(':nth-child(2)').css({'display' : 'none'});
+        iwBackground.children(':nth-child(4)').css({'display' : 'none'});
+        iwOuter.parent().parent().css({left: '10px'});
+        iwBackground.children(':nth-child(1)').attr('style', function(i,s){ return s + 'left: 96px !important;'});
+        iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'left: 96px !important;'});
+        iwBackground.children(':nth-child(3)').find('div').children().css({'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 1px 6px', 'z-index' : '1'});
+        var iwCloseBtn = iwOuter.next();
+        iwCloseBtn.css({opacity: '1', right: '1px', top: '1px', border: '7px solid #48b5e9', 'border-radius': '23px', 'box-shadow': '0 0 5px #3990B9'});
 
-    var iwOuter = $('.gm-style-iw');
-    var iwBackground = iwOuter.prev();
-    iwBackground.children(':nth-child(2)').css({'display' : 'none'});
-    iwBackground.children(':nth-child(4)').css({'display' : 'none'});
-    iwOuter.parent().parent().css({left: '10px'});
-    iwBackground.children(':nth-child(1)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
-    iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
-    iwBackground.children(':nth-child(3)').find('div').children().css({'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 1px 6px', 'z-index' : '1'});
-    var iwCloseBtn = iwOuter.next();
-    iwCloseBtn.css({opacity: '1', right: '18px', top: '3px', border: '7px solid #48b5e9', 'border-radius': '13px', 'box-shadow': '0 0 5px #3990B9'});
+        if($('.iw-content').height() < 140){
+          $('.iw-bottom-gradient').css({display: 'none'});
+        } 
 
-    if($('.iw-content').height() < 140){
-      $('.iw-bottom-gradient').css({display: 'none'});
-    } 
-
-    iwCloseBtn.mouseout(function(){
-      $(this).css({opacity: '1'});
-    });
-  });
+        iwCloseBtn.mouseout(function(){
+          $(this).css({opacity: '1'});
+        });
+      });
 
       $scope.map.setCenter(latLngNotification);  
       $scope.map.setZoom(15);

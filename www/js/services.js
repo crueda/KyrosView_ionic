@@ -1,4 +1,27 @@
-angular.module('main.services', [])
+angular.module('main.services', ['ionic'])
+
+.factory('DevicesDataService', function($q, $timeout) {
+
+    var searchDevices = function(searchFilter) {         
+      //console.log('Searching devices for ' + searchFilter);
+
+      var deferred = $q.defer();
+
+      var matches = devices.filter( function(device) {
+        if(device.vehicle_license.toLowerCase().indexOf(searchFilter.toLowerCase()) !== -1 ) return true;
+      })
+
+      $timeout( function(){        
+        deferred.resolve( matches );
+      }, 100);
+
+      return deferred.promise;
+    };
+
+    return {
+        searchDevices : searchDevices
+    }
+})
 
 .factory('LoginService', function($q) {
 
