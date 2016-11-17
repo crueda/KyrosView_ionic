@@ -12,17 +12,12 @@ angular.module('main.map', [])
 .controller('MapCtrl', function($scope, $compile, $http, $state, $ionicPopup, $cordovaGeolocation, URL, MAP_MODE) {
 
   $scope.historic = function() {
-    //console.log("-->");
-    var vehicleLicense="";
      if (localStorage.getItem("mapmode") == MAP_MODE.notification) { 
-      vehicleLicense = localStorage.getItem("notificationSelectedVehicleLicense");
       var actualDate = new Date().getTime();
       var initDate = actualDate - (86400000/12)*3;
-      //console.log(initDate);
-      //console.log(actualDate);
 
       var bounds = new google.maps.LatLngBounds();
-      var url = URL.trackingVehicle + "/" + localStorage.getItem("vehicleLicense") + "?initDate=" + initDate + "&endDate=" + actualDate;
+      var url = URL.trackingVehicle + "/" + localStorage.getItem("notificationSelectedVehicleLicense") + "?initDate=" + initDate + "&endDate=" + actualDate;
       console.log(url);
       $http.get(url).success(function(data, status, headers,config){  
 
@@ -45,7 +40,7 @@ angular.module('main.map', [])
           var marker = new google.maps.Marker({
               map: $scope.map,
               icon: image,
-              animation: google.maps.Animation.DROP,
+              //animation: google.maps.Animation.DROP,
               position: latLng
           });   
                    
@@ -91,16 +86,13 @@ angular.module('main.map', [])
   };
 
   var titulo = "Mapa";
-  //if (localStorage.getItem("notificationSelected")!="") { 
   if (localStorage.getItem("mapmode") == MAP_MODE.notification) { 
     titulo = localStorage.getItem("notificationSelectedVehicleLicense") + " - " + localStorage.getItem("notificationSelectedName");
   } 
   else if (localStorage.getItem("mapmode") == MAP_MODE.device) { 
-  //else if (localStorage.getItem("deviceSelected")!="") { 
     titulo = localStorage.getItem("deviceSelected");
   }  
   else { 
-  //else if (localStorage.getItem("vehicleLicense")!="") { 
     titulo = localStorage.getItem("vehicleLicense");
   }  
 
@@ -122,9 +114,6 @@ angular.module('main.map', [])
      
     if (localStorage.getItem("mapmode") == MAP_MODE.notification) {  
 
-      //localStorage.setItem("notificationSelected", "");  
-        //$scope.titulo_mapa = localStorage.getItem("notificationSelected");  
-        //console.log("titulo a:"+localStorage.getItem("notificationSelectedVehicleLicense"));
         var latLngNotification = new google.maps.LatLng(localStorage.getItem("notificationSelectedLatitude"), localStorage.getItem("notificationSelectedLongitude"));
         var image = {
           url: localStorage.getItem("notificationSelectedIcon"),

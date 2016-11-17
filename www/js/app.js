@@ -64,6 +64,7 @@ $ionicConfigProvider.tabs.position('bottom');
 
   .state('login', {
       url: '/login',
+      cache: false,
       templateUrl: 'templates/login/login.html',
       controller: 'LoginCtrl'
   })

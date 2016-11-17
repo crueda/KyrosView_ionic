@@ -12,8 +12,33 @@
 
 angular.module('main.login', [])
 .controller('LoginCtrl', function($scope, $http, LoginService, $ionicLoading, $timeout, $ionicPopup, $state, URL, MAP_MODE) {
-    $scope.data = {};
+    if (localStorage.getItem("check_remember")=="true") {
+      $scope.data = {username: localStorage.getItem("login_username"), password: localStorage.getItem("login_password")};
+    } else {
+      $scope.data = {};      
+    }
     //$scope.data = {username: 'crueda', password: 'dat1234'};
+
+    if (localStorage.getItem("check_remember")=="true") {
+      $scope.settings = {
+        remember: true
+      };          
+    } else {
+      $scope.settings = {
+        remember: false
+      };                
+    }
+
+    //$scope.check_remember = localStorage.getItem("check_remember");
+    $scope.remember = function() {      
+      console.log ($scope.settings.remember);
+      if ($scope.settings.remember){
+        localStorage.setItem("check_remember", "true");         
+      } else {
+        localStorage.setItem("check_remember", "false");         
+      }
+    }
+
     $scope.login = function() {      
           $ionicLoading.show({
             content: 'Loading',
@@ -37,7 +62,11 @@ angular.module('main.login', [])
                 localStorage.setItem("deviceSelected", "");  
                 localStorage.setItem("mapmode", MAP_MODE.init);  
                 saveToken($http, URL);
-                //console.log("nuevo username:" +  localStorage.getItem("username"));
+
+                if (localStorage.getItem("check_remember")=="true") {
+                  localStorage.setItem("login_username", $scope.data.username); 
+                  localStorage.setItem("login_password", $scope.data.password); 
+                }
                 $state.go('tab.notifications');
               } else {
                 var alertPopup = $ionicPopup.alert({
