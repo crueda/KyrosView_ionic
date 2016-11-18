@@ -23,6 +23,7 @@ angular.module('main.services', ['ionic'])
     }
 })
 
+
 .factory('LoginService', function($q) {
 
   return {
@@ -67,6 +68,7 @@ angular.module('main.services', ['ionic'])
     }
   };
 });
+
 
 
 

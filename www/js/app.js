@@ -1,32 +1,9 @@
-// Ionic Starter App
-
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-// 'starter.services' is found in services.js
-// 'starter.controllers' is found in controllers.jso
-
+// KyrosView Main App
 angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notification', 'main.device', 'main.map', 'main.config', 'main.services', 'ngCordova', 'ion-tree-list'])
 
-.run(function($ionicPlatform, $http) {
+.run(function($ionicPlatform, $http, $ionicPopup) {
   $ionicPlatform.ready(function() {
     
-    /*
-    var push = new Ionic.Push({
-
-      "debug": true
-    });
-
-    push.register(function(token) {
-      console.log("My Device token:",token.token);
-      push.saveToken(token);  // persist the token in the Ionic Platform
-
-      localStorage.setItem("token", token.token);
-
-    });
-*/
-
-
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
@@ -38,9 +15,72 @@ angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notific
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
-  });
-})
 
+    var isWebView = ionic.Platform.isWebView();
+    var isIPad = ionic.Platform.isIPad();
+    var isIOS = ionic.Platform.isIOS();
+    var isAndroid = ionic.Platform.isAndroid();
+    var isWindowsPhone = ionic.Platform.isWindowsPhone();
+
+      localStorage.setItem("token", "");
+    //if (isAndroid) {
+      // Registrar la aplicacion en el servicio PUSH
+      pushNotification = window.plugins.pushNotification;
+
+      window.onNotification = function(e){
+
+        switch(e.event){
+          case 'registered':
+            if(e.regid.length > 0){
+              
+              var device_token = e.regid;
+              localStorage.setItem("token", device_token);
+            }
+          break;
+        
+          case 'message':
+            var alertPopup = $ionicPopup.alert({
+                  title: 'Mensaje push!!!',
+                  template: JSON.stringify(e)
+                });
+          break;
+
+          case 'error':
+              //alert('error occured');
+              /*var alertPopup = $ionicPopup.alert({
+                  title: 'Mehh',
+                  template: 'error'
+                });
+              */
+          break;
+        }
+      };
+
+      window.errorHandler = function(error){
+        //console.log('an error occured');
+      }
+
+      pushNotification.register(
+        onNotification,
+        errorHandler,
+        {
+          'badge': 'true',
+          'sound': 'true',
+          'alert': 'true',
+          'senderID': '379445772580',        
+          'ecb': 'onNotification'
+        }
+      );      
+    //}
+
+  });
+
+
+
+
+
+
+})
 
 
 .config(function($stateProvider, $ionicConfigProvider, $urlRouterProvider) {
