@@ -19,7 +19,7 @@ angular.module('main')
   other: "910,911,920,921,922,923,924,925,926,927,931,932,933,934935,936,941,942,947,1029,1030,1033,1041"
 })
 
-.constant('URL', {
+.constant('URL2', {
   login: 'http://view.kyroslbs.com/api/app/login',
   archiveNotification: 'http://view.kyroslbs.com/api/app/notification/archive',
   archiveAllNotifications: 'http://view.kyroslbs.com/api/app/notification/archive/user',
@@ -38,7 +38,7 @@ angular.module('main')
   getStatusNotificationsUserVehicle: 'http://view.kyroslbs.com/api/app/notification/status'
 })
  
-.constant('URL2', {
+.constant('URL', {
   login: 'http://localhost:3000/api/app/login',
   archiveNotification: 'http://localhost:3000/api/app/notification/archive',
   archiveAllNotifications: 'http://localhost:3000/api/app/notification/archive/user',

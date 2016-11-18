@@ -16,12 +16,25 @@
     <i class="icon ion-search placeholder-icon"></i>
     <input type="search" placeholder="Introduce matrícula" ng-change="search()" ng-model="data.search">
   </label>
-  <button class="button button-clear button-stable">
-    Cancelar
+  <button class="button button-clear button-stable ion-chevron-down">
+    
   </button>      
 </ion-header-bar>
 <ion-content>
-  <div class="list">
-    <li class="item" data-ng-click="selectDevice(device)" ng-repeat="device in data.devices">{{device.vehicle_license}}</li>
-  </div>
+
+  <!--div class="list">
+    <li class="item" data-ng-click="selectDevice(device)" ng-repeat="device in data.devices">{{device.vehicle_license}}
+    </li>
+  </div-->
+
+  <ion-item class="item-remove-animate item-avatar item-icon-right" 
+        ng-repeat="device in data.devices" type="item-text-wrap" ng-click="selectDevice(device);">
+        <img ng-src="/img/devices/{{device.icon_real_time}}">
+        <h2>{{device.vehicle_license}}</h2>
+        <p>{{device.alias}}</p>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+
+      </ion-item>
+
+
 </ion-content>
