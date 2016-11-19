@@ -232,7 +232,7 @@ angular.module('main.notification', [])
   });
 })
 
-.controller('NotificationDetailCtrl', function($scope, $http, $state, $cordovaNativeAudio, $stateParams, Notifications, MAP_MODE) {
+.controller('NotificationDetailCtrl', function($scope, $http, $state, $cordovaNativeAudio, $stateParams, Notifications, MAP_MODE, URL) {
   //$scope.notification = Notifications.get($stateParams.notificationId);
   $scope.notification = notifications[$stateParams.notificationId];
 
@@ -261,7 +261,7 @@ $scope.notificationArchiveChange = function() {
   if ($scope.notification.value) {
     //notifications.splice($stateParams.notificationId, 1);
 
-    archiveNotification($http, $scope.notification['mongoId']);
+    archiveNotification($http, $scope.notification['mongoId'], URL);
     $state.go('tab.notifications');
   }
 

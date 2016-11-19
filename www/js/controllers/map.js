@@ -217,14 +217,13 @@ angular.module('main.map', [])
       
       } else {
           var alertPopup = $ionicPopup.alert({
-            title: 'Operación no permitida',
+            title: 'Mensaje',
             template: 'No existen puntos de tracking'
           });
-          //$scope.titulo_mapa = "Mapa";
-          //console.log("titulo a:"+"Mapa");
           var actualLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
           $scope.map.setCenter(actualLatLng);
           $scope.map.setZoom(15);
+          /*
           var marker = new google.maps.Marker({
               map: $scope.map,
               animation: google.maps.Animation.DROP,
@@ -235,7 +234,7 @@ angular.module('main.map', [])
           });
           google.maps.event.addListener(marker, 'click', function () {
               infoWindow.open($scope.map, marker);
-          }); 
+          });*/ 
       }
 
  

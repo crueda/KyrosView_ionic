@@ -145,7 +145,7 @@ $ionicConfigProvider.tabs.position('bottom');
 
   .state('tab.notifications', {
       url: '/notifications',
-      cache: true,
+      cache: false,
       views: {
         'tab-notifications': {
           templateUrl: 'templates/notification/tab-notifications.html',         

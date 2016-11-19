@@ -26,21 +26,20 @@
         <b>Altitud</b> <span class="item-note">{{notification.altitude}}</span>
       </ion-item>
       <ion-item class="item" style="white-space: normal;">
-        <b>Dirección</b> <span class="item-note" class="left">{{notification.geocoding}}</span>
+        <b>Dirección</b> <span class="item-note" class="right">{{notification.geocoding}}</span>
         <br>
       </ion-item>
 
-    </ion-list>
-
-    <button class="button button-block button-balanced" ng-click="showMapNotification()">Ver en mapa</button>
-
-    <br>
-    
-    <ion-list>
     <ion-toggle  ng-model=notification.value ng-change="notificationArchiveChange()" toggle-class="toggle-calm">
         Archivar
     </ion-toggle>
+
     </ion-list>
+
+    <br>
+    <button class="button button-block button-balanced" ng-click="showMapNotification()">Ver en mapa</button>
+
+    
 
   </ion-content>
 </ion-view>
