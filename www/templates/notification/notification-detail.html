@@ -1,8 +1,15 @@
 <ion-view view-title="{{notification.vehicleLicense}}">
-  <ion-nav-bar class="bar-assertive">
-    <ion-nav-back-button></ion-nav-back-button>
-  </ion-nav-bar>
-      
+<ion-nav-bar class="bar-assertive nav-title-slide-ios7" align-title="center">
+    <ion-nav-back-button class="button-icon icon  ion-ios7-arrow-back">
+        Todas
+    </ion-nav-back-button>
+    <ion-nav-buttons side="right">
+        <button class="button ion-trash-b customButtonIcon" ng-click="archiveSelectNotification('{{notification.mongoId}}')">
+            
+        </button>
+    </ion-nav-buttons>
+</ion-nav-bar>
+
   <ion-content class="padding">
 
     <img ng-src="{{notification.icon}}" class="center" style="width: 64px; height: 64px">
@@ -26,13 +33,14 @@
         <b>Altitud</b> <span class="item-note">{{notification.altitude}}</span>
       </ion-item>
       <ion-item class="item" style="white-space: normal;">
-        <b>Dirección</b> <span class="item-note" class="right">{{notification.geocoding}}</span>
-        <br>
+        <b>Dirección</b> 
+        <br><br><span class="item-note" class="left">{{notification.geocoding}}</span>
+        
       </ion-item>
 
-    <ion-toggle  ng-model=notification.value ng-change="notificationArchiveChange()" toggle-class="toggle-calm">
+    <!--ion-toggle  ng-model=notification.value ng-change="notificationArchiveChange()" toggle-class="toggle-calm">
         Archivar
-    </ion-toggle>
+    </ion-toggle-->
 
     </ion-list>
 

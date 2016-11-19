@@ -1,5 +1,12 @@
 var notifications = [];
 
+ function pad(value) {
+    if(value < 10) {
+        return '0' + value;
+    } else {
+        return value;
+    }
+  }
 
   function getEventDescription(eventType) {
     //var evento = EVENT_ENUM.getByValue('value', eventType);
@@ -21,6 +28,18 @@ var notifications = [];
         return "";
       }
     }
+  }
+
+  function getEventDate(timestamp) {
+    var date = new Date(timestamp);
+    var year = date.getFullYear();
+    var month = pad(date.getMonth() + 1);
+    var day = pad(date.getDate());
+    var hours = pad(date.getHours());
+    var minutes = pad(date.getMinutes());
+    var seconds = pad(date.getSeconds());
+    var strDate = day + "/" + month + "/" + year + " - " + hours + ":" + minutes + ":" + seconds;
+    return strDate;
   }
 
   //todo
@@ -50,13 +69,6 @@ var notifications = [];
       });
   }
   
- function pad(value) {
-    if(value < 10) {
-        return '0' + value;
-    } else {
-        return value;
-    }
-  }
 
 angular.module('main.notification', [])
 .controller('NotificationsCtrl', function($scope, $http, Notifications, $ionicPopup, $ionicLoading, $timeout, URL) {
@@ -65,8 +77,8 @@ angular.module('main.notification', [])
 
     $scope.archiveNotifications = function() {
     var confirmPopup = $ionicPopup.confirm({
-     title: 'Archivar',
-     template: '¿Deseas archivar todas las notificaciones?'
+     title: 'Confirmar',
+     template: '¿Deseas eliminar todas las notificaciones?'
    });
 
    confirmPopup.then(function(res) {
@@ -80,43 +92,22 @@ angular.module('main.notification', [])
   }
 
   $scope.doRefresh = function() {
-    
-    //console.log('Refreshing!');
     $timeout( function() {
-      notifications = [];
+    var url = URL.getNotifications + "?username="+localStorage.getItem("username");
+    console.log(url);
+    notifications = [];
 
-  var url = URL.getNotifications + "?username="+localStorage.getItem("username");
-  console.log(url);
-  notifications = [];
-  $ionicLoading.show({
-    //template: '<ion-spinner icon="bubbles"></ion-spinner><p>LOADING...</p>'
-    //templateUrl: 'loading.html',
-    content: 'Loading',
-    animation: 'fade-in',
-    showBackdrop: true,
-    maxWidth: 200,
-    showDelay: 0
-  });
-  $http.get(url)
+    $http.get(url)
     .success(function(data, status, headers,config){
-      $ionicLoading.hide(); 
 
       for (var i=0; i<data.length; i++) {
-        var date = new Date(data[i].timestamp);
-        var year = date.getFullYear();
-        var month = pad(date.getMonth() + 1);
-        var day = pad(date.getDate());
-        var hours = pad(date.getHours());
-        var minutes = pad(date.getMinutes());
-        var seconds = pad(date.getSeconds());
-        var strDate = day + "/" + month + "/" + year + " - " + hours + ":" + minutes + ":" + seconds;
 
         notification = { mongoId: data[i]._id,
                   id: i,
                   vehicleLicense: data[i].vehicle_license,
                   name: getEventDescription(data[i].subtype),
                   icon: getEventIcon(data[i].subtype),
-                  date: strDate,
+                  date: getEventDate(data[i].timestamp),
                   latitude: data[i].location.coordinates[1].toFixed(4),
                   longitude: data[i].location.coordinates[0].toFixed(4),
                   speed: data[i].speed.toFixed(1),
@@ -133,13 +124,11 @@ angular.module('main.notification', [])
         })
         .error(function(data, status, headers,config){
           //$scope.notifications = notifications;
-          $ionicLoading.hide();
           $ionicLoading.show({
             template: 'Error de red',
             scope: $scope
           });
           $timeout(function() {
-             $ionicLoading.hide();
              $scope.$broadcast('scroll.refreshComplete');
              //$state.go('login');
           }, 1500);
@@ -152,7 +141,7 @@ angular.module('main.notification', [])
       //Stop the ion-refresher from spinning
       //$scope.$broadcast('scroll.refreshComplete');
     
-    }, 1000);
+    }, 2000);
   };
 
   $scope.remove = function(notification, URL) {
@@ -186,21 +175,13 @@ angular.module('main.notification', [])
       $ionicLoading.hide(); 
 
       for (var i=0; i<data.length; i++) {
-        var date = new Date(data[i].timestamp);
-        var year = date.getFullYear();
-        var month = pad(date.getMonth() + 1);
-        var day = pad(date.getDate());
-        var hours = pad(date.getHours());
-        var minutes = pad(date.getMinutes());
-        var seconds = pad(date.getSeconds());
-        var strDate = day + "/" + month + "/" + year + " - " + hours + ":" + minutes + ":" + seconds;
-
+        
         notification = { mongoId: data[i]._id,
                   id: i,
                   vehicleLicense: data[i].vehicle_license,
                   name: getEventDescription(data[i].subtype),
                   icon: getEventIcon(data[i].subtype),
-                  date: strDate,
+                  date: getEventDate(data[i].timestamp),
                   latitude: data[i].location.coordinates[1].toFixed(4),
                   longitude: data[i].location.coordinates[0].toFixed(4),
                   speed: data[i].speed.toFixed(1),
@@ -232,10 +213,22 @@ angular.module('main.notification', [])
   });
 })
 
-.controller('NotificationDetailCtrl', function($scope, $http, $state, $cordovaNativeAudio, $stateParams, Notifications, MAP_MODE, URL) {
+.controller('NotificationDetailCtrl', function($scope, $http, $state, $ionicPopup, $cordovaNativeAudio, $stateParams, Notifications, MAP_MODE, URL) {
   //$scope.notification = Notifications.get($stateParams.notificationId);
   $scope.notification = notifications[$stateParams.notificationId];
 
+  $scope.archiveSelectNotification = function(notificationId) {
+    var confirmPopup = $ionicPopup.confirm({
+     title: 'Confirmar',
+     template: '¿Deseas eliminar esta notificación?'
+   });
+   confirmPopup.then(function(res) {
+     if(res) {
+        archiveNotification ($http, notificationId, URL);
+        $state.go('tab.notifications');
+     } 
+   });
+  }
 
     $scope.showMapNotification = function() {
     
