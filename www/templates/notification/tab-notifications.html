@@ -1,11 +1,9 @@
 <ion-view view-title="Notificaciones">
 
 <ion-nav-bar class="bar-assertive nav-title-slide-ios7" align-title="center">
-    <ion-nav-buttons side="left">
-        
-<!--img ng-src="img/3.png" class="center" style="width: 25px; height: 25px"-->
-<div class="aa" style="width: {{width_bubble}}px;">{{num_notifications}}</div>            
-    </ion-nav-buttons>
+    <ion-nav-buttons side="left">        
+      <div class="bubble" style="width: {{width_bubble}}px;">{{num_notifications}}</div>
+      </ion-nav-buttons>
 
     <ion-nav-buttons side="right">
         <button class="button ion-trash-b customButtonIcon" ng-click="archiveNotifications()">            

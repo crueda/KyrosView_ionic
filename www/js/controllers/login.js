@@ -20,6 +20,13 @@ angular.module('main.login', [])
       };  
   }
 
+  $scope.version = function() {
+    var alertPopup = $ionicPopup.alert({
+      title: 'Kyros App',
+      template: 'Vesión: ' + APP.version
+    });
+  }
+
     if (localStorage.getItem("check_remember")=="true") {
       $scope.data = {username: localStorage.getItem("login_username"), password: localStorage.getItem("login_password")};
     } else {
