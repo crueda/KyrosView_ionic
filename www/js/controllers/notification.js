@@ -194,9 +194,14 @@ angular.module('main.notification', [])
         notifications.push(notification);
         }
           $scope.notifications = notifications;
-          //if (data.length > 99)
           $scope.num_notifications = data.length;
-          //$scope.num_notifications = 1;
+          if (data.length > 99) {
+            $scope.width_bubble = 47;
+          } else if (data.length > 9){
+            $scope.width_bubble = 37;            
+          } else {
+            $scope.width_bubble = 27;                        
+          }
         })
         .error(function(data, status, headers,config){
           //$scope.notifications = notifications;
