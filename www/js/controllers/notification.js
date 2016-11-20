@@ -174,51 +174,45 @@ angular.module('main.notification', [])
     .success(function(data, status, headers,config){
       $ionicLoading.hide(); 
 
-      for (var i=0; i<data.length; i++) {
-        
+      for (var i=0; i<data.length; i++) {        
         notification = { mongoId: data[i]._id,
-                  id: i,
-                  vehicleLicense: data[i].vehicle_license,
-                  name: getEventDescription(data[i].subtype),
-                  icon: getEventIcon(data[i].subtype),
-                  date: getEventDate(data[i].timestamp),
-                  latitude: data[i].location.coordinates[1].toFixed(4),
-                  longitude: data[i].location.coordinates[0].toFixed(4),
-                  speed: data[i].speed.toFixed(1),
-                  heading: data[i].heading.toFixed(1),
-                  altitude: data[i].altitude.toFixed(0),
-                  geocoding: data[i].geocoding,
-                  battery: data[i].battery
-                  
+          id: i,
+          vehicleLicense: data[i].vehicle_license,
+          name: getEventDescription(data[i].subtype),
+          icon: getEventIcon(data[i].subtype),
+          date: getEventDate(data[i].timestamp),
+          latitude: data[i].location.coordinates[1].toFixed(4),
+          longitude: data[i].location.coordinates[0].toFixed(4),
+          speed: data[i].speed.toFixed(1),
+          heading: data[i].heading.toFixed(1),
+          altitude: data[i].altitude.toFixed(0),
+          geocoding: data[i].geocoding,
+          battery: data[i].battery            
           }
         notifications.push(notification);
-        }
-          $scope.notifications = notifications;
-          $scope.num_notifications = data.length;
-          if (data.length > 99) {
-            $scope.width_bubble = 47;
-          } else if (data.length > 9){
-            $scope.width_bubble = 37;            
-          } else {
-            $scope.width_bubble = 27;                        
-          }
-        })
-        .error(function(data, status, headers,config){
-          //$scope.notifications = notifications;
-          $ionicLoading.hide();
-          $ionicLoading.show({
-            template: 'Error de red',
-            scope: $scope
-          });
-          $timeout(function() {
-             $ionicLoading.hide();
-             $state.go('login');
-          }, 1500);
-          //$state.go('login');            
-        })
-        .then(function(result){
-          things = result.data;
-  });
+      }
+      $scope.notifications = notifications;
+      $scope.num_notifications = data.length;
+      if (data.length > 99) {
+        $scope.width_bubble = 47;
+      } else if (data.length > 9){
+        $scope.width_bubble = 37;            
+      } else {
+        $scope.width_bubble = 27;                        
+      }
+  })
+  .error(function(data, status, headers,config){
+    $ionicLoading.hide();
+    $ionicLoading.show({
+      template: 'Error de red',
+      scope: $scope
+    });
+    $timeout(function() {
+      $ionicLoading.hide();
+      $state.go('login');
+    }, 1500);
+    //$state.go('login');            
+    });
 })
 
 .controller('NotificationDetailCtrl', function($scope, $http, $state, $ionicPopup, $cordovaNativeAudio, $stateParams, Notifications, MAP_MODE, URL) {
