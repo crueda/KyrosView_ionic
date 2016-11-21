@@ -1,4 +1,5 @@
 var notifications = [];
+var num_notifications = 0;
 
  function pad(value) {
     if(value < 10) {
@@ -51,6 +52,12 @@ var notifications = [];
       
       notifications = [];
       $scope.notifications = notifications;
+      $scope.num_notifications = 0;
+      if (!ionic.Platform.isAndroid()) {
+        $scope.top_bubble = 24;
+      } else {
+        $scope.top_bubble = 6;            
+      }
 
       })
       .error(function(data, status, headers,config){
@@ -69,13 +76,29 @@ var notifications = [];
       });
   }
   
+  function onConfirm(buttonIndex) {
+    //alert('You selected button ' + buttonIndex);
+    if (buttonIndex==1) {
+      archiveAllNotification ($http, $scope, URL);
+    }
+  }
 
+ 
 angular.module('main.notification', [])
 .controller('NotificationsCtrl', function($scope, $http, Notifications, $ionicPopup, $ionicLoading, $timeout, URL) {
 
   var urlArchive = URL.archiveNotification;
 
     $scope.archiveNotifications = function() {
+
+    navigator.notification.confirm(
+        'Tienes ' + num_notifications + ' notificaciones.\r\n¿Deseas eliminarlas todas?', // message
+         onConfirm,            // callback to invoke with index of button pressed
+        'Confirmar',           // title
+        ['Si','No']     // buttonLabels
+    );
+
+  /*
     var confirmPopup = $ionicPopup.confirm({
      title: 'Confirmar',
      template: '¿Deseas eliminar todas las notificaciones?'
@@ -88,38 +111,57 @@ angular.module('main.notification', [])
        //console.log('You are not sure');
      }
    });
+   */
 
   }
 
   $scope.doRefresh = function() {
     $timeout( function() {
-    var url = URL.getNotifications + "?username="+localStorage.getItem("username");
+    var url = URL.getNotificationsLimit + "?username="+localStorage.getItem("username");
     console.log(url);
     notifications = [];
 
     $http.get(url)
     .success(function(data, status, headers,config){
 
-      for (var i=0; i<data.length; i++) {
+      for (var i=0; i<data.result.length; i++) {
 
-        notification = { mongoId: data[i]._id,
-                  id: i,
-                  vehicleLicense: data[i].vehicle_license,
-                  name: getEventDescription(data[i].subtype),
-                  icon: getEventIcon(data[i].subtype),
-                  date: getEventDate(data[i].timestamp),
-                  latitude: data[i].location.coordinates[1].toFixed(4),
-                  longitude: data[i].location.coordinates[0].toFixed(4),
-                  speed: data[i].speed.toFixed(1),
-                  heading: data[i].heading.toFixed(1),
-                  altitude: data[i].altitude.toFixed(0),
-                  geocoding: data[i].geocoding,
-                  battery: data[i].battery
-                  
-          }
+        notification = { mongoId: data.result[i]._id,
+          id: i,
+          vehicleLicense: data.result[i].vehicle_license,
+          name: getEventDescription(data.result[i].subtype),
+          icon: getEventIcon(data.result[i].subtype),
+          date: getEventDate(data.result[i].timestamp),
+          latitude: data.result[i].location.coordinates[1].toFixed(4),
+          longitude: data.result[i].location.coordinates[0].toFixed(4),
+          speed: data.result[i].speed.toFixed(1),
+          heading: data.result[i].heading.toFixed(1),
+          altitude: data.result[i].altitude.toFixed(0),
+          geocoding: data.result[i].geocoding,
+          battery: data.result[i].battery          
+        }
         notifications.push(notification);
         }
           $scope.notifications = notifications;
+          if (!ionic.Platform.isAndroid()) {
+            $scope.top_bubble = 24;
+          } else {
+            $scope.top_bubble = 6;            
+          }
+
+          num_notifications = data.result.length;
+          $scope.num_notifications = data.result.length;
+          if (num_notifications>99) {
+            $scope.num_notifications = "99+"
+          }
+          if (data.length > 99) {
+            $scope.width_bubble = 47;
+          } else if (data.length > 9){
+            $scope.width_bubble = 37;            
+          } else {
+            $scope.width_bubble = 27;                        
+          }
+
           $scope.$broadcast('scroll.refreshComplete');
         })
         .error(function(data, status, headers,config){
@@ -158,7 +200,7 @@ angular.module('main.notification', [])
 
   }
 
-  var url = URL.getNotifications + "?username="+localStorage.getItem("username");
+  var url = URL.getNotificationsLimit + "?username="+localStorage.getItem("username");
   console.log(url);
   notifications = [];
   $ionicLoading.show({
@@ -174,25 +216,34 @@ angular.module('main.notification', [])
     .success(function(data, status, headers,config){
       $ionicLoading.hide(); 
 
-      for (var i=0; i<data.length; i++) {        
-        notification = { mongoId: data[i]._id,
+      for (var i=0; i<data.result.length; i++) {        
+        notification = { mongoId: data.result[i]._id,
           id: i,
-          vehicleLicense: data[i].vehicle_license,
-          name: getEventDescription(data[i].subtype),
-          icon: getEventIcon(data[i].subtype),
-          date: getEventDate(data[i].timestamp),
-          latitude: data[i].location.coordinates[1].toFixed(4),
-          longitude: data[i].location.coordinates[0].toFixed(4),
-          speed: data[i].speed.toFixed(1),
-          heading: data[i].heading.toFixed(1),
-          altitude: data[i].altitude.toFixed(0),
-          geocoding: data[i].geocoding,
-          battery: data[i].battery            
+          vehicleLicense: data.result[i].vehicle_license,
+          name: getEventDescription(data.result[i].subtype),
+          icon: getEventIcon(data.result[i].subtype),
+          date: getEventDate(data.result[i].timestamp),
+          latitude: data.result[i].location.coordinates[1].toFixed(4),
+          longitude: data.result[i].location.coordinates[0].toFixed(4),
+          speed: data.result[i].speed.toFixed(1),
+          heading: data.result[i].heading.toFixed(1),
+          altitude: data.result[i].altitude.toFixed(0),
+          geocoding: data.result[i].geocoding,
+          battery: data.result[i].battery            
           }
         notifications.push(notification);
       }
       $scope.notifications = notifications;
-      $scope.num_notifications = data.length;
+      num_notifications = data.num_notifications;
+      if (num_notifications>99) {
+        $scope.num_notifications = "99+"
+      }
+      $scope.num_notifications = data.num_notifications;
+      if (!ionic.Platform.isAndroid()) {
+            $scope.top_bubble = 24;
+      } else {
+            $scope.top_bubble = 6;            
+      }
       if (data.length > 99) {
         $scope.width_bubble = 47;
       } else if (data.length > 9){

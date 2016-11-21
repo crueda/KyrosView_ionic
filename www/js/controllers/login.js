@@ -21,10 +21,11 @@ angular.module('main.login', [])
   }
 
   $scope.version = function() {
-    var alertPopup = $ionicPopup.alert({
+    navigator.notification.alert("Versión: " + APP.version, null, "Kyros App", "Ok");
+    /*var alertPopup = $ionicPopup.alert({
       title: 'Kyros App',
       template: 'Vesión: ' + APP.version
-    });
+    });*/
   }
 
     if (localStorage.getItem("check_remember")=="true") {
@@ -97,7 +98,7 @@ angular.module('main.login', [])
               }
 
               // ir a estaña de notificaciones
-              $state.go('tab.notifications');
+              $state.go('tab.notifications', {cache: false});
             } else {
               var alertPopup = $ionicPopup.alert({
                 title: 'Login incorrecto!',

@@ -1,7 +1,7 @@
 // KyrosView Main App
 angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notification', 'main.device', 'main.map', 'main.config', 'main.services', 'ngCordova', 'ion-tree-list'])
 
-.run(function($ionicPlatform, $http, $ionicPopup) {
+.run(function($ionicPlatform, $http, $ionicPopup, $cordovaTouchID, $state) {
   $ionicPlatform.ready(function() {
     
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -15,6 +15,25 @@ angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notific
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+
+
+      $cordovaTouchID.checkSupport().then(function() {
+            $cordovaTouchID.authenticate("Debes autenticarte para entrar").then(function() {
+                //alert("Autenticación correcta");
+                /*var usernameTouchID = localStorage.getItem("usernameTouchID");
+                if (usernameTouchID!=undefined && usernameTouchID!="") {
+                  localStorage.setItem("username", usernameTouchID);
+                  $state.go('tab.notifications');
+                }*/
+                $state.go('tab.notifications', {cache: false});
+                //navigator.notification.alert("Autenticación correcta", alertDismissed, "Kyros", "Ok");
+            }, function(error) {
+                console.log(JSON.stringify(error));
+                 navigator.notification.alert("Autenticación no correcta, introduzca usuario y contraseña", null, "Kyros", "Cerrar");
+            });
+        }, function(error) {
+            console.log(JSON.stringify(error));
+        });
 
     var isWebView = ionic.Platform.isWebView();
     var isIPad = ionic.Platform.isIPad();
@@ -39,6 +58,7 @@ angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notific
           break;
         
           case 'message':
+          
             var alertPopup = $ionicPopup.alert({
                   title: 'Mensaje push!!!',
                   template: JSON.stringify(e)
