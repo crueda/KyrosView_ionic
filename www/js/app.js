@@ -26,9 +26,6 @@ angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notific
       StatusBar.styleDefault();
     }
 
-            navigator.notification.alert("-11->", null, "Kyros App", "Ok");
-
-
     var isWebView = ionic.Platform.isWebView();
     var isIPad = ionic.Platform.isIPad();
     var isIOS = ionic.Platform.isIOS();
@@ -51,15 +48,11 @@ angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notific
       });
     }*/
 
- localStorage.setItem("token", "a");      
-      localStorage.setItem("username", "");
+    localStorage.setItem("token", "");      
+    localStorage.setItem("username", "");
 
-
-        //navigator.notification.alert("-aa->", null, "Kyros App", "Ok");
-
-
-$cordovaPushV5.initialize(  // important to initialize with the multidevice structure !!
-{
+    $cordovaPushV5.initialize(  // important to initialize with the multidevice structure !!
+    {
             android: {
                 senderID: "379445772580"
             },
@@ -70,13 +63,12 @@ $cordovaPushV5.initialize(  // important to initialize with the multidevice stru
                 clearBadge: true
             },
             windows: {}
-}
-).then(function (result) {
+    }
+    ).then(function (result) {
         $cordovaPushV5.onNotification();
         $cordovaPushV5.onError();
         $cordovaPushV5.register().then(function (resultreg) {
-            //localStorage.myPush = resultreg;
-            navigator.notification.alert("-->"+resultreg, null, "Kyros App", "Ok");
+            //navigator.notification.alert("-->"+resultreg, null, "Kyros App", "Ok");
              if (localStorage.getItem("token")!=null && localStorage.getItem("token")!="") {
                   saveToken($http, URL);
               }
@@ -85,88 +77,10 @@ $cordovaPushV5.initialize(  // important to initialize with the multidevice stru
             // SEND THE TOKEN TO THE SERVER, best associated with your device id and user
         }, function (err) {
             // handle error
-            navigator.notification.alert("-err->"+err, null, "Kyros App", "Ok");
+            //navigator.notification.alert("-err->"+err, null, "Kyros App", "Ok");
         });
+      });
     });
-
-
-        //navigator.notification.alert("-bb->", null, "Kyros App", "Ok");
-
-     
-
-    //if (isAndroid) {
-      // Registrar la aplicacion en el servicio PUSH
-      //pushNotification = window.plugins.pushNotification;
-
-
-/*
-      pushNotification = window.plugins.pushNotification;
-
-      window.onNotification = function(e){
-navigator.notification.alert("-->" + e.regid, null, "Kyros App", "Ok");
-        switch(e.event){
-          case 'registered':
-            if(e.regid.length > 0){
-
-              //navigator.notification.alert("Versión: " + e.regid, null, "Kyros App", "Ok");
-
-              var device_token = e.regid;
-              localStorage.setItem("token", device_token);
-
-              if (ionic.Platform.isAndroid() && localStorage.getItem("username")!="") {
-                saveToken($http, URL);
-              }
-
-            }
-          break;
-        
-          case 'message':
-          
-            var alertPopup = $ionicPopup.alert({
-                  title: 'Mensaje push!!!',
-                  template: JSON.stringify(e)
-                });
-          break;
-
-          case 'error':
-              //navigator.notification.alert("error: ", null, "Kyros App", "Ok");
-              //alert('error occured');
-              var alertPopup = $ionicPopup.alert({
-                  title: 'Mehh',
-                  template: 'error'
-                });
-              
-          break;
-        }
-      };
-
-      window.errorHandler = function(error){
-        //console.log('an error occured');
-      }
-
-      pushNotification.register(
-        onNotification,
-        errorHandler,
-        {
-          'badge': 'true',
-          'sound': 'true',
-          'alert': 'true',
-          'senderID': '379445772580',        
-          'ecb': 'onNotification'
-        }
-      );      
-    //}
-
-*/
-
-
-  });
-
-
-
-
-
-
 })
 
 

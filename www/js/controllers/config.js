@@ -1,7 +1,7 @@
 angular.module('main.config', [])
-.controller('ConfigCtrl', function($scope, $http, $state, URL) {
+.controller('ConfigCtrl', function($scope, $http, $state, URL, APP) {
 
-    var url = URL.getStatusNotifications + "/" + localStorage.getItem("username");
+    var url = APP.api_base + URL.getStatusNotifications + "/" + localStorage.getItem("username");
     $http.get(url).success(function(data, status, headers,config){            
     	if (data==1) {
     		$scope.settings = {
@@ -21,9 +21,9 @@ angular.module('main.config', [])
  $scope.configNotificationsChange = function() {
     var url;
     if ($scope.settings.enableNotifications) {
-      url = URL.configNotificationsEnable + "/" + localStorage.getItem("username");
+      url = APP.api_base + URL.configNotificationsEnable + "/" + localStorage.getItem("username");
     } else {
-      url = URL.configNotificationsDisable + "/" + localStorage.getItem("username");
+      url = APP.api_base + URL.configNotificationsDisable + "/" + localStorage.getItem("username");
     }
     $http.get(url).success(function(data, status, headers,config){            
       })

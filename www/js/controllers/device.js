@@ -10,10 +10,18 @@ devices = devices.sort(function(a, b) {
 });
 
 
+function getEventDescription(eventType) {
+    //var evento = EVENT_ENUM.getByValue('value', eventType);
+    var evento = EventEnum[eventType];
+    if (evento!=undefined) {
+      return EventEnum.properties[evento].description;      
+    }
+    return "";
+  }
 
 angular.module('main.device', ['ionic'])
 
-.controller('DevicesCtrl', function($scope, $state, $http, DevicesDataService, $ionicLoading, $timeout, URL) {
+.controller('DevicesCtrl', function($scope, $state, $http, DevicesDataService, $ionicLoading, $timeout, URL, APP) {
 
   $scope.selectDevice = function(device) {
     localStorage.setItem("deviceSelected", device.vehicle_license); 
@@ -27,22 +35,19 @@ angular.module('main.device', ['ionic'])
       maxWidth: 200,
       showDelay: 0
     });
-    //var url = URL.treeDevices + "/" + localStorage.getItem("username");
-    var url = URL.listDevices + "/" + localStorage.getItem("username");
+    var url = APP.api_base + URL.listDevices + "/" + localStorage.getItem("username");
     $http.get(url)
     .success(function(data, status, headers,config){   
       devices = data;
-      //$scope.tasks = data[0].monitor;
       $scope.data = { "devices" : [], "search" : '' };
       $scope.search = function() {
       DevicesDataService.searchDevices($scope.data.search).then(
         function(matches) {
           $scope.data.devices = matches;
         }
-      )
-      }
+      )}
 
-       $ionicLoading.hide();         
+      $ionicLoading.hide();         
     })
     .error(function(data, status, headers,config){
         $ionicLoading.hide();
@@ -55,9 +60,9 @@ angular.module('main.device', ['ionic'])
           }, 1500);
     })
 
-$scope.$on('$ionTreeList:LoadComplete', function(event, items) {
-   $ionicLoading.hide();
-});
+  $scope.$on('$ionTreeList:LoadComplete', function(event, items) {
+     $ionicLoading.hide();
+  });
 
     $scope.$on('$ionTreeList:ItemClicked', function(event, item) {
   // process 'item'
@@ -73,7 +78,7 @@ $scope.$on('$ionTreeList:LoadComplete', function(event, items) {
 })
 
 
-.controller('DeviceDetailCtrl', function($scope, $state, $http, $ionicPopup, $ionicLoading, $timeout, URL, MAP_MODE, NOTIFICATION_EVENTS) {
+.controller('DeviceDetailCtrl', function($scope, $state, $http, $ionicPopup, $ionicLoading, $timeout, URL, APP, MAP_MODE, NOTIFICATION_EVENTS) {
     $ionicLoading.show({
       content: 'Loading',
       animation: 'fade-in',
@@ -81,17 +86,32 @@ $scope.$on('$ionTreeList:LoadComplete', function(event, items) {
       maxWidth: 200,
       showDelay: 0
     });    
-    var url = URL.getStatusNotificationsUserVehicle + "?username=" + localStorage.getItem("username") + "&vehicleLicense="+ localStorage.getItem("deviceSelected");
+    var url = APP.api_base + URL.getConfigNotifications + "/" + localStorage.getItem("username") + "?vehicleLicense="+ localStorage.getItem("deviceSelected");
+    console.log(url);
     $http.get(url).success(function(data, status, headers,config){   
         if (data!=undefined) {
-          $scope.settings = {
-            enablePanic: data.panic,
-            enableStartStop: data.start_stop,
-            enableZone: data.zone,
-            enableRoute: data.route,
-            enablePoi: data.poi,
-            enableOther: data.other
-          };             
+
+          var notificationsConfig = [];
+          for (var i=0; i<data.length; i++) {
+            var notificationConfig = {};
+            if (data[i].enabled==1) {
+              notificationConfig = {
+                id: data[i]._id,
+                enabled: true,
+                name: getEventDescription(data[i].event_type),
+                eventType: data[i].event_type
+              }
+            } else {
+              notificationConfig = {
+                id: data[i]._id,
+                enabled: false,
+                name: getEventDescription(data[i].event_type),
+                eventType: data[i].event_type
+              }
+            }
+            notificationsConfig.push(notificationConfig);
+          }
+          $scope.notificationsConfig = notificationsConfig;
         }   
         $ionicLoading.hide();        
       })
@@ -112,90 +132,30 @@ $scope.$on('$ionTreeList:LoadComplete', function(event, items) {
    $scope.titulo_device = localStorage.getItem("deviceSelected");
    //console.log (localStorage.getItem("deviceSelected"));
 
+   $scope.configNotificationChange = function(id, eventType) {
+    for (var i=0; i<$scope.notificationsConfig.length; i++) {
+      var config = $scope.notificationsConfig[i];
+      if (config.eventType == eventType) {
 
-   $scope.configNotificationPanicChange = function() {
-    var url;
-    if ($scope.settings.enablePanic) {
-      url = URL.configEventsAdd + "?vehicleLicense=" + localStorage.getItem("deviceSelected") + "&username=" + localStorage.getItem("username") + "&eventIdList=" + NOTIFICATION_EVENTS.panic;
-    } else {
-      url = URL.configEventsRemove + "?vehicleLicense=" + localStorage.getItem("deviceSelected") + "&username=" + localStorage.getItem("username") + "&eventIdList=" + NOTIFICATION_EVENTS.panic;
+        var enableConfig = 0;
+        if (config.enabled)
+          enableConfig = 1;
+        
+        var url = APP.api_base + URL.configEventChange + "?vehicleLicense=" + localStorage.getItem("deviceSelected") + "&username=" + localStorage.getItem("username") + "&eventType=" + eventType + "&enabled=" + enableConfig;
+        $http.get(url).success(function(data, status, headers,config){            
+        })
+        .error(function(data, status, headers,config){
+        });
+
+      }
     }
-    $http.get(url).success(function(data, status, headers,config){            
-      })
-      .error(function(data, status, headers,config){
-      });
+
    }
 
-   $scope.configNotificationStartStopChange = function() {
-    var url;
-    if ($scope.settings.enableStartStop) {
-      url = URL.configEventsAdd + "?vehicleLicense=" + localStorage.getItem("deviceSelected") + "&username=" + localStorage.getItem("username") + "&eventIdList=" + NOTIFICATION_EVENTS.start_stop;
-    } else {
-      url = URL.configEventsRemove + "?vehicleLicense=" + localStorage.getItem("deviceSelected") + "&username=" + localStorage.getItem("username") + "&eventIdList=" + NOTIFICATION_EVENTS.start_stop;
-    }
-    console.log(url);
-    $http.get(url).success(function(data, status, headers,config){            
-      })
-      .error(function(data, status, headers,config){
-      });
-   }
-
-   $scope.configNotificationRoutesChange = function() {
-    var url;
-    if ($scope.settings.enableRoute) {
-      url = URL.configEventsAdd + "?vehicleLicense=" + localStorage.getItem("deviceSelected") + "&username=" + localStorage.getItem("username") + "&eventIdList=" + NOTIFICATION_EVENTS.route;
-    } else {
-      url = URL.configEventsRemove + "?vehicleLicense=" + localStorage.getItem("deviceSelected") + "&username=" + localStorage.getItem("username") + "&eventIdList=" + NOTIFICATION_EVENTS.route;
-    }
-    $http.get(url).success(function(data, status, headers,config){            
-      })
-      .error(function(data, status, headers,config){
-      });
-   }
-
-   $scope.configNotificationZonesChange = function() {
-    var url;
-    if ($scope.settings.enableZone) {
-      url = URL.configEventsAdd + "?vehicleLicense=" + localStorage.getItem("deviceSelected") + "&username=" + localStorage.getItem("username") + "&eventIdList=" + NOTIFICATION_EVENTS.zone;
-    } else {
-      url = URL.configEventsRemove + "?vehicleLicense=" + localStorage.getItem("deviceSelected") + "&username=" + localStorage.getItem("username") + "&eventIdList=" + NOTIFICATION_EVENTS.zone;
-    }
-    $http.get(url).success(function(data, status, headers,config){            
-      })
-      .error(function(data, status, headers,config){
-      });
-   }
-
-   $scope.configNotificationPoisChange = function() {
-    var url;
-    if ($scope.settings.enablePoi) {
-      url = URL.configEventsAdd + "?vehicleLicense=" + localStorage.getItem("deviceSelected") + "&username=" + localStorage.getItem("username") + "&eventIdList=" + NOTIFICATION_EVENTS.poi;
-    } else {
-      url = URL.configEventsRemove + "?vehicleLicense=" + localStorage.getItem("deviceSelected") + "&username=" + localStorage.getItem("username") + "&eventIdList=" + NOTIFICATION_EVENTS.poi;
-    }
-    $http.get(url).success(function(data, status, headers,config){            
-      })
-      .error(function(data, status, headers,config){
-      });
-   }
-
-   $scope.configNotificationOtherChange = function() {
-    var url;
-    if ($scope.settings.enableOther) {
-      url = URL.configEventsAdd + "?vehicleLicense=" + localStorage.getItem("deviceSelected") + "&username=" + localStorage.getItem("username") + "&eventIdList=" + NOTIFICATION_EVENTS.other;
-    } else {
-      url = URL.configEventsRemove + "?vehicleLicense=" + localStorage.getItem("deviceSelected") + "&username=" + localStorage.getItem("username") + "&eventIdList=" + NOTIFICATION_EVENTS.other;
-    }
-    $http.get(url).success(function(data, status, headers,config){            
-      })
-      .error(function(data, status, headers,config){
-      });
-   }
 
    $scope.showMapDevice = function() {
-    var urlTracking_complete = URL.tracking1vehicle + "/" + localStorage.getItem("deviceSelected");
-    console.log(urlTracking_complete);
-    $http.get(urlTracking_complete).success(function(data, status, headers,config){  
+    var url = APP.api_base + URL.tracking1vehicle + "/" + localStorage.getItem("deviceSelected");
+    $http.get(url).success(function(data, status, headers,config){  
       if (data[0]!=undefined) {
         localStorage.setItem("deviceSelectedLatitude", data[0].location.coordinates[1]);  
         localStorage.setItem("deviceSelectedLongitude", data[0].location.coordinates[0]);  
@@ -216,13 +176,13 @@ $scope.$on('$ionTreeList:LoadComplete', function(event, items) {
   $scope.setAsDefault = function() {
     //var actualDefaultVehicle = localStorage.getItem("defaultVehicleLicense");
     var selectedVehicle = localStorage.getItem("deviceSelected");
-    var url = URL.setDefaultVehicle + "?username=" + localStorage.getItem("username") + "&vehicleLicense=" + localStorage.getItem("deviceSelected");
+    var url = APP.api_base + URL.setDefaultVehicle + "?username=" + localStorage.getItem("username") + "&vehicleLicense=" + localStorage.getItem("deviceSelected");
     console.log(url);
     $http.get(url).success(function(data, status, headers,config){  
       if (data[0]!=undefined) {
         //localStorage.setItem("defaultVehicleLicense", selectedVehicle);  
         localStorage.setItem("vehicleLicense", selectedVehicle);  
-        var urlTracking = URL.tracking1vehicle + "/" + localStorage.getItem("deviceSelected");
+        var urlTracking = APP.api_base + URL.tracking1vehicle + "/" + localStorage.getItem("deviceSelected");
         $http.get(urlTracking).success(function(data, status, headers,config){  
           if (data[0]!=undefined) {
             localStorage.setItem("deviceSelectedLatitude", data[0].location.coordinates[1]);  

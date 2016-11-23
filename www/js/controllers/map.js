@@ -9,7 +9,7 @@
   var infoWindowDict = {};
 
 angular.module('main.map', [])
-.controller('MapCtrl', function($scope, $compile, $http, $state, $ionicPopup, $cordovaGeolocation, URL, MAP_MODE) {
+.controller('MapCtrl', function($scope, $compile, $http, $state, $ionicPopup, $cordovaGeolocation, URL, MAP_MODE, APP) {
 
   $scope.historic = function() {
      if (localStorage.getItem("mapmode") == MAP_MODE.notification) { 
@@ -17,12 +17,11 @@ angular.module('main.map', [])
       var initDate = actualDate - (86400000/12)*8;
 
       var bounds = new google.maps.LatLngBounds();
-      var url = URL.trackingVehicle + "/" + localStorage.getItem("notificationSelectedVehicleLicense") + "?initDate=" + initDate + "&endDate=" + actualDate;
-      console.log(url);
+      var url = APP.api_base + URL.trackingVehicle + "/" + localStorage.getItem("notificationSelectedVehicleLicense") + "?initDate=" + initDate + "&endDate=" + actualDate;
+      //console.log(url);
       $http.get(url).success(function(data, status, headers,config){  
 
         if (data.status=="ok" && data.result.length > 0) {
-        //console.log("-->"+ data.result.length);
         var pathCoordinates = [];
         for (var i=0; i<data.result.length; i++) {
  
@@ -246,7 +245,7 @@ angular.module('main.map', [])
       //console.log("titulo a:"+localStorage.getItem("vehicleLicense"));
 
       var bounds = new google.maps.LatLngBounds();
-      var url = URL.tracking1vehicle + "/" + localStorage.getItem("vehicleLicense");
+      var url = APP.api_base + URL.tracking1vehicle + "/" + localStorage.getItem("vehicleLicense");
       //console.log(url);
       $http.get(url).success(function(data, status, headers,config){  
         var latLngVehicle = new google.maps.LatLng(data[0].location.coordinates[1], data[0].location.coordinates[0]);

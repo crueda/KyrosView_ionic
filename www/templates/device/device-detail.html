@@ -6,41 +6,26 @@
 
   <ion-content class="padding">
 
+    <button class="button button-block button-calm" ng-click="setAsDefault()">Seleccionar por defecto</button>
+
+    <button class="button button-block button-balanced" ng-click="showMapDevice()">Ver en mapa</button>
+
+    <br>
+
     <ion-list>
 
     <div class="item item-divider">
     Configuración de notificaciones:
     </div>
 
-    <ion-toggle  ng-model="settings.enablePanic" ng-change="configNotificationPanicChange()">
-        Pánicos y robos
-    </ion-toggle>
-    <ion-toggle  ng-model="settings.enableStartStop" ng-change="configNotificationStartStopChange()">
-        Arranques y paradas
-    </ion-toggle>
-    <ion-toggle  ng-model="settings.enableZone" ng-change="configNotificationZonesChange()">
-        Zonas
-    </ion-toggle>
-    <ion-toggle  ng-model="settings.enableRoute" ng-change="configNotificationRoutesChange()">
-        Rutas
-    </ion-toggle>
-    <ion-toggle  ng-model="settings.enablePoi" ng-change="configNotificationPoisChange()">
-        Pois
-    </ion-toggle>
-    <ion-toggle  ng-model="settings.enableOther" ng-change="configNotificationOtherChange()">
-        Otros
-    </ion-toggle>
+      <ion-item class="item item-config-notification" 
+        ng-repeat="notificationConfig in notificationsConfig">
+       
+        <ion-toggle  ng-model="notificationConfig.enabled" ng-change="configNotificationChange('{{notificationConfig.id}}', {{notificationConfig.eventType}})">{{notificationConfig.name}}</ion-toggle>
+
+    </ion-item>
+
     </ion-list>
-
-    <br>
-    
-
-    <button class="button button-block button-calm" ng-click="setAsDefault()">Seleccionar por defecto</button>
-
-
-    <button class="button button-block button-balanced" ng-click="showMapDevice()">Ver en mapa</button>
-
-
 
   </ion-content>
 </ion-view>

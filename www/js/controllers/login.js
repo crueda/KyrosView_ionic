@@ -1,12 +1,9 @@
-  function saveToken ($http, URL) {
-    var urlSaveToken_complete = URL.saveToken + "?username="+ localStorage.getItem("username") + "&token="+ localStorage.getItem("token");
-    console.log(urlSaveToken_complete);
-    $http.get(urlSaveToken_complete).success(function(data, status, headers,config){            
+  function saveToken ($http, URL, APP) {
+    var url = APP.api_base + URL.saveToken + "?username="+ localStorage.getItem("username") + "&token="+ localStorage.getItem("token");
+    //console.log(url);
+    $http.get(url).success(function(data, status, headers,config){            
       })
       .error(function(data, status, headers,config){
-      })
-      .then(function(result){
-        things = result.data;
       });
   }
 
@@ -21,11 +18,11 @@ angular.module('main.login', [])
   }
 
   $scope.version = function() {
-    navigator.notification.alert("Versión: " + APP.version, null, "Kyros App", "Ok");
-    /*var alertPopup = $ionicPopup.alert({
+    //navigator.notification.alert("Versión: " + APP.version, null, "Kyros App", "Ok");
+    var alertPopup = $ionicPopup.alert({
       title: 'Kyros App',
       template: 'Vesión: ' + APP.version
-    });*/
+    });
   }
 
     if (localStorage.getItem("check_remember")=="true") {
@@ -33,7 +30,7 @@ angular.module('main.login', [])
     } else {
       $scope.data = {};      
     }
-    //$scope.data = {username: 'crueda', password: 'dat1234'};
+    $scope.data = {username: 'crueda', password: 'dat1234'};
 
     if (localStorage.getItem("check_remember")=="true") {
       $scope.settings = {
@@ -66,7 +63,7 @@ angular.module('main.login', [])
       });
       
       // peticion de login
-      var url = URL.login + "?version="+APP.version+"&username="+ $scope.data.username +"&password="+$scope.data.password;
+      var url = APP.api_base + URL.login + "?version="+APP.version+"&username="+ $scope.data.username +"&password="+$scope.data.password;
       console.log(url);
         $http.get(url)
           .success(function(data, status, headers,config){     
@@ -89,7 +86,7 @@ angular.module('main.login', [])
               localStorage.setItem("mapmode", MAP_MODE.init);  
               //if (ionic.Platform.isAndroid() && localStorage.getItem("token")!="") {
               if (localStorage.getItem("token")!=null && localStorage.getItem("token")!="") {
-                  saveToken($http, URL);
+                  saveToken($http, URL, APP);
               }
 
               if (localStorage.getItem("check_remember")=="true") {

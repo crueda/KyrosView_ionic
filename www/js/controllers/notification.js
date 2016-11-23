@@ -44,9 +44,9 @@ var num_notifications = 0;
   }
 
   //todo
-  function archiveAllNotification ($http, $scope, URL) {
+  function archiveAllNotification ($http, $scope, URL, APP) {
     //console.log('You are not sure');
-    var url = URL.archiveAllNotifications + "/" + localStorage.getItem("username");
+    var url = APP.api_base + URL.archiveAllNotifications + "/" + localStorage.getItem("username");
     console.log(url);
     $http.get(url).success(function(data, status, headers,config){            
       
@@ -65,8 +65,8 @@ var num_notifications = 0;
       
   }
 
-  function archiveNotification ($http, notificationId, URL) {
-    var url = URL.archiveNotification + "?username="+ localStorage.getItem("username") + "&notificationId="+notificationId;
+  function archiveNotification ($http, notificationId, URL, APP) {
+    var url = APP.api_base + URL.archiveNotification + "?username="+ localStorage.getItem("username") + "&notificationId="+notificationId;
     $http.get(url).success(function(data, status, headers,config){            
       })
       .error(function(data, status, headers,config){
@@ -79,15 +79,15 @@ var num_notifications = 0;
   function onConfirm(buttonIndex) {
     //alert('You selected button ' + buttonIndex);
     if (buttonIndex==1) {
-      archiveAllNotification ($http, $scope, URL);
+      archiveAllNotification ($http, $scope, URL, APP);
     }
   }
 
  
 angular.module('main.notification', [])
-.controller('NotificationsCtrl', function($scope, $http, Notifications, $ionicPopup, $ionicLoading, $timeout, URL) {
+.controller('NotificationsCtrl', function($scope, $http, Notifications, $ionicPopup, $ionicLoading, $timeout, URL, APP) {
 
-  var urlArchive = URL.archiveNotification;
+  var urlArchive = APP.api_base + URL.archiveNotification;
 
     $scope.archiveNotifications = function() {
 
@@ -117,7 +117,7 @@ angular.module('main.notification', [])
 
   $scope.doRefresh = function() {
     $timeout( function() {
-    var url = URL.getNotificationsLimit + "?username="+localStorage.getItem("username");
+    var url = APP.api_base + URL.getNotificationsLimit + "?username="+localStorage.getItem("username");
     console.log(url);
     notifications = [];
 
@@ -204,7 +204,7 @@ angular.module('main.notification', [])
   $scope.remove = function(notification, URL) {
     //console.log("-->"+ notifications.indexOf(notification));
     notifications.splice(notifications.indexOf(notification), 1);
-    //archiveNotification($http, notification['mongoId'], URL);
+    //archiveNotification($http, notification['mongoId'], URL, APP);
 
 
     var url = urlArchive + "?username="+ localStorage.getItem("username") + "&notificationId="+notification['mongoId'];
@@ -215,7 +215,7 @@ angular.module('main.notification', [])
 
   }
 
-  var url = URL.getNotificationsLimit + "?username="+localStorage.getItem("username");
+  var url = APP.api_base + URL.getNotificationsLimit + "?username="+localStorage.getItem("username");
   //var url = URL.getNotificationsLimit + "?username=robertodat";
   console.log(url);
   notifications = [];
@@ -297,7 +297,7 @@ angular.module('main.notification', [])
     });
 })
 
-.controller('NotificationDetailCtrl', function($scope, $http, $state, $ionicPopup, $cordovaNativeAudio, $stateParams, Notifications, MAP_MODE, URL) {
+.controller('NotificationDetailCtrl', function($scope, $http, $state, $ionicPopup, $cordovaNativeAudio, $stateParams, Notifications, MAP_MODE, URL, APP) {
   //$scope.notification = Notifications.get($stateParams.notificationId);
   $scope.notification = notifications[$stateParams.notificationId];
 
@@ -308,7 +308,7 @@ angular.module('main.notification', [])
    });
    confirmPopup.then(function(res) {
      if(res) {
-        archiveNotification ($http, notificationId, URL);
+        archiveNotification ($http, notificationId, URL, APP);
         $state.go('tab.notifications');
      } 
    });
@@ -338,7 +338,7 @@ $scope.notificationArchiveChange = function() {
   if ($scope.notification.value) {
     //notifications.splice($stateParams.notificationId, 1);
 
-    archiveNotification($http, $scope.notification['mongoId'], URL);
+    archiveNotification($http, $scope.notification['mongoId'], URL, APP);
     $state.go('tab.notifications');
   }
 

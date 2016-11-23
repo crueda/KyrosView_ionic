@@ -1,7 +1,9 @@
 angular.module('main')
 
 .constant('APP', {
-  version: 1,
+  version: 2,
+  api_base: 'http://localhost:3000'
+  //api_base: 'http://view.kyroslbs.com'
 })
 
 .constant('MAP_MODE', {
@@ -20,41 +22,23 @@ angular.module('main')
 })
 
 .constant('URL', {
-  login: 'http://view.kyroslbs.com/api/app/login',
-  archiveNotification: 'http://view.kyroslbs.com/api/app/notification/archive',
-  archiveAllNotifications: 'http://view.kyroslbs.com/api/app/notification/archive/user',
-  getNotifications: 'http://view.kyroslbs.com/api/app/notification',
-  getNotificationsLimit: 'http://view.kyroslbs.com/api/app/notificationLimit',
-  treeDevices: 'http://view.kyroslbs.com/api/app/monitor',
-  listDevices: 'http://view.kyroslbs.com/api/app/monitorList',
-  saveToken: 'http://view.kyroslbs.com/api/app/notification/setToken',
-  tracking1vehicle: 'http://view.kyroslbs.com/api/app/tracking1/vehicle',
-  trackingVehicle: 'http://view.kyroslbs.com/api/app/tracking/vehicle',
-  setDefaultVehicle: 'http://view.kyroslbs.com/api/app/vehicle/setAsDefault',
-  configEventsAdd: 'http://view.kyroslbs.com/api/app/notification/config/add',
-  configEventsRemove: 'http://view.kyroslbs.com/api/app/notification/config/remove',
-  configNotificationsEnable: 'http://view.kyroslbs.com/api/app/notification/enable/user',
-  configNotificationsDisable: 'http://view.kyroslbs.com/api/app/notification/disable/user',
-  getStatusNotifications: 'http://view.kyroslbs.com/api/app/notification/status/user',
-  getStatusNotificationsUserVehicle: 'http://view.kyroslbs.com/api/app/notification/status'
-})
- 
-.constant('URL2', {
-  login: 'http://localhost:3000/api/app/login',
-  archiveNotification: 'http://localhost:3000/api/app/notification/archive',
-  archiveAllNotifications: 'http://localhost:3000/api/app/notification/archive/user',
-  getNotifications: 'http://localhost:3000/api/app/notification',
-  getNotificationsLimit: 'http://localhost:3000/api/app/notificationLimit',
-  treeDevices: 'http://localhost:3000/api/app/monitor',
-  listDevices: 'http://localhost:3000/api/app/monitorList',
-  saveToken: 'http://localhost:3000/api/app/notification/setToken',
-  tracking1vehicle: 'http://localhost:3000/api/app/tracking1/vehicle',
-  trackingVehicle: 'http://localhost:3000/api/app/tracking/vehicle',
-  setDefaultVehicle: 'http://localhost:3000/api/app/vehicle/setAsDefault',
-  configEventsAdd: 'http://localhost:3000/api/app/notification/config/add',
-  configEventsRemove: 'http://localhost:3000/api/app/notification/config/remove',
-  configNotificationsEnable: 'http://localhost:3000/api/app/notification/enable/user',
-  configNotificationsDisable: 'http://localhost:3000/api/app/notification/disable/user',
-  getStatusNotifications: 'http://localhost:3000/api/app/notification/status/user',
-  getStatusNotificationsUserVehicle: 'http://localhost:3000/api/app/notification/status'
+  login: '/api/app/login',
+  archiveNotification: '/api/app/notification/archive',
+  archiveAllNotifications: '/api/app/notification/archive/user',
+  //getNotifications: '/api/app/notification',
+  getNotificationsLimit: '/api/app/notificationLimit',
+  //treeDevices: '/api/app/monitor',
+  listDevices: '/api/app/monitorList',
+  saveToken: '/api/app/notification/setToken',
+  tracking1vehicle: '/api/app/tracking1/vehicle',
+  trackingVehicle: '/api/app/tracking/vehicle',
+  setDefaultVehicle: '/api/app/vehicle/setAsDefault',
+  //configEventsAdd: '/api/app/notification/config/add',
+  //configEventsRemove: '/api/app/notification/config/remove',
+  configEventChange: '/api/app/notification/config/change',
+  configNotificationsEnable: '/api/app/notification/enable/user',
+  configNotificationsDisable: '/api/app/notification/disable/user',
+  getConfigNotifications: '/api/app/notification/config/user',
+  getStatusNotifications: '/api/app/notification/status/user',
+  //getStatusNotificationsUserVehicle: '/api/app/notification/status'
 });

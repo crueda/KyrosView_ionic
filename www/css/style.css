@@ -139,3 +139,7 @@ button.tooltipButton {
     box-sizing:content-box;     
  }
 
+ .item-config-notification {
+ 	padding: 0;
+ }
+
