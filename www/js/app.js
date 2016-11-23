@@ -1,7 +1,17 @@
-// KyrosView Main App
-angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notification', 'main.device', 'main.map', 'main.config', 'main.services', 'ngCordova', 'ion-tree-list'])
+function saveToken ($http, URL) {
+    var url = URL.saveToken + "?username="+ localStorage.getItem("username") + "&token="+ localStorage.getItem("token");
+    console.log(url);
+    $http.get(url).success(function(data, status, headers,config){            
+      })
+      .error(function(data, status, headers,config){
+      });
+}
 
-.run(function($ionicPlatform, $http, $ionicPopup, $cordovaTouchID, $state) {
+// KyrosView Main App
+//angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notification', 'main.device', 'main.map', 'main.config', 'main.services', 'ngCordova', 'ion-tree-list'])
+angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notification', 'main.device', 'main.map', 'main.config', 'main.services', 'ngCordova'])
+
+.run(function($ionicPlatform, $http, $ionicPopup, $cordovaTouchID, $cordovaPushV5, $state, URL) {
   $ionicPlatform.ready(function() {
     
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -16,24 +26,8 @@ angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notific
       StatusBar.styleDefault();
     }
 
+            navigator.notification.alert("-11->", null, "Kyros App", "Ok");
 
-      $cordovaTouchID.checkSupport().then(function() {
-            $cordovaTouchID.authenticate("Debes autenticarte para entrar").then(function() {
-                //alert("Autenticación correcta");
-                /*var usernameTouchID = localStorage.getItem("usernameTouchID");
-                if (usernameTouchID!=undefined && usernameTouchID!="") {
-                  localStorage.setItem("username", usernameTouchID);
-                  $state.go('tab.notifications');
-                }*/
-                $state.go('tab.notifications', {cache: false});
-                //navigator.notification.alert("Autenticación correcta", alertDismissed, "Kyros", "Ok");
-            }, function(error) {
-                console.log(JSON.stringify(error));
-                 navigator.notification.alert("Autenticación no correcta, introduzca usuario y contraseña", null, "Kyros", "Cerrar");
-            });
-        }, function(error) {
-            console.log(JSON.stringify(error));
-        });
 
     var isWebView = ionic.Platform.isWebView();
     var isIPad = ionic.Platform.isIPad();
@@ -41,19 +35,88 @@ angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notific
     var isAndroid = ionic.Platform.isAndroid();
     var isWindowsPhone = ionic.Platform.isWindowsPhone();
 
-      localStorage.setItem("token", "");
+
+    // Soporte para TouchID
+    /*
+    if (isIOS || isIPad) {
+      $cordovaTouchID.checkSupport().then(function() {
+        $cordovaTouchID.authenticate("Debes autenticarte para entrar").then(function() {
+          $state.go('tab.notifications', {cache: false});
+        }, function(error) {
+          console.log(JSON.stringify(error));
+            navigator.notification.alert("Autenticación no correcta, introduzca usuario y contraseña", null, "Kyros", "Cerrar");
+        });
+      }, function(error) {
+          console.log(JSON.stringify(error));
+      });
+    }*/
+
+ localStorage.setItem("token", "a");      
+      localStorage.setItem("username", "");
+
+
+        //navigator.notification.alert("-aa->", null, "Kyros App", "Ok");
+
+
+$cordovaPushV5.initialize(  // important to initialize with the multidevice structure !!
+{
+            android: {
+                senderID: "379445772580"
+            },
+            ios: {
+                alert: 'true',
+                badge: true,
+                sound: 'false',
+                clearBadge: true
+            },
+            windows: {}
+}
+).then(function (result) {
+        $cordovaPushV5.onNotification();
+        $cordovaPushV5.onError();
+        $cordovaPushV5.register().then(function (resultreg) {
+            //localStorage.myPush = resultreg;
+            navigator.notification.alert("-->"+resultreg, null, "Kyros App", "Ok");
+             if (localStorage.getItem("token")!=null && localStorage.getItem("token")!="") {
+                  saveToken($http, URL);
+              }
+
+             localStorage.setItem("token", resultreg); 
+            // SEND THE TOKEN TO THE SERVER, best associated with your device id and user
+        }, function (err) {
+            // handle error
+            navigator.notification.alert("-err->"+err, null, "Kyros App", "Ok");
+        });
+    });
+
+
+        //navigator.notification.alert("-bb->", null, "Kyros App", "Ok");
+
+     
+
     //if (isAndroid) {
       // Registrar la aplicacion en el servicio PUSH
+      //pushNotification = window.plugins.pushNotification;
+
+
+/*
       pushNotification = window.plugins.pushNotification;
 
       window.onNotification = function(e){
-
+navigator.notification.alert("-->" + e.regid, null, "Kyros App", "Ok");
         switch(e.event){
           case 'registered':
             if(e.regid.length > 0){
-              
+
+              //navigator.notification.alert("Versión: " + e.regid, null, "Kyros App", "Ok");
+
               var device_token = e.regid;
               localStorage.setItem("token", device_token);
+
+              if (ionic.Platform.isAndroid() && localStorage.getItem("username")!="") {
+                saveToken($http, URL);
+              }
+
             }
           break;
         
@@ -66,12 +129,13 @@ angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notific
           break;
 
           case 'error':
+              //navigator.notification.alert("error: ", null, "Kyros App", "Ok");
               //alert('error occured');
-              /*var alertPopup = $ionicPopup.alert({
+              var alertPopup = $ionicPopup.alert({
                   title: 'Mehh',
                   template: 'error'
                 });
-              */
+              
           break;
         }
       };
@@ -92,6 +156,9 @@ angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notific
         }
       );      
     //}
+
+*/
+
 
   });
 

@@ -87,9 +87,9 @@ angular.module('main.login', [])
               localStorage.setItem("notificationSelected", "");  
               localStorage.setItem("deviceSelected", "");  
               localStorage.setItem("mapmode", MAP_MODE.init);  
-              if (localStorage.getItem("token")!="") {
-              //if (ionic.Platform.isAndroid()) {
-                saveToken($http, URL);
+              //if (ionic.Platform.isAndroid() && localStorage.getItem("token")!="") {
+              if (localStorage.getItem("token")!=null && localStorage.getItem("token")!="") {
+                  saveToken($http, URL);
               }
 
               if (localStorage.getItem("check_remember")=="true") {

@@ -53,7 +53,7 @@ var num_notifications = 0;
       notifications = [];
       $scope.notifications = notifications;
       $scope.num_notifications = 0;
-      if (!ionic.Platform.isAndroid()) {
+      if (ionic.Platform.isIOS()) {
         $scope.top_bubble = 24;
       } else {
         $scope.top_bubble = 6;            
@@ -126,14 +126,23 @@ angular.module('main.notification', [])
 
       for (var i=0; i<data.result.length; i++) {
 
+          if (data.result[i].location!=undefined) {
+            lat = data.result[i].location.coordinates[1].toFixed(4);
+            lon = data.result[i].location.coordinates[0].toFixed(4);            
+          } else {
+            lat = 0;
+            lon = 0;                        
+          }
+
+
         notification = { mongoId: data.result[i]._id,
           id: i,
           vehicleLicense: data.result[i].vehicle_license,
           name: getEventDescription(data.result[i].subtype),
           icon: getEventIcon(data.result[i].subtype),
           date: getEventDate(data.result[i].timestamp),
-          latitude: data.result[i].location.coordinates[1].toFixed(4),
-          longitude: data.result[i].location.coordinates[0].toFixed(4),
+          latitude: lat,
+          longitude: lon,
           speed: data.result[i].speed.toFixed(1),
           heading: data.result[i].heading.toFixed(1),
           altitude: data.result[i].altitude.toFixed(0),
@@ -143,23 +152,29 @@ angular.module('main.notification', [])
         notifications.push(notification);
         }
           $scope.notifications = notifications;
-          if (!ionic.Platform.isAndroid()) {
-            $scope.top_bubble = 24;
-          } else {
-            $scope.top_bubble = 6;            
-          }
 
+          // Texto del indicador
           num_notifications = data.result.length;
-          $scope.num_notifications = data.result.length;
           if (num_notifications>99) {
             $scope.num_notifications = "99+"
+          } else {
+            $scope.num_notifications = num_notifications          
           }
-          if (data.length > 99) {
+
+          // Anchura del indicador
+          if (num_notifications > 99) {
             $scope.width_bubble = 47;
-          } else if (data.length > 9){
+          } else if (num_notifications > 9){
             $scope.width_bubble = 37;            
           } else {
             $scope.width_bubble = 27;                        
+          }
+
+          // Altura del indicador  
+          if (ionic.Platform.isIOS()) {
+            $scope.top_bubble = 24;
+          } else {
+            $scope.top_bubble = 6;            
           }
 
           $scope.$broadcast('scroll.refreshComplete');
@@ -201,6 +216,7 @@ angular.module('main.notification', [])
   }
 
   var url = URL.getNotificationsLimit + "?username="+localStorage.getItem("username");
+  //var url = URL.getNotificationsLimit + "?username=robertodat";
   console.log(url);
   notifications = [];
   $ionicLoading.show({
@@ -217,14 +233,22 @@ angular.module('main.notification', [])
       $ionicLoading.hide(); 
 
       for (var i=0; i<data.result.length; i++) {        
+        if (data.result[i].location!=undefined) {
+            lat = data.result[i].location.coordinates[1].toFixed(4);
+            lon = data.result[i].location.coordinates[0].toFixed(4);            
+          } else {
+            lat = 0;
+            lon = 0;                        
+          }
+
         notification = { mongoId: data.result[i]._id,
           id: i,
           vehicleLicense: data.result[i].vehicle_license,
           name: getEventDescription(data.result[i].subtype),
           icon: getEventIcon(data.result[i].subtype),
           date: getEventDate(data.result[i].timestamp),
-          latitude: data.result[i].location.coordinates[1].toFixed(4),
-          longitude: data.result[i].location.coordinates[0].toFixed(4),
+          latitude: lat,
+          longitude: lon,
           speed: data.result[i].speed.toFixed(1),
           heading: data.result[i].heading.toFixed(1),
           altitude: data.result[i].altitude.toFixed(0),
@@ -235,18 +259,25 @@ angular.module('main.notification', [])
       }
       $scope.notifications = notifications;
       num_notifications = data.num_notifications;
+
+      // Texto del indicador
       if (num_notifications>99) {
         $scope.num_notifications = "99+"
+      } else {
+        $scope.num_notifications = num_notifications;        
       }
-      $scope.num_notifications = data.num_notifications;
-      if (!ionic.Platform.isAndroid()) {
+
+      // ALtura del indicador
+      if (ionic.Platform.isIOS()) {
             $scope.top_bubble = 24;
       } else {
             $scope.top_bubble = 6;            
       }
-      if (data.length > 99) {
+
+      // Anchura del indicador
+      if (num_notifications > 99) {
         $scope.width_bubble = 47;
-      } else if (data.length > 9){
+      } else if (num_notifications > 9){
         $scope.width_bubble = 37;            
       } else {
         $scope.width_bubble = 27;                        

@@ -278,7 +278,7 @@
     "POWER_OFF": {icon: "power_off_info_40.png", description: "Apagado"},
     "CHECKIN": {icon: "checkin_info_40.png", description: "Chequeo"},
     "EHEALTH": {icon: "ehealth_info_40.png", description: "e-health"},
-    "EMPTY_BATTERY": {icon: "empty_battery_info_40.png", description: "Bataría agotada"},
+    "EMPTY_BATTERY": {icon: "empty_battery_40.png", description: "Bataría agotada"},
     "RECOVER_BATTERY": {icon: "recover_battery_info_40.png", description: "Bateria recuperada"},
     "HARSH_CORNERING": {icon: "harsh_cornering_info_40.png", description: "Curva brusca"},
     "RPM": {icon: "rpm_info_40.png", description: "RPM"},
