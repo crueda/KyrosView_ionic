@@ -319,7 +319,7 @@ angular.module('main.notification', [])
    confirmPopup.then(function(res) {
      if(res) {
         archiveNotification ($http, notificationId, URL, APP);
-        $state.go('tab.notifications');
+        $state.go('tab.notifications', {cache: false, mode: localStorage.getItem("group_notifications")});
      } 
    });
   }
@@ -349,7 +349,7 @@ $scope.notificationArchiveChange = function() {
     //notifications.splice($stateParams.notificationId, 1);
 
     archiveNotification($http, $scope.notification['mongoId'], URL, APP);
-    $state.go('tab.notifications');
+    $state.go('tab.notifications',  {cache: false, mode: localStorage.getItem("group_notifications")});
   }
 
 };

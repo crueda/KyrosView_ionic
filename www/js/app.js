@@ -145,27 +145,26 @@ $ionicConfigProvider.tabs.position('bottom');
   })
 
   .state('tab.notifications', {
-      url: '/notifications',
+      url: '/notifications/:mode/',
       cache: false,
       views: {
         'tab-notifications': {
-          templateUrl: 'templates/notification/tab-notifications-group.html',         
+          //templateUrl: 'templates/notification/tab-notifications-group.html',         
+          templateUrl: function ($stateParams){
+                // Here you can access to the url params with $stateParams
+                // Just return the right url template according to the params
+                if ($stateParams.mode == 0) {
+                    return 'templates/notification/tab-notifications.html'
+                }
+                else if ($stateParams.mode == 1) {
+                    return 'templates/notification/tab-notifications-group.html'
+                }
+            },
           controller: 'NotificationsCtrl'
         }
       }
     })
-  /*
-  .state('tab.notifications-g', {
-      url: '/notifications-g',
-      cache: false,
-      views: {
-        'tab-notifications-group': {
-          templateUrl: 'templates/notification/tab-notifications-group.html',         
-          controller: 'Notifications-gCtrl'
-        }
-      }
-    })
-  */
+  
     .state('tab.notification-detail', {
       url: '/notifications/:notificationId',
       cache: true,

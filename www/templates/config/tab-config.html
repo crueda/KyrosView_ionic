@@ -6,9 +6,23 @@
   <ion-content class="padding">
 
     <ion-list>
-    <ion-toggle  ng-model="settings.enableNotifications" ng-change="configNotificationsChange()">
-        Recibir notificaciones
+     
+
+    <ion-toggle  toggle-assertive ng-model="settings.enableNotifications" ng-change="configChange()">
+        Recibir push
     </ion-toggle>
+
+    <li class="item item-toggle">
+     Agrupar notificaciones
+     <label class="toggle toggle-calm">
+       <input type="checkbox" ng-model="settings.enableGroupNotifications" ng-change="configChange()">
+       <div class="track">
+         <div class="handle"></div>
+       </div>
+     </label>
+  </li>
+
+
     <ion-list>
     
     <br>

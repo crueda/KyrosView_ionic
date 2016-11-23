@@ -84,10 +84,10 @@ angular.module('main.login', [])
               localStorage.setItem("notificationSelected", "");  
               localStorage.setItem("deviceSelected", "");  
               localStorage.setItem("mapmode", MAP_MODE.init);  
-              /*localStorage.setItem("group_notifications", "1");
+              localStorage.setItem("group_notifications", "1");
               if (data.result[0].group_notifications!=undefined) {
                 localStorage.setItem("group_notifications", data.result[0].group_notifications);
-              } */ 
+              }  
               //if (ionic.Platform.isAndroid() && localStorage.getItem("token")!="") {
               if (localStorage.getItem("token")!=null && localStorage.getItem("token")!="") {
                   saveToken($http, URL, APP);
@@ -99,12 +99,7 @@ angular.module('main.login', [])
               }
 
               // ir a estaña de notificaciones
-              $state.go('tab.notifications', {cache: false});                
-              /*if (localStorage.getItem("group_notifications")==0) {
-                $state.go('tab.notifications', {cache: false});                
-              } else {
-                $state.go('tab.notifications-group', {cache: false});                
-              }*/
+              $state.go('tab.notifications',  {cache: false, mode: localStorage.getItem("group_notifications")});                
             } else {
               var alertPopup = $ionicPopup.alert({
                 title: 'Login incorrecto!',
