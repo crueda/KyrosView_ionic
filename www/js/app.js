@@ -9,7 +9,7 @@ function saveToken ($http, URL) {
 
 // KyrosView Main App
 //angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notification', 'main.device', 'main.map', 'main.config', 'main.services', 'ngCordova', 'ion-tree-list'])
-angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notification', 'main.device', 'main.map', 'main.config', 'main.services', 'ngCordova'])
+angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notification', 'main.device', 'main.map', 'main.config', 'main.services', 'ngCordova', 'ionic.ion.autoListDivider'])
 
 .run(function($ionicPlatform, $http, $ionicPopup, $cordovaTouchID, $cordovaPushV5, $state, URL) {
   $ionicPlatform.ready(function() {
@@ -149,11 +149,23 @@ $ionicConfigProvider.tabs.position('bottom');
       cache: false,
       views: {
         'tab-notifications': {
-          templateUrl: 'templates/notification/tab-notifications.html',         
+          templateUrl: 'templates/notification/tab-notifications-group.html',         
           controller: 'NotificationsCtrl'
         }
       }
     })
+  /*
+  .state('tab.notifications-g', {
+      url: '/notifications-g',
+      cache: false,
+      views: {
+        'tab-notifications-group': {
+          templateUrl: 'templates/notification/tab-notifications-group.html',         
+          controller: 'Notifications-gCtrl'
+        }
+      }
+    })
+  */
     .state('tab.notification-detail', {
       url: '/notifications/:notificationId',
       cache: true,
@@ -164,6 +176,8 @@ $ionicConfigProvider.tabs.position('bottom');
         }
       }
     })
+  
+    
 
   .state('tab.config', {
     url: '/config',

@@ -91,17 +91,19 @@ angular.module('main.notification', [])
 
     $scope.archiveNotifications = function() {
 
+    /*
     navigator.notification.confirm(
         'Tienes ' + num_notifications + ' notificaciones.\r\n¿Deseas eliminarlas todas?', // message
          onConfirm,            // callback to invoke with index of button pressed
         'Confirmar',           // title
         ['Si','No']     // buttonLabels
     );
+    */
 
-  /*
+  
     var confirmPopup = $ionicPopup.confirm({
      title: 'Confirmar',
-     template: '¿Deseas eliminar todas las notificaciones?'
+     template: 'Tienes ' + num_notifications + ' notificaciones.\r\n¿Deseas eliminarlas todas?'
    });
 
    confirmPopup.then(function(res) {
@@ -111,7 +113,7 @@ angular.module('main.notification', [])
        //console.log('You are not sure');
      }
    });
-   */
+   
 
   }
 
@@ -157,6 +159,10 @@ angular.module('main.notification', [])
           num_notifications = data.result.length;
           if (num_notifications>99) {
             $scope.num_notifications = "99+"
+            var alertPopup = $ionicPopup.alert({
+                title: 'Mensaje',
+                template: 'Tienes ' + num_notifications + ' notificaciones.\r\nSolo se muestran las 100 más recientes'
+              });
           } else {
             $scope.num_notifications = num_notifications          
           }
@@ -263,6 +269,10 @@ angular.module('main.notification', [])
       // Texto del indicador
       if (num_notifications>99) {
         $scope.num_notifications = "99+"
+        var alertPopup = $ionicPopup.alert({
+          title: 'Mensaje',
+          template: 'Tienes ' + num_notifications + ' notificaciones.\r\nSolo se muestran las 100 más recientes'
+        });
       } else {
         $scope.num_notifications = num_notifications;        
       }
