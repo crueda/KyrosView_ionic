@@ -149,14 +149,12 @@ $ionicConfigProvider.tabs.position('bottom');
       cache: false,
       views: {
         'tab-notifications': {
-          //templateUrl: 'templates/notification/tab-notifications-group.html',         
           templateUrl: function ($stateParams){
-                // Here you can access to the url params with $stateParams
-                // Just return the right url template according to the params
-                if ($stateParams.mode == 0) {
+                //if ($stateParams.mode == 0) {
+                if (localStorage.getItem("group_notifications") == 0) {
                     return 'templates/notification/tab-notifications.html'
                 }
-                else if ($stateParams.mode == 1) {
+                else {
                     return 'templates/notification/tab-notifications-group.html'
                 }
             },

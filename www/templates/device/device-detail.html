@@ -21,7 +21,17 @@
       <ion-item class="item item-config-notification" 
         ng-repeat="notificationConfig in notificationsConfig">
        
-        <ion-toggle  ng-model="notificationConfig.enabled" ng-change="configNotificationChange('{{notificationConfig.id}}', {{notificationConfig.eventType}})">{{notificationConfig.name}}</ion-toggle>
+        <!--ion-toggle  ng-model="notificationConfig.enabled" ng-change="configNotificationChange('{{notificationConfig.id}}', {{notificationConfig.eventType}})">{{notificationConfig.name}}</ion-toggle-->
+
+        <li class="item item-toggle">
+            {{notificationConfig.name}}
+             <label class="toggle toggle-calm">
+               <input type="checkbox" ng-model="notificationConfig.enabled" ng-change="configNotificationChange('{{notificationConfig.id}}', {{notificationConfig.eventType}})">
+               <div class="track">
+                 <div class="handle"></div>
+               </div>
+             </label>
+        </li>
 
     </ion-item>
 

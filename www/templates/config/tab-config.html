@@ -8,9 +8,20 @@
     <ion-list>
      
 
-    <ion-toggle  toggle-assertive ng-model="settings.enableNotifications" ng-change="configChange()">
+    <!--ion-toggle  toggle-assertive ng-model="settings.enableNotifications" ng-change="configChange()">
         Recibir push
-    </ion-toggle>
+    </ion-toggle-->
+
+     <li class="item item-toggle">
+     Recibir push
+     <label class="toggle">
+       <input type="checkbox" ng-model="settings.enableNotifications" ng-change="configChange()">
+       <div class="track">
+         <div class="handle"></div>
+       </div>
+     </label>
+    </li>
+
 
     <li class="item item-toggle">
      Agrupar notificaciones
