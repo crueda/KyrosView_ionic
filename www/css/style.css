@@ -29,14 +29,14 @@ body {
     height: 100%;
 }
  
-#map {
+.map {
     width: 100%;
     height: 100%;
     	margin: 0;
 	padding: 0;
 }
 
-#map img {
+.map img {
 	max-width: none !important;
 }
 .gm-style-iw {
@@ -143,3 +143,7 @@ button.tooltipButton {
  	padding: 0;
  }
 
+.item-avatar, .item-avatar .item-img {
+    font-size: 16px;
+    border-radius: 0px; 
+}

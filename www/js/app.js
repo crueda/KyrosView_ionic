@@ -48,9 +48,18 @@ angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notific
       });
     }*/
 
+        /*
+        var alertPopup = $ionicPopup.alert({
+            title: '**',
+            template: '1'
+        });*/
+
+
     localStorage.setItem("token", "");      
     localStorage.setItem("username", "");
 
+
+/*
     $cordovaPushV5.initialize(  // important to initialize with the multidevice structure !!
     {
             android: {
@@ -74,12 +83,104 @@ angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notific
               }
 
              localStorage.setItem("token", resultreg); 
-            // SEND THE TOKEN TO THE SERVER, best associated with your device id and user
         }, function (err) {
             // handle error
             //navigator.notification.alert("-err->"+err, null, "Kyros App", "Ok");
         });
       });
+
+$rootScope.$on('$cordovaPushV5:notificationReceived', function(event, data) {  // use two variables here, event and data !!!
+
+        var alertPopup = $ionicPopup.alert({
+            title: '**',
+            template: '2:' + data
+        });
+
+
+    if (data.additionalData.foreground === false) {
+        navigator.notification.alert("fore->"+data, null, "Kyros App", "Ok");
+        // do something if the app is in foreground while receiving to push - handle in app push handling        
+    } else {
+        navigator.notification.alert("back->"+data, null, "Kyros App", "Ok");
+       // handle push messages while app is in background or not started
+    }
+    if (Device.isOniOS()) {
+        if (data.additionalData.badge) {
+            $cordovaPushV5.setBadgeNumber(NewNumber).then(function (result) {
+                // OK
+            }, function (err) {
+                // handle error
+            });
+        }
+    }
+
+    $cordovaPushV5.finish().then(function (result) {
+        // OK finished - works only with the dev-next version of pushV5.js in ngCordova as of February 8, 2016
+    }, function (err) {
+        // handle error
+    });
+});
+
+$rootScope.$on('$cordovaPushV5:errorOccurred', function(event, error) {
+    // handle error
+});
+
+*/
+
+
+var push = PushNotification.init({
+    "android": {
+        "senderID": "379445772580"
+    },
+    browser: {
+        pushServiceURL: 'http://push.api.phonegap.com/v1/push'
+    },
+    "ios": {
+        "alert": "true",
+        "badge": "true",
+        "sound": "true"
+    },
+    "windows": {}
+});
+
+push.on('registration', function(data) {
+  localStorage.setItem("token", data.registrationId); 
+  
+  /*if (localStorage.getItem("token")!=null && localStorage.getItem("token")!="") {
+                  saveToken($http, URL);
+              }*/
+
+
+    // data.registrationId
+    /*
+     var alertPopup = $ionicPopup.alert({
+            title: '**',
+            template: '2:' + data.registrationId
+        });
+        */
+
+});
+
+push.on('notification', function(data) {
+    // data.message,
+    // data.title,
+    // data.count,
+    // data.sound,
+    // data.image,
+    // data.additionalData
+    var alertPopup = $ionicPopup.alert({
+            title: '**',
+            template: '3:' + data.message
+        });
+});
+
+push.on('error', function(e) {
+    // e.message
+});
+
+
+
+
     });
 })
 
@@ -113,7 +214,7 @@ $ionicConfigProvider.tabs.position('bottom');
 
   .state('tab.map', {
     url: '/map',
-    cache: true,
+    cache: false,
     views: {
       'tab-map': {
         templateUrl: 'templates/map/tab-map.html',
@@ -124,7 +225,7 @@ $ionicConfigProvider.tabs.position('bottom');
 
   .state('tab.devices', {
     url: '/devices',
-    cache: true,
+    cache: false,
     views: {
       'tab-devices': {
         templateUrl: 'templates/device/tab-devices.html',
@@ -185,8 +286,18 @@ $ionicConfigProvider.tabs.position('bottom');
         controller: 'ConfigCtrl'
       }
     }
-  });
+  })
 
+  .state('tab.test', {
+    url: '/test',
+    cache: false,
+    views: {
+      'tab-test': {
+        templateUrl: 'templates/others/test.html',
+        controller: 'TestCtrl'
+      }
+    }
+  });
 
   // if none of the above states are matched, use this as the fallback
   //$urlRouterProvider.otherwise('/tab/dash');

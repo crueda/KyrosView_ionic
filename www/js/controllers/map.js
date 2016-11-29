@@ -95,20 +95,31 @@ angular.module('main.map', [])
 
   $scope.titulo_mapa = titulo;  
 
-  var options = {timeout: 10000, enableHighAccuracy: true};
-  $cordovaGeolocation.getCurrentPosition(options).then(function(position){
- 
-    var latLng = new google.maps.LatLng(41, -3);
-    var mapOptions = {
+  //var options = {timeout: 10000, enableHighAccuracy: true};
+  //$cordovaGeolocation.getCurrentPosition(options).then(function(position){
+
+    $scope.$on('$destroy', function () {
+      console.log("Destruir EL MAPA");
+      $scope.map = null;
+    });
+
+    if ($scope.map ==null) {
+      console.log("CREAR EL MAPA");
+      var latLng = new google.maps.LatLng(41, -3);
+      var mapOptions = {
         center: latLng,
         zoom: 5,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
-    $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+      $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    }
+ 
 
     // Cuando el mapa esta cargado, pintar el vehiculo 
     google.maps.event.addListenerOnce($scope.map, 'idle', function(){
      
+       console.log("MAPA LISTO");
+
     if (localStorage.getItem("mapmode") == MAP_MODE.notification) {  
 
         var latLngNotification = new google.maps.LatLng(localStorage.getItem("notificationSelectedLatitude"), localStorage.getItem("notificationSelectedLongitude"));
@@ -119,6 +130,9 @@ angular.module('main.map', [])
           anchor: new google.maps.Point(15, 15),
           scaledSize: new google.maps.Size(30, 30)
         };
+
+      console.log("MARKER");
+
       var marker = new google.maps.Marker({
           map: $scope.map,
           icon: image,
@@ -126,20 +140,18 @@ angular.module('main.map', [])
           position: latLngNotification
       });   
 
-
-
       // InfoWindow content
       var content = '<div id="iw-container">' +
-                    '<div class="iw-title">' + localStorage.getItem("notificationSelectedName") + '</div>' +
-                    '<div class="iw-content">' +
-                      '<div class="iw-subTitle">Matricula:</div>' +
-                      '<p>' + localStorage.getItem("notificationSelectedVehicleLicense") + '</p>' +
-                      '<div class="iw-subTitle">Fecha:</div>' +
-                      '<p>' + localStorage.getItem("notificationSelectedDate") + '</p>' + 
-                      '<button class="button button-block button-balanced tooltipButton" ng-click="historic()">Histórico 8h.</button>'+
-                    '</div>' +
-                    '<div class="iw-bottom-gradient"></div>' +
-                  '</div>';
+        '<div class="iw-title">' + localStorage.getItem("notificationSelectedName") + '</div>' +
+        '<div class="iw-content">' +
+        '<div class="iw-subTitle">Matricula:</div>' +
+        '<p>' + localStorage.getItem("notificationSelectedVehicleLicense") + '</p>' +
+        '<div class="iw-subTitle">Fecha:</div>' +
+        '<p>' + localStorage.getItem("notificationSelectedDate") + '</p>' + 
+        '<button class="button button-block button-balanced tooltipButton" ng-click="historic()">Histórico 8h.</button>'+
+        '</div>' +
+        '<div class="iw-bottom-gradient"></div>' +
+        '</div>';
 
       var compiled = $compile(content)($scope);
       var infoWindow = new google.maps.InfoWindow({
@@ -174,6 +186,8 @@ angular.module('main.map', [])
           $(this).css({opacity: '1'});
         });
       });
+
+      console.log("CENTER");
 
       $scope.map.setCenter(latLngNotification);  
       $scope.map.setZoom(15);
@@ -219,7 +233,8 @@ angular.module('main.map', [])
             title: 'Mensaje',
             template: 'No existen puntos de tracking'
           });
-          var actualLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+          //var actualLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+          var actualLatLng = new google.maps.LatLng(41, -3);
           $scope.map.setCenter(actualLatLng);
           $scope.map.setZoom(15);
           /*
@@ -284,9 +299,11 @@ angular.module('main.map', [])
     } else {
       //$scope.titulo_mapa = "Mapa";
       //console.log("titulo a:"+"Mapaa");
-      var actualLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+      //var actualLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+      var actualLatLng = new google.maps.LatLng(41, -3);
       $scope.map.setCenter(actualLatLng);
       $scope.map.setZoom(15);
+      /*
       var marker = new google.maps.Marker({
           map: $scope.map,
           animation: google.maps.Animation.DROP,
@@ -297,14 +314,14 @@ angular.module('main.map', [])
       });
       google.maps.event.addListener(marker, 'click', function () {
           infoWindow.open($scope.map, marker);
-      }); 
+      });*/ 
     }
       
      
     });
 
  
-  }, function(error){
+ /* }, function(error){
     console.log("Could not get location");
-  });
+  });*/
 })

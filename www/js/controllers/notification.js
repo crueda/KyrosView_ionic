@@ -108,7 +108,7 @@ angular.module('main.notification', [])
 
    confirmPopup.then(function(res) {
      if(res) {
-        archiveAllNotification ($http, $scope, URL);
+        archiveAllNotification ($http, $scope, URL, APP);
      } else {
        //console.log('You are not sure');
      }

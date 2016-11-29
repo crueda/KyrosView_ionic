@@ -29,7 +29,11 @@
         ng-repeat="notification in notifications | filter: busqueda" type="item-text-wrap" href="#/tab/notifications/{{notification.id}}">
 
 
-        <img ng-src="{{notification.icon}}" style="width: 38px; height: 38px">
+        <!--img ng-src="{{notification.icon}}" style="width: 38px; height: 38px"-->
+
+        <!--img ng-src="{{notification.icon}}"-->
+        <img ng-src="img/{{notification.id}}.svg" style="width: 55px; height: 55px">
+
         <!--h2>{{notification.vehicleLicense}}</h2-->
         <p><b>{{notification.name}}</b></p>
         <p>{{notification.date}}</p>
