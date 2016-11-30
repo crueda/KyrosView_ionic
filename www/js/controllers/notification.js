@@ -307,9 +307,67 @@ angular.module('main.notification', [])
     });
 })
 
-.controller('NotificationDetailCtrl', function($scope, $http, $state, $ionicPopup, $cordovaNativeAudio, $stateParams, Notifications, MAP_MODE, URL, APP) {
+.controller('NotificationDetailCtrl', function($scope, $http, $state, $ionicPopup, $ionicLoading, $cordovaNativeAudio, $stateParams, Notifications, MAP_MODE, URL, APP) {
   //$scope.notification = Notifications.get($stateParams.notificationId);
-  $scope.notification = notifications[$stateParams.notificationId];
+
+  //console.log($scope.mongoId);
+  if (localStorage.getItem("notificationPushMongoId")==undefined || localStorage.getItem("notificationPushMongoId")==0) {
+    $scope.notification = notifications[$stateParams.notificationId];    
+  } else {
+    // viene de un click sobre un mensaje push -> buscar la notificacion
+    var notificationPush = {};
+
+    var url = APP.api_base + URL.getNotification + "/"+localStorage.getItem("notificationPushMongoId");
+    localStorage.setItem("notificationPushMongoId", 0);
+
+    $ionicLoading.show({
+      content: 'Loading',
+      animation: 'fade-in',
+      showBackdrop: true,
+      maxWidth: 200,
+      showDelay: 0
+    });
+    $http.get(url)
+      .success(function(data, status, headers,config){
+        $ionicLoading.hide();
+
+
+        if (data[0]!=undefined) {   
+
+          notificationPush = { 
+            mongoId: data[0]._id,
+            vehicleLicense: data[0].vehicle_license,
+            name: getEventDescription(data[0].subtype),
+            icon: getEventIcon(data[0].subtype),
+            date: getEventDate(data[0].timestamp),
+            latitude: data[0].location.coordinates[1].toFixed(4),
+            longitude: data[0].location.coordinates[0].toFixed(4),
+            speed: data[0].speed.toFixed(1),
+            heading: data[0].heading.toFixed(1),
+            altitude: data[0].altitude.toFixed(0),
+            geocoding: data[0].geocoding,
+            battery: data[0].battery            
+          }
+          $scope.notification = notificationPush;  
+      } 
+      
+    })
+    .error(function(data, status, headers,config){
+      $ionicLoading.hide();
+      $ionicLoading.show({
+        template: 'Error de red',
+        scope: $scope
+      });
+      $timeout(function() {
+        $ionicLoading.hide();
+        $state.go('login');
+      }, 1500);
+      
+    });
+
+    //console.log(notificationPush.vehicleLicense);
+    //$scope.notification = notificationPush;   
+  }
 
   $scope.archiveSelectNotification = function(notificationId) {
     var confirmPopup = $ionicPopup.confirm({

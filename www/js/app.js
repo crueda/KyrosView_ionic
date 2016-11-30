@@ -168,10 +168,21 @@ push.on('notification', function(data) {
     // data.sound,
     // data.image,
     // data.additionalData
-    var alertPopup = $ionicPopup.alert({
-            title: '**',
-            template: '3:' + data.message
-        });
+    
+    /*var alertPopup = $ionicPopup.alert({
+            title: '****',
+            template: '->' + data.additionalData.foreground + "-" + data.count + "-" + data.additionalData._id + "-" + data.additionalData.vehicle_license + "-" + data.additionalData.info
+        });*/
+    
+    $state.go('tab.notifications',  {cache: false, mode: localStorage.getItem("group_notifications")});      
+
+    /*
+    localStorage.setItem("notificationSelectedVehicleLicense", data.additionalData.vehicle_license);
+    localStorage.setItem("notificationPushMongoId", data.additionalData._id);
+    //$state.go('tab.map', {cache: false});
+    $state.go('tab.notification-detail',  {cache: false});
+    */
+
 });
 
 push.on('error', function(e) {
@@ -270,7 +281,10 @@ $ionicConfigProvider.tabs.position('bottom');
       views: {
         'tab-notifications': {
           templateUrl: 'templates/notification/notification-detail.html',
-          controller: 'NotificationDetailCtrl'
+          controller: 'NotificationDetailCtrl',
+          params: {
+            mongoId: 7
+          }
         }
       }
     })

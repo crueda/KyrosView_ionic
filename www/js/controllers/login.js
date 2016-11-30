@@ -99,7 +99,11 @@ angular.module('main.login', [])
               }
 
               // ir a estaña de notificaciones
-              $state.go('tab.notifications',  {cache: false, mode: localStorage.getItem("group_notifications")});                
+              $state.go('tab.notifications',  {cache: false, mode: localStorage.getItem("group_notifications")});      
+              /*console.log ("voy");
+              localStorage.setItem("notificationPushMongoId", "583bf0538af5cc32917a308a");
+              $state.go('tab.notification-detail',  {cache: false});*/
+
             } else {
               var alertPopup = $ionicPopup.alert({
                 title: 'Login incorrecto!',

@@ -25,7 +25,7 @@ angular.module('main')
   login: '/api/app/login',
   archiveNotification: '/api/app/notification/archive',
   archiveAllNotifications: '/api/app/notification/archive/user',
-  //getNotifications: '/api/app/notification',
+  getNotification: '/api/app/notification',
   getNotificationsLimit: '/api/app/notificationLimit',
   listDevices: '/api/app/monitorList',
   saveToken: '/api/app/notification/setToken',

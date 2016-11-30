@@ -95,8 +95,8 @@ angular.module('main.map', [])
 
   $scope.titulo_mapa = titulo;  
 
-  //var options = {timeout: 10000, enableHighAccuracy: true};
-  //$cordovaGeolocation.getCurrentPosition(options).then(function(position){
+  var options = {timeout: 10000, enableHighAccuracy: true};
+  $cordovaGeolocation.getCurrentPosition(options).then(function(position){
 
     $scope.$on('$destroy', function () {
       console.log("Destruir EL MAPA");
@@ -321,7 +321,7 @@ angular.module('main.map', [])
     });
 
  
- /* }, function(error){
+  }, function(error){
     console.log("Could not get location");
-  });*/
+  });
 })
