@@ -174,14 +174,24 @@ push.on('notification', function(data) {
             template: '->' + data.additionalData.foreground + "-" + data.count + "-" + data.additionalData._id + "-" + data.additionalData.vehicle_license + "-" + data.additionalData.info
         });*/
     
-    $state.go('tab.notifications',  {cache: false, mode: localStorage.getItem("group_notifications")});      
-
     /*
     localStorage.setItem("notificationSelectedVehicleLicense", data.additionalData.vehicle_license);
     localStorage.setItem("notificationPushMongoId", data.additionalData._id);
     //$state.go('tab.map', {cache: false});
     $state.go('tab.notification-detail',  {cache: false});
     */
+
+
+
+    //$state.go('tab.notifications',  {cache: false, mode: localStorage.getItem("group_notifications")});      
+
+    //localStorage.setItem("notificationSelectedLatitude", data.additionalData.latitude);
+    //localStorage.setItem("notificationSelectedLongitude", data.additionalData.longitude);
+    localStorage.setItem("notificationPushMongoId", data.additionalData._id);
+    localStorage.setItem("notificationSelectedVehicleLicense", data.additionalData.vehicle_license);
+    localStorage.setItem("mapmode", 3);
+    $state.go('tab.map');
+
 
 });
 

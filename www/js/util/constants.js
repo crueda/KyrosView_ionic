@@ -10,6 +10,7 @@ angular.module('main')
   init: 0,
   notification: 1,
   device: 2,
+  push: 3,
 })
 
 .constant('NOTIFICATION_EVENTS', {

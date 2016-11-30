@@ -100,6 +100,14 @@ angular.module('main.login', [])
 
               // ir a estaña de notificaciones
               $state.go('tab.notifications',  {cache: false, mode: localStorage.getItem("group_notifications")});      
+
+/*
+    localStorage.setItem("notificationSelectedVehicleLicense", "Test_1");
+        localStorage.setItem("notificationPushMongoId", "583d2c2e8af5cc1083516027");
+    localStorage.setItem("mapmode", MAP_MODE.push);
+   $state.go('tab.map');
+   */
+
               /*console.log ("voy");
               localStorage.setItem("notificationPushMongoId", "583bf0538af5cc32917a308a");
               $state.go('tab.notification-detail',  {cache: false});*/
