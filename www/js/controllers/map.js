@@ -142,10 +142,8 @@ angular.module('main.map', [])
         var latLngNotification = new google.maps.LatLng(localStorage.getItem("notificationSelectedLatitude"), localStorage.getItem("notificationSelectedLongitude"));
         var image = {
           url: localStorage.getItem("notificationSelectedIcon"),
-          anchor: new google.maps.Point(30, 30),
-          scaledSize: new google.maps.Size(60, 60),
-          //size: new google.maps.Size(30, 30),
-          //anchor: new google.maps.Point(30/2, 30/2)
+          //anchor: new google.maps.Point(30, 30),
+          scaledSize: new google.maps.Size(40, 40),
         };
 
       console.log("MARKER");
@@ -235,10 +233,8 @@ angular.module('main.map', [])
         var latLngNotification = new google.maps.LatLng(data[0].location.coordinates[1], data[0].location.coordinates[0]);
         var image = {
           url: getEventIcon(data[0].subtype),
-          //size: new google.maps.Size(40, 40),
-          //origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(15, 15),
-          scaledSize: new google.maps.Size(30, 30)
+          //anchor: new google.maps.Point(20, 20),
+          scaledSize: new google.maps.Size(40, 40)
         };
 
       var marker = new google.maps.Marker({
@@ -316,10 +312,8 @@ angular.module('main.map', [])
         var latLngDevice = new google.maps.LatLng(localStorage.getItem("deviceSelectedLatitude"), localStorage.getItem("deviceSelectedLongitude"));
         var image = {
           url: 'img/devices/' + localStorage.getItem("deviceSelectedIcon"),
-          //size: new google.maps.Size(40, 40),
-          //origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(15, 15),
-          scaledSize: new google.maps.Size(30, 30)
+          //anchor: new google.maps.Point(20, 20),
+          scaledSize: new google.maps.Size(40, 40)
         };
         var marker = new google.maps.Marker({
             map: $scope.map,
@@ -378,10 +372,8 @@ angular.module('main.map', [])
         var latLngVehicle = new google.maps.LatLng(data[0].location.coordinates[1], data[0].location.coordinates[0]);
         var image = {
           url: 'img/devices/' + data[0].icon,
-          //size: new google.maps.Size(40, 40),
-          //origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(15, 15),
-          scaledSize: new google.maps.Size(30, 30)
+          //anchor: new google.maps.Point(15, 15),
+          scaledSize: new google.maps.Size(40, 40)
         };
       var marker = new google.maps.Marker({
           map: $scope.map,
