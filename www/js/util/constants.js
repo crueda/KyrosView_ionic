@@ -1,7 +1,7 @@
 angular.module('main')
 
 .constant('APP', {
-  version: 2,
+  version: 3,
   api_base: 'http://localhost:3000'
   //api_base: 'http://view.kyroslbs.com'
 })

@@ -169,7 +169,7 @@ button.tooltipButton {
     border: 0px solid;
     background-color: cccccc;
     border-color: #cccccc;
-    border-radius: 50%; }
+    border-radius: 0%; }
 
 .item-avatar,
 .item-avatar .item-content,
@@ -196,5 +196,5 @@ button.tooltipButton {
     border: 0px solid;
     background-color: cccccc;
     border-color: #cccccc;
-    border-radius: 50%; }
+    border-radius: 0%; }
 
