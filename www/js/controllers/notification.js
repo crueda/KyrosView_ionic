@@ -85,7 +85,10 @@ var num_notifications = 0;
 
  
 angular.module('main.notification', [])
-.controller('NotificationsCtrl', function($scope, $http, Notifications, $ionicPopup, $ionicLoading, $timeout, URL, APP) {
+.controller('NotificationsCtrl', function($scope, $state, $http, Notifications, $ionicPopup, $ionicLoading, $timeout, URL, APP) {
+  if (localStorage.getItem("username")=="") {
+    $state.go('login');
+  }
 
   var urlArchive = APP.api_base + URL.archiveNotification;
 

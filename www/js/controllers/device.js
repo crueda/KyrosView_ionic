@@ -23,6 +23,11 @@ angular.module('main.device', ['ionic'])
 
 .controller('DevicesCtrl', function($scope, $state, $http, DevicesDataService, $ionicLoading, $timeout, URL, APP) {
 
+  if (localStorage.getItem("username")=="") {
+    $state.go('login');
+  }
+
+
   $scope.selectDevice = function(device) {
     localStorage.setItem("deviceSelected", device.vehicle_license); 
     $state.go('tab.device-detail');

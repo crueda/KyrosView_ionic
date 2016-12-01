@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<svg style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;" width="100px" height="100px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+<svg style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;" width="500px" height="500px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
   <g id="Layer-1" transform="matrix(1.215873, 0, 0, 1.205146, -6.873055, -6.66925)">
     <path d="M58,32C58,46.359 46.359,58 32,58C17.641,58 6,46.359 6,32C6,17.641 17.641,6 32,6C46.359,6 58,17.641 58,32" style="fill:rgb(222,112,71);fill-rule:nonzero;"/>
-    <g>
-      <g clip-path="url(#_clip1)">
-        <g>
-          <g opacity="0.199997">
-            <g clip-path="url(#_clip2)">
-              <path d="M58,58L16.989,58L47.012,6L58,6L58,58Z" style="fill:rgb(2,2,0);fill-rule:nonzero;"/>
-            </g>
-          </g>
-        </g>
-        <path d="M52,32C52,43.046 43.046,52 32,52C20.954,52 12,43.046 12,32C12,20.954 20.954,12 32,12C43.046,12 52,20.954 52,32" style="fill:rgb(222,220,217);fill-rule:nonzero;"/>
+    <g clip-path="url(#_clip1)">
+      <g>
+        <g opacity="0.199997"/>
       </g>
+      <path d="M52,32C52,43.046 43.046,52 32,52C20.954,52 12,43.046 12,32C12,20.954 20.954,12 32,12C43.046,12 52,20.954 52,32" style="fill:rgb(222,220,217);fill-rule:nonzero;"/>
     </g>
     <g>
       <g clip-path="url(#_clip3)">

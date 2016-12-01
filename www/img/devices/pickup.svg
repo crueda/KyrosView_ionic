@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="100%" height="100%" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;">
+<svg width="500px" height="500px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;">
     <g id="Layer-1" transform="matrix(-1,0,-0,1,64,0)">
         <path d="M36,15L28.561,15C23.054,15 20.548,16.927 18.257,20.895C17.673,21.906 16.464,24 16.464,24C16.464,24 9.614,24.727 6.934,25.031C5.161,25.233 3.875,25.992 3.187,27.188C2,29.25 2,34.935 2,37.537C2,40.513 3.312,42 6.178,42L59,42C60.641,42 62,40.884 62,39L62,29C62,27.201 60.803,26 59,26L40,26L40,19C40,16.783 38.693,15 36,15" style="fill:rgb(128,179,79);fill-rule:nonzero;"/>
         <g>

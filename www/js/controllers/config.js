@@ -1,5 +1,9 @@
 angular.module('main.config', [])
-.controller('ConfigCtrl', function($scope, $http, $state, URL, APP) {
+.controller('ConfigCtrl', function($scope, $state, $http, $state, URL, APP) {
+
+  if (localStorage.getItem("username")=="") {
+    $state.go('login');
+  }
 
     var url = APP.api_base + URL.getStatusNotifications + "/" + localStorage.getItem("username");
     $http.get(url).success(function(data, status, headers,config){ 

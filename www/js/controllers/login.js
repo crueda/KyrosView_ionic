@@ -30,7 +30,8 @@ angular.module('main.login', [])
     } else {
       $scope.data = {};      
     }
-    $scope.data = {username: 'crueda', password: 'dat1234'};
+   // $scope.data = {username: 'crueda', password: 'dat1234'};
+    $scope.data = {username: 'test', password: 'test'};
 
     if (localStorage.getItem("check_remember")=="true") {
       $scope.settings = {
