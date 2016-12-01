@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<svg id="Layer_1" style="enable-background:new 0 0 508 508;" width="500px" height="500px" x="0px" y="0px" viewBox="0 0 508 508" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="254" cy="254" r="254" style="fill: rgb(40, 152, 18);"/>
-  <path style="fill:#2B3B4E;" d="M72,431.2c46,47.2,110.8,76.8,182,76.8s136-29.6,182-76.8H72z"/>
+<svg id="Layer_1" style="enable-background:new 0 0 508 508;" x="0px" y="0px" width="500px" height="500px" viewBox="0 0 508 508" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="254" cy="254" r="254" style="fill: rgb(144, 223, 170);"/>
+  <path d="M72,431.2c46,47.2,110.8,76.8,182,76.8s136-29.6,182-76.8H72z" style="fill: rgb(146, 146, 146);"/>
   <rect x="244.482" y="91.988" transform="matrix(-0.4659 -0.8848 0.8848 -0.4659 254.0921 395.7448)" width="4" height="58.398" style="fill: rgb(171, 156, 156);"/>
   <g>
     <rect x="232.836" y="119.192" transform="matrix(-0.8847 -0.4662 0.4662 -0.8847 437.3582 350.5677)" width="58.401" height="4" style="fill: rgb(171, 156, 156);"/>
