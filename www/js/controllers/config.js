@@ -3,10 +3,16 @@ angular.module('main.config', [])
 
   if (localStorage.getItem("username")=="") {
     $state.go('login');
-  }
+  } else {
 
     var url = APP.api_base + URL.getStatusNotifications + "/" + localStorage.getItem("username");
-    $http.get(url).success(function(data, status, headers,config){ 
+    $http({
+      method: 'GET',
+      url: url,
+      headers: {
+        'x-access': localStorage.getItem("token_api")
+      }})
+    .success(function(data, status, headers,config){ 
     	var group_mode = false;
     	if (localStorage.getItem("group_notifications") == 1) {
     		group_mode = true;           
@@ -25,6 +31,7 @@ angular.module('main.config', [])
       })
       .error(function(data, status, headers,config){
       });
+ }
 
  $scope.configChange = function() {
     var url;
@@ -40,7 +47,13 @@ angular.module('main.config', [])
     	localStorage.setItem("group_notifications", 0);
     } 
     url = APP.api_base + URL.configUserPreferences + "/" + localStorage.getItem("username") + "?push_mode=" + push_mode + "&group_mode=" + group_mode;    
-    $http.get(url).success(function(data, status, headers,config){            
+    $http({
+      method: 'GET',
+      url: url,
+      headers: {
+        'x-access': localStorage.getItem("token_api")
+      }})
+     .success(function(data, status, headers,config){            
       })
       .error(function(data, status, headers,config){
       });
@@ -48,9 +61,9 @@ angular.module('main.config', [])
 
   $scope.logout = function() {
     localStorage.setItem("username", "");
+    localStorage.setItem("token_api", "");
     $scope.data = {};
     $state.go('login');
   };
-
 
 })

@@ -56,76 +56,8 @@ angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notific
 
 
     localStorage.setItem("token", "");      
+    localStorage.setItem("token_api", "");      
     localStorage.setItem("username", "");
-
-
-/*
-    $cordovaPushV5.initialize(  // important to initialize with the multidevice structure !!
-    {
-            android: {
-                senderID: "379445772580"
-            },
-            ios: {
-                alert: 'true',
-                badge: true,
-                sound: 'false',
-                clearBadge: true
-            },
-            windows: {}
-    }
-    ).then(function (result) {
-        $cordovaPushV5.onNotification();
-        $cordovaPushV5.onError();
-        $cordovaPushV5.register().then(function (resultreg) {
-            //navigator.notification.alert("-->"+resultreg, null, "Kyros App", "Ok");
-             if (localStorage.getItem("token")!=null && localStorage.getItem("token")!="") {
-                  saveToken($http, URL);
-              }
-
-             localStorage.setItem("token", resultreg); 
-        }, function (err) {
-            // handle error
-            //navigator.notification.alert("-err->"+err, null, "Kyros App", "Ok");
-        });
-      });
-
-$rootScope.$on('$cordovaPushV5:notificationReceived', function(event, data) {  // use two variables here, event and data !!!
-
-        var alertPopup = $ionicPopup.alert({
-            title: '**',
-            template: '2:' + data
-        });
-
-
-    if (data.additionalData.foreground === false) {
-        navigator.notification.alert("fore->"+data, null, "Kyros App", "Ok");
-        // do something if the app is in foreground while receiving to push - handle in app push handling        
-    } else {
-        navigator.notification.alert("back->"+data, null, "Kyros App", "Ok");
-       // handle push messages while app is in background or not started
-    }
-    if (Device.isOniOS()) {
-        if (data.additionalData.badge) {
-            $cordovaPushV5.setBadgeNumber(NewNumber).then(function (result) {
-                // OK
-            }, function (err) {
-                // handle error
-            });
-        }
-    }
-
-    $cordovaPushV5.finish().then(function (result) {
-        // OK finished - works only with the dev-next version of pushV5.js in ngCordova as of February 8, 2016
-    }, function (err) {
-        // handle error
-    });
-});
-
-$rootScope.$on('$cordovaPushV5:errorOccurred', function(event, error) {
-    // handle error
-});
-
-*/
 
 
 var push = PushNotification.init({

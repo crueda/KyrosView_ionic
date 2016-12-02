@@ -12,19 +12,23 @@
 
   <ion-content class="padding">
 
-    <img ng-src="{{notification.icon}}" class="center" style="width: 64px; height: 64px">
+    <img ng-src="{{notification.icon}}" class="center" style="width: 84px; height: 84px">
     <h4>
     <p align="center"><b>
       {{notification.name}}
     </b></p>
     </h4>
+
+    <button class="button button-block button-balanced" ng-click="showMapNotification()">Ver en mapa</button>
+
     <ion-list>
 
       <ion-item>
         <b>Fecha</b> <span class="item-note">{{notification.date}}</span>
       </ion-item>
-      <ion-item>
-        <b>Coordenadas</b> <span class="item-note">{{notification.latitude}}, {{notification.longitude}}</span>
+      <ion-item class="item" style="white-space: normal;">
+        <b>Dirección</b> 
+        <br><br><span class="item-note" class="left">{{notification.geocoding}}</span>        
       </ion-item>
       <ion-item>
         <b>Velocidad</b> <span class="item-note">{{notification.speed}}</span>
@@ -32,10 +36,8 @@
       <ion-item>
         <b>Altitud</b> <span class="item-note">{{notification.altitude}}</span>
       </ion-item>
-      <ion-item class="item" style="white-space: normal;">
-        <b>Dirección</b> 
-        <br><br><span class="item-note" class="left">{{notification.geocoding}}</span>
-        
+      <ion-item>
+        <b>Coordenadas</b> <span class="item-note">{{notification.latitude}}, {{notification.longitude}}</span>
       </ion-item>
 
     <!--ion-toggle  ng-model=notification.value ng-change="notificationArchiveChange()" toggle-class="toggle-calm">
@@ -44,8 +46,6 @@
 
     </ion-list>
 
-    <br>
-    <button class="button button-block button-balanced" ng-click="showMapNotification()">Ver en mapa</button>
 
     
 

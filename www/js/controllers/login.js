@@ -30,7 +30,7 @@ angular.module('main.login', [])
     } else {
       $scope.data = {};      
     }
-   // $scope.data = {username: 'crueda', password: 'dat1234'};
+    $scope.data = {username: 'crueda', password: 'dat1234'};
     //$scope.data = {username: 'test', password: 'test'};
 
     if (localStorage.getItem("check_remember")=="true") {
@@ -82,6 +82,7 @@ angular.module('main.login', [])
                 localStorage.setItem("vehicleLicense", "");                  
               }
               localStorage.setItem("username", $scope.data.username);
+              localStorage.setItem("token_api", data.result[0].token_api);  
               localStorage.setItem("notificationSelected", "");  
               localStorage.setItem("deviceSelected", "");  
               localStorage.setItem("mapmode", MAP_MODE.init);  

@@ -33,7 +33,12 @@ angular.module('main.map', [])
       var bounds = new google.maps.LatLngBounds();
       var url = APP.api_base + URL.trackingVehicle + "/" + localStorage.getItem("notificationSelectedVehicleLicense") + "?initDate=" + initDate + "&endDate=" + actualDate;
       //console.log(url);
-      $http.get(url).success(function(data, status, headers,config){  
+      $http({
+        method: 'GET',
+        url: url,
+        headers: {
+          'x-access': localStorage.getItem("token_api")
+        }}).success(function(data, status, headers,config){  
 
         if (data.status=="ok" && data.result.length > 0) {
         var pathCoordinates = [];
@@ -116,12 +121,10 @@ angular.module('main.map', [])
   $cordovaGeolocation.getCurrentPosition(options).then(function(position){
 
     $scope.$on('$destroy', function () {
-      console.log("Destruir EL MAPA");
       $scope.map = null;
     });
 
     if ($scope.map ==null) {
-      console.log("CREAR EL MAPA");
       var latLng = new google.maps.LatLng(41, -3);
       var mapOptions = {
         center: latLng,
@@ -135,8 +138,6 @@ angular.module('main.map', [])
     // Cuando el mapa esta cargado, pintar el vehiculo 
     google.maps.event.addListenerOnce($scope.map, 'idle', function(){
      
-    console.log("MAPA LISTO2");
-
     if (localStorage.getItem("mapmode") == MAP_MODE.notification) {  
 
         var latLngNotification = new google.maps.LatLng(localStorage.getItem("notificationSelectedLatitude"), localStorage.getItem("notificationSelectedLongitude"));
@@ -145,8 +146,6 @@ angular.module('main.map', [])
           //anchor: new google.maps.Point(30, 30),
           scaledSize: new google.maps.Size(40, 40),
         };
-
-      console.log("MARKER");
 
       var marker = new google.maps.Marker({
           map: $scope.map,
@@ -214,19 +213,19 @@ angular.module('main.map', [])
         });
       });
 
-      console.log("CENTER");
-
       $scope.map.setCenter(latLngNotification);  
       $scope.map.setZoom(15);
-
-
-
     }
     else if (localStorage.getItem("mapmode") == MAP_MODE.push) {  
     var url = APP.api_base + URL.getNotification + "/"+localStorage.getItem("notificationPushMongoId");
     localStorage.setItem("notificationPushMongoId", 0);
 
-    $http.get(url)
+     $http({
+      method: 'GET',
+      url: url,
+      headers: {
+          'x-access': localStorage.getItem("token_api")
+      }})
       .success(function(data, status, headers,config){
         if (data[0]!=undefined) {   
 
@@ -313,7 +312,7 @@ angular.module('main.map', [])
         var image = {
           url: 'img/devices/' + localStorage.getItem("deviceSelectedIcon"),
           //anchor: new google.maps.Point(20, 20),
-          scaledSize: new google.maps.Size(40, 40)
+          scaledSize: new google.maps.Size(50, 50)
         };
         var marker = new google.maps.Marker({
             map: $scope.map,
@@ -368,12 +367,18 @@ angular.module('main.map', [])
       var bounds = new google.maps.LatLngBounds();
       var url = APP.api_base + URL.tracking1vehicle + "/" + localStorage.getItem("vehicleLicense");
       //console.log(url);
-      $http.get(url).success(function(data, status, headers,config){  
+      $http({
+        method: 'GET',
+        url: url,
+        headers: {
+          'x-access': localStorage.getItem("token_api")
+        }
+      }).success(function(data, status, headers,config){  
         var latLngVehicle = new google.maps.LatLng(data[0].location.coordinates[1], data[0].location.coordinates[0]);
         var image = {
           url: 'img/devices/' + data[0].icon,
           //anchor: new google.maps.Point(15, 15),
-          scaledSize: new google.maps.Size(40, 40)
+          scaledSize: new google.maps.Size(50, 50)
         };
       var marker = new google.maps.Marker({
           map: $scope.map,

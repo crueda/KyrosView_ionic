@@ -86,9 +86,6 @@ var num_notifications = 0;
  
 angular.module('main.notification', [])
 .controller('NotificationsCtrl', function($scope, $state, $http, Notifications, $ionicPopup, $ionicLoading, $timeout, URL, APP) {
-  if (localStorage.getItem("username")=="") {
-    $state.go('login');
-  }
 
   var urlArchive = APP.api_base + URL.archiveNotification;
 
@@ -224,9 +221,13 @@ angular.module('main.notification', [])
 
   }
 
+  if (localStorage.getItem("username")=="") {
+    $state.go('login');
+  } else {
+
   var url = APP.api_base + URL.getNotificationsLimit + "?username="+localStorage.getItem("username");
   //var url = URL.getNotificationsLimit + "?username=robertodat";
-  console.log(url);
+  console.log(url);  
   notifications = [];
   $ionicLoading.show({
     //template: '<ion-spinner icon="bubbles"></ion-spinner><p>LOADING...</p>'
@@ -237,12 +238,32 @@ angular.module('main.notification', [])
     maxWidth: 200,
     showDelay: 0
   });
-  $http.get(url)
+  $http({
+    method: 'GET',
+    url: url,
+    headers: {
+        'x-access': localStorage.getItem("token_api")
+    }})
     .success(function(data, status, headers,config){
       $ionicLoading.hide(); 
 
-      for (var i=0; i<data.result.length; i++) {        
-        if (data.result[i].location!=undefined) {
+      if (data.result==undefined) {
+        /*var alertPopup = $ionicPopup.alert({
+          title: 'Mensaje',
+          template: 'Error de red'
+        });*/
+        $ionicLoading.show({
+          template: 'Error de red',
+          scope: $scope
+        });
+        $timeout(function() {
+          $ionicLoading.hide();
+          $state.go('login');
+        }, 1500);        
+      } else {
+
+        for (var i=0; i<data.result.length; i++) {        
+          if (data.result[i].location!=undefined) {
             lat = data.result[i].location.coordinates[1].toFixed(4);
             lon = data.result[i].location.coordinates[0].toFixed(4);            
           } else {
@@ -250,52 +271,53 @@ angular.module('main.notification', [])
             lon = 0;                        
           }
 
-        notification = { mongoId: data.result[i]._id,
-          id: i,
-          vehicleLicense: data.result[i].vehicle_license,
-          name: getEventDescription(data.result[i].subtype),
-          icon: getEventIcon(data.result[i].subtype),
-          date: getEventDate(data.result[i].timestamp),
-          latitude: lat,
-          longitude: lon,
-          speed: data.result[i].speed.toFixed(1),
-          heading: data.result[i].heading.toFixed(1),
-          altitude: data.result[i].altitude.toFixed(0),
-          geocoding: data.result[i].geocoding,
-          battery: data.result[i].battery            
+          notification = { mongoId: data.result[i]._id,
+            id: i,
+            vehicleLicense: data.result[i].vehicle_license,
+            name: getEventDescription(data.result[i].subtype),
+            icon: getEventIcon(data.result[i].subtype),
+            date: getEventDate(data.result[i].timestamp),
+            latitude: lat,
+            longitude: lon,
+            speed: data.result[i].speed.toFixed(1),
+            heading: data.result[i].heading.toFixed(1),
+            altitude: data.result[i].altitude.toFixed(0),
+            geocoding: data.result[i].geocoding,
+            battery: data.result[i].battery            
           }
-        notifications.push(notification);
-      }
-      $scope.notifications = notifications;
-      num_notifications = data.num_notifications;
+          notifications.push(notification);
+        }
+        $scope.notifications = notifications;
+        num_notifications = data.num_notifications;
 
-      // Texto del indicador
-      if (num_notifications>99) {
-        $scope.num_notifications = "99+"
-        var alertPopup = $ionicPopup.alert({
-          title: 'Mensaje',
-          template: 'Tienes ' + num_notifications + ' notificaciones.\r\nSolo se muestran las 100 más recientes'
-        });
-      } else {
-        $scope.num_notifications = num_notifications;        
-      }
+        // Texto del indicador
+        if (num_notifications>99) {
+          $scope.num_notifications = "99+"
+          var alertPopup = $ionicPopup.alert({
+            title: 'Mensaje',
+            template: 'Tienes ' + num_notifications + ' notificaciones.\r\nSolo se muestran las 100 más recientes'
+          });
+        } else {
+          $scope.num_notifications = num_notifications;        
+        }
 
-      // ALtura del indicador
-      if (ionic.Platform.isIOS()) {
-            $scope.top_bubble = 24;
-      } else {
-            $scope.top_bubble = 6;            
-      }
+        // ALtura del indicador
+        if (ionic.Platform.isIOS()) {
+              $scope.top_bubble = 24;
+        } else {
+              $scope.top_bubble = 6;            
+        }
 
-      // Anchura del indicador
-      if (num_notifications > 99) {
-        $scope.width_bubble = 47;
-      } else if (num_notifications > 9){
-        $scope.width_bubble = 37;            
-      } else {
-        $scope.width_bubble = 27;                        
-      }
-  })
+        // Anchura del indicador
+        if (num_notifications > 99) {
+          $scope.width_bubble = 47;
+        } else if (num_notifications > 9){
+          $scope.width_bubble = 37;            
+        } else {
+          $scope.width_bubble = 27;                        
+        }
+      } // else
+  }) // success
   .error(function(data, status, headers,config){
     $ionicLoading.hide();
     $ionicLoading.show({
@@ -305,9 +327,10 @@ angular.module('main.notification', [])
     $timeout(function() {
       $ionicLoading.hide();
       $state.go('login');
-    }, 1500);
-    //$state.go('login');            
-    });
+    }, 1500);             
+  });
+  
+  } // else
 })
 
 .controller('NotificationDetailCtrl', function($scope, $http, $state, $ionicPopup, $ionicLoading, $cordovaNativeAudio, $stateParams, Notifications, MAP_MODE, URL, APP) {
