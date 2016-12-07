@@ -48,7 +48,8 @@ angular.module('main.device', ['ionic'])
       }})
     .success(function(data, status, headers,config){   
       devices = data;
-      $scope.data = { "devices" : [], "search" : '' };
+      //$scope.data = { "devices" : [], "search" : '' };
+      $scope.data = { "devices" : devices, "search" : '' };
       $scope.search = function() {
       DevicesDataService.searchDevices($scope.data.search).then(
         function(matches) {

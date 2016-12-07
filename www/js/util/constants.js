@@ -4,6 +4,7 @@ angular.module('main')
   version: 3,
   api_base: 'http://localhost:3000'
   //api_base: 'http://view.kyroslbs.com'
+  //api_base: 'http://192.168.28.248:3000'
 })
 
 .constant('MAP_MODE', {
@@ -17,7 +18,7 @@ angular.module('main')
   login: '/api/app/login',
   archiveNotification: '/api/app/notification/archive',
   archiveAllNotifications: '/api/app/notification/archive/user',
-  getNotification: '/api/app/notification',
+  getNotification: '/api/app/push/notification',
   getNotificationsLimit: '/api/app/notificationLimit',
   listDevices: '/api/app/monitorList',
   saveToken: '/api/app/notification/setToken',
@@ -28,6 +29,7 @@ angular.module('main')
   configUserPreferences: '/api/app/user',
   getConfigNotifications: '/api/app/notification/config/user',
   getStatusNotifications: '/api/app/notification/status/user',
+
   //configNotificationsEnable: '/api/app/notification/enable/user',
   //configNotificationsDisable: '/api/app/notification/disable/user',
   //treeDevices: '/api/app/monitor',

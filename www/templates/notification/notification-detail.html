@@ -10,14 +10,43 @@
     </ion-nav-buttons>
 </ion-nav-bar>
 
-  <ion-content class="padding">
 
-    <img ng-src="{{notification.icon}}" class="center" style="width: 84px; height: 84px">
-    <h4>
-    <p align="center"><b>
-      {{notification.name}}
-    </b></p>
-    </h4>
+<ion-header-bar class="bar-subheader" align-title='center'>
+  <button class="button ion-ios-arrow-back" ng-click="goPreviousNotification()"></button>
+  <h1 class="title"><b>{{notification.name}}</b></h1>
+  <button class="button ion-ios-arrow-forward" ng-click="goNextNotification()"></button>            
+</ion-header-bar>
+
+<!--div class="bar bar-subheader">
+<button class="button ion-ios-arrow-back" ng-click="goPreviousNotification()">
+  </button></div>
+  <div class="col"><h4><b>{{notification.name}}</b></h4></div>
+  <div class="col"><button class="button ion-ios-arrow-forward" ng-click="goNextNotification()"></button></div>
+
+</div-->
+
+    
+       
+
+<!--ks-swiper-container initial-slide="3" speed="2000" loop="true" show-nav-buttons="false" slides-per-view="3" space-between="5" pagination-clickable="false" override-parameters="{effect: 'coverflow',coverflow: {rotate: 50,stretch: 0,depth: 100,modifier: 1,slideShadows : false}}">
+    <ks-swiper-slide class="swiper-slide">
+        <img ng-src="img/events/stop.svg" width="100%">
+        <img ng-src="img/events/stop.svg" width="100%">
+        <img ng-src="img/events/stop.svg" width="100%">
+        <img ng-src="img/events/stop.svg" width="100%">
+        <img ng-src="img/events/stop.svg" width="100%">
+    </ks-swiper-slide>            
+</ks-swiper-container-->
+
+        
+  
+
+
+  <ion-content class="padding has-header has-subheader">
+
+    <img ng-src="{{notification.icon}}" class="center" style="width: 100px; height: 100px">
+
+<br>
 
     <button class="button button-block button-balanced" ng-click="showMapNotification()">Ver en mapa</button>
 

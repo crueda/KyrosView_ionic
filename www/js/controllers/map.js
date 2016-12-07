@@ -19,6 +19,27 @@
     }
   }
 
+  function getEventDate(timestamp) {
+    var date = new Date(timestamp);
+    var year = date.getFullYear();
+    var month = pad(date.getMonth() + 1);
+    var day = pad(date.getDate());
+    var hours = pad(date.getHours());
+    var minutes = pad(date.getMinutes());
+    var seconds = pad(date.getSeconds());
+    var strDate = day + "/" + month + "/" + year + " - " + hours + ":" + minutes + ":" + seconds;
+    return strDate;
+  }
+
+  function getEventDescription(eventType) {
+    //var evento = EVENT_ENUM.getByValue('value', eventType);
+    var evento = EventEnum[eventType];
+    if (evento!=undefined) {
+      return EventEnum.properties[evento].description;      
+    }
+    return "";
+  }
+
 
   var infoWindowDict = {};
 
@@ -39,7 +60,6 @@ angular.module('main.map', [])
         headers: {
           'x-access': localStorage.getItem("token_api")
         }}).success(function(data, status, headers,config){  
-
         if (data.status=="ok" && data.result.length > 0) {
         var pathCoordinates = [];
         for (var i=0; i<data.result.length; i++) {
@@ -90,13 +110,19 @@ angular.module('main.map', [])
         historicPath.setMap($scope.map);
         $scope.map.fitBounds(bounds);
       } else {
-        var alertPopup = $ionicPopup.alert({
-            title: 'Tracking últimas 8 horas',
-            template: 'No existen puntos de tracking'
-        });
+        if (status==200) {
+          var alertPopup = $ionicPopup.alert({
+              title: 'Tracking últimas 8 horas',
+              template: 'No existen puntos de tracking'
+          });          
+        } else {  // vengo de un push
+          $state.go('login');   
+        }
+
       }
       })
       .error(function(data, status, headers,config){
+         $state.go('login');  
       });
      }
   };
@@ -166,6 +192,7 @@ angular.module('main.map', [])
           position: latLngNotification
       });   
 
+
       // InfoWindow content
       var content = '<div id="iw-container">' +
         '<div class="iw-title">' + localStorage.getItem("notificationSelectedName") + '</div>' +
@@ -222,10 +249,8 @@ angular.module('main.map', [])
 
      $http({
       method: 'GET',
-      url: url,
-      headers: {
-          'x-access': localStorage.getItem("token_api")
-      }})
+      url: url
+      })
       .success(function(data, status, headers,config){
         if (data[0]!=undefined) {   
 
@@ -245,12 +270,12 @@ angular.module('main.map', [])
 
       // InfoWindow content
       var content = '<div id="iw-container">' +
-        '<div class="iw-title">' + localStorage.getItem("notificationSelectedName") + '</div>' +
+        '<div class="iw-title">' + getEventDescription(data[0].subtype) + '</div>' +
         '<div class="iw-content">' +
         '<div class="iw-subTitle">Matricula:</div>' +
         '<p>' + localStorage.getItem("notificationSelectedVehicleLicense") + '</p>' +
         '<div class="iw-subTitle">Fecha:</div>' +
-        '<p>' + localStorage.getItem("notificationSelectedDate") + '</p>' + 
+        '<p>'  + getEventDate(data[0].timestamp) + '</p>' + 
         '<button class="button button-block button-balanced tooltipButton" ng-click="historic()">Histórico 8h.</button>'+
         '</div>' +
         '<div class="iw-bottom-gradient"></div>' +
@@ -297,6 +322,7 @@ angular.module('main.map', [])
       
     })
     .error(function(data, status, headers,config){
+
     });
 
 

@@ -27,8 +27,22 @@
     </div>
     
     <ion-list>
-      <ion-checkbox ng-model="settings.remember" ng-change="remember()">Recordar</ion-checkbox>
+      <!--ion-checkbox ng-model="settings.remember" ng-change="remember()">Recordar</ion-checkbox-->
+
+ <li class="item item-toggle">
+     
+     <label class="toggle toggle-calm">
+       <input type="checkbox" ng-model="settings.remember" ng-change="remember()">
+       <div class="track">
+         <div class="handle"></div>
+       </div>
+     </label>
+     Recordar datos
+    </li>
+
     </ion-list>
+
+
     <br>
 
     <button class="button button-block button-calm" ng-click="login()">Entrar</button>

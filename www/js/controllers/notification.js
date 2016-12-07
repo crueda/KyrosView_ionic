@@ -48,7 +48,13 @@ var num_notifications = 0;
     //console.log('You are not sure');
     var url = APP.api_base + URL.archiveAllNotifications + "/" + localStorage.getItem("username");
     console.log(url);
-    $http.get(url).success(function(data, status, headers,config){            
+    $http({
+      method: 'GET',
+      url: url,
+      headers: {
+        'x-access': localStorage.getItem("token_api")
+      }})
+    .success(function(data, status, headers,config){            
       
       notifications = [];
       $scope.notifications = notifications;
@@ -67,12 +73,16 @@ var num_notifications = 0;
 
   function archiveNotification ($http, notificationId, URL, APP) {
     var url = APP.api_base + URL.archiveNotification + "?username="+ localStorage.getItem("username") + "&notificationId="+notificationId;
-    $http.get(url).success(function(data, status, headers,config){            
+    console.log(url);
+    $http({
+      method: 'GET',
+      url: url,
+      headers: {
+        'x-access': localStorage.getItem("token_api")
+      }})
+    .success(function(data, status, headers,config){       
       })
       .error(function(data, status, headers,config){
-      })
-      .then(function(result){
-        things = result.data;
       });
   }
   
@@ -87,7 +97,6 @@ var num_notifications = 0;
 angular.module('main.notification', [])
 .controller('NotificationsCtrl', function($scope, $state, $http, Notifications, $ionicPopup, $ionicLoading, $timeout, URL, APP) {
 
-  var urlArchive = APP.api_base + URL.archiveNotification;
 
     $scope.archiveNotifications = function() {
 
@@ -161,7 +170,7 @@ angular.module('main.notification', [])
             $scope.num_notifications = "99+"
             var alertPopup = $ionicPopup.alert({
                 title: 'Mensaje',
-                template: 'Tienes ' + num_notifications + ' notificaciones.\r\nSolo se muestran las 100 más recientes'
+                template: 'Tienes ' + num_notifications + ' notificaciones.\r\nSolo se muestran las 50 más recientes'
               });
           } else {
             $scope.num_notifications = num_notifications          
@@ -213,8 +222,14 @@ angular.module('main.notification', [])
     //archiveNotification($http, notification['mongoId'], URL, APP);
 
 
-    var url = urlArchive + "?username="+ localStorage.getItem("username") + "&notificationId="+notification['mongoId'];
-    $http.get(url).success(function(data, status, headers,config){            
+    var url = APP.api_base + URL.archiveNotification + "?username="+ localStorage.getItem("username") + "&notificationId="+notification['mongoId'];
+    $http({
+      method: 'GET',
+      url: url,
+      headers: {
+        'x-access': localStorage.getItem("token_api")
+    }})
+    .success(function(data, status, headers,config){            
     })
     .error(function(data, status, headers,config){
     });
@@ -295,7 +310,7 @@ angular.module('main.notification', [])
           $scope.num_notifications = "99+"
           var alertPopup = $ionicPopup.alert({
             title: 'Mensaje',
-            template: 'Tienes ' + num_notifications + ' notificaciones.\r\nSolo se muestran las 100 más recientes'
+            template: 'Tienes ' + num_notifications + ' notificaciones.\r\nSolo se muestran las 50 más recientes'
           });
         } else {
           $scope.num_notifications = num_notifications;        
@@ -338,6 +353,7 @@ angular.module('main.notification', [])
 
   //console.log($scope.mongoId);
   if (localStorage.getItem("notificationPushMongoId")==undefined || localStorage.getItem("notificationPushMongoId")==0) {
+    localStorage.setItem("notificationSelected", $stateParams.notificationId);  
     $scope.notification = notifications[$stateParams.notificationId];    
   } else {
     // viene de un click sobre un mensaje push -> buscar la notificacion
@@ -395,7 +411,8 @@ angular.module('main.notification', [])
     //$scope.notification = notificationPush;   
   }
 
-  $scope.archiveSelectNotification = function(notificationId) {
+  $scope.archiveSelectNotification = function(notificationId) { 
+    /*
     var confirmPopup = $ionicPopup.confirm({
      title: 'Confirmar',
      template: '¿Deseas eliminar esta notificación?'
@@ -406,11 +423,60 @@ angular.module('main.notification', [])
         $state.go('tab.notifications', {cache: false, mode: localStorage.getItem("group_notifications")});
      } 
    });
+   */
+
+ 
+
+
+    go_notificationId =  parseInt(localStorage.getItem("notificationSelected")) + 1;
+    if (go_notificationId > notifications.length -2) {
+      go_notificationId = notifications.length -1;
+    }
+    $scope.notification = notifications[go_notificationId];    
+    localStorage.setItem("notificationSelected", go_notificationId);
+
+    archiveNotification ($http, notificationId, URL, APP);
+    notifications.splice(go_notificationId-1, 1);
+
+
+      $ionicLoading.show({
+        template: 'Notificación borrada',
+        duration: 666,
+        scope: $scope
+      });
+
+    if (notifications.length>0) {
+      $state.go('tab.notifications-detail', {cache: false});
+    } else {
+      $state.go('tab.notifications', {cache: false, mode: localStorage.getItem("group_notifications")});      
+    }
+
+  }
+
+  $scope.goPreviousNotification = function() {
+    go_notificationId =  parseInt(localStorage.getItem("notificationSelected")) - 1;
+    if (go_notificationId < 0) {
+      go_notificationId = 0;
+    }
+    $scope.notification = notifications[go_notificationId];    
+    localStorage.setItem("notificationSelected", go_notificationId);
+    $state.go('tab.notifications-detail', {cache: false});
+  }
+
+  $scope.goNextNotification = function() {
+    go_notificationId =  parseInt(localStorage.getItem("notificationSelected")) + 1;
+    if (go_notificationId > notifications.length -2) {
+      go_notificationId = notifications.length -1;
+    }
+    $scope.notification = notifications[go_notificationId];    
+    localStorage.setItem("notificationSelected", go_notificationId);
+    $state.go('tab.notifications-detail', {cache: false});
   }
 
     $scope.showMapNotification = function() {
     
-    $scope.notification = notifications[$stateParams.notificationId];
+    //$scope.notification = notifications[$stateParams.notificationId];
+    $scope.notification = notifications[parseInt(localStorage.getItem("notificationSelected"))];
     localStorage.setItem("notificationSelected", $scope.notification.id);  
     localStorage.setItem("notificationSelectedVehicleLicense", $scope.notification.vehicleLicense);  
     localStorage.setItem("notificationSelectedLatitude", $scope.notification.latitude);  
