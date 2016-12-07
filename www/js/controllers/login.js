@@ -88,6 +88,10 @@ angular.module('main.login', [])
               localStorage.setItem("deviceSelected", "");  
               localStorage.setItem("mapmode", MAP_MODE.init);  
               localStorage.setItem("group_notifications", "1");
+              if (data.result[0].max_show_notifications!=undefined) {
+                localStorage.setItem("max_show_notifications", data.result[0].max_show_notifications);
+              }  
+
               if (data.result[0].group_notifications!=undefined) {
                 localStorage.setItem("group_notifications", data.result[0].group_notifications);
               }  

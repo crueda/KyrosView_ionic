@@ -95,7 +95,7 @@ var num_notifications = 0;
 
  
 angular.module('main.notification', [])
-.controller('NotificationsCtrl', function($scope, $state, $http, Notifications, $ionicPopup, $ionicLoading, $timeout, URL, APP) {
+.controller('NotificationsCtrl', function($rootScope, $scope, $state, $http, Notifications, $ionicPopup, $ionicLoading, $timeout, URL, APP, $sce) {
 
 
     $scope.archiveNotifications = function() {
@@ -126,9 +126,19 @@ angular.module('main.notification', [])
 
   }
 
+/*
+$scope.renderHtml = function (htmlCode) {
+            return $sce.trustAsHtml(htmlCode);
+};
+$scope.body = '<div style="width:200px; height:200px; border:1px solid blue;"></div>';
+*/
+
+//$scope.html = '<svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.41421" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g fill-rule="nonzero" transform="matrix(1.227483 0 0 1.207261 -7.147999 -6.763805)"><path d="m22.888 58c-1.061 0-2.078-.422-2.828-1.172l-12.887-12.887c-.751-.75-1.172-1.767-1.172-2.828l-.001-18.226c0-1.061.422-2.078 1.172-2.828l12.887-12.888c.75-.75 1.767-1.171 2.829-1.171h18.225c1.06 0 2.078.421 2.828 1.171l12.887 12.888c.75.751 1.172 1.768 1.172 2.829v18.224c0 1.061-.422 2.078-1.172 2.828l-12.887 12.888c-.75.75-1.768 1.172-2.828 1.172z" fill="#dedcd9"/><path d="m6 58h10.989l30.023-52h-41.012z" fill="#fff" opacity=".300003"/><path d="m53 29.563c0-2.531-.954-4.563-5.5-4.563h-3.5v14.001h3v-5h .5c4 0 5.5-1.938 5.5-4.438m-11 2.438c0-4.252-1.963-7.001-5-7.001-3.037 0-5 2.749-5 7.001 0 4.251 1.963 7 5 7 3.037 0 5-2.749 5-7m-11-7.001h-9v3h3v11.001h3v-11.001h3zm-9 9.677c0-3.318-2.284-3.803-4.917-4.433-1.543-.368-1.735-.769-1.809-1.181-.077-.441.211-1.063 1.321-1.063.78 0 1.386.301 1.564.919l2.883-.83c-.549-1.905-2.339-3.089-4.447-3.089-1.557 0-2.715.526-3.516 1.481-.695.827-.965 1.931-.758 3.103.479 2.72 3.848 3.343 4.83 3.579 1.72.411 1.849.866 1.849 1.514 0 .804-.785 1.324-2 1.324-.595 0-1.634-.128-1.921-.982l-2.844.955c.636 1.895 2.417 3.027 4.765 3.027 3.282 0 5-2.175 5-4.324m33-12.203v19.053l-13.474 13.474h-19.052l-13.474-13.473v-19.054l13.473-13.474h19.053zm-18 5.526c-1.578 0-2 2.514-2 4.001 0 1.486.422 4 2 4 1.579 0 2-2.514 2-4 0-1.487-.421-4.001-2-4.001m13 1.5c0 .688-.23 1.501-1.5 1.501h-1.5v-3.001h1.5c1.27 0 1.5.729 1.5 1.5" fill="#de7047"/></g></svg>';
+$scope.trustedHtml = $sce.trustAsHtml($rootScope.eventIconSVG);
+
   $scope.doRefresh = function() {
     $timeout( function() {
-    var url = APP.api_base + URL.getNotificationsLimit + "?username="+localStorage.getItem("username");
+    var url = APP.api_base + URL.getNotificationsLimit + "?username="+localStorage.getItem("username") + "&max=" + localStorage.getItem("max_show_notifications");
     console.log(url);
     notifications = [];
 
@@ -166,7 +176,7 @@ angular.module('main.notification', [])
 
           // Texto del indicador
           num_notifications = data.result.length;
-          if (num_notifications>99) {
+          /*if (num_notifications>99) {
             $scope.num_notifications = "99+"
             var alertPopup = $ionicPopup.alert({
                 title: 'Mensaje',
@@ -174,10 +184,13 @@ angular.module('main.notification', [])
               });
           } else {
             $scope.num_notifications = num_notifications          
-          }
+          }*/
+          $scope.num_notifications = num_notifications;
 
           // Anchura del indicador
-          if (num_notifications > 99) {
+          if (num_notifications > 999) {
+            $scope.width_bubble = 57;
+          } else if (num_notifications > 99) {
             $scope.width_bubble = 47;
           } else if (num_notifications > 9){
             $scope.width_bubble = 37;            
@@ -240,7 +253,7 @@ angular.module('main.notification', [])
     $state.go('login');
   } else {
 
-  var url = APP.api_base + URL.getNotificationsLimit + "?username="+localStorage.getItem("username");
+  var url = APP.api_base + URL.getNotificationsLimit + "?username="+localStorage.getItem("username") + "&max=" + localStorage.getItem("max_show_notifications");
   //var url = URL.getNotificationsLimit + "?username=robertodat";
   console.log(url);  
   notifications = [];
@@ -306,7 +319,7 @@ angular.module('main.notification', [])
         num_notifications = data.num_notifications;
 
         // Texto del indicador
-        if (num_notifications>99) {
+        /*if (num_notifications>99) {
           $scope.num_notifications = "99+"
           var alertPopup = $ionicPopup.alert({
             title: 'Mensaje',
@@ -314,9 +327,10 @@ angular.module('main.notification', [])
           });
         } else {
           $scope.num_notifications = num_notifications;        
-        }
+        }*/
+        $scope.num_notifications = num_notifications;        
 
-        // ALtura del indicador
+        // Altura del indicador
         if (ionic.Platform.isIOS()) {
               $scope.top_bubble = 24;
         } else {
@@ -324,7 +338,9 @@ angular.module('main.notification', [])
         }
 
         // Anchura del indicador
-        if (num_notifications > 99) {
+        if (num_notifications > 999) {
+          $scope.width_bubble = 57;
+        } else if (num_notifications > 99) {
           $scope.width_bubble = 47;
         } else if (num_notifications > 9){
           $scope.width_bubble = 37;            

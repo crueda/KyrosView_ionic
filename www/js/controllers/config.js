@@ -33,6 +33,35 @@ angular.module('main.config', [])
       });
  }
 
+  $scope.configChangeNumNotifications = function(optionSelected) {
+    //console.log(optionSelected);
+    localStorage.setItem("max_show_notifications", optionSelected);
+    
+    var url;
+    var push_mode = 0;
+    var group_mode = 0;
+    if ($scope.settings.enableNotifications) {
+      push_mode = 1;
+    } 
+    if ($scope.settings.enableGroupNotifications) {
+      group_mode = 1;
+      localStorage.setItem("group_notifications", 1);
+    } else {
+      localStorage.setItem("group_notifications", 0);
+    } 
+    url = APP.api_base + URL.configUserPreferences + "/" + localStorage.getItem("username") + "?push_mode=" + push_mode + "&group_mode=" + group_mode + "&max_show_notifications=" + optionSelected;    
+    $http({
+      method: 'GET',
+      url: url,
+      headers: {
+        'x-access': localStorage.getItem("token_api")
+      }})
+    .success(function(data, status, headers,config){            
+    })
+    .error(function(data, status, headers,config){
+    });
+ }
+
  $scope.configChange = function() {
     var url;
     var push_mode = 0;
