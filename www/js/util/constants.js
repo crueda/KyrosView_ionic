@@ -2,8 +2,8 @@ angular.module('main')
 
 .constant('APP', {
   version: 3,
-  //api_base: 'http://localhost:3000'
-  api_base: 'http://view.kyroslbs.com'
+  api_base: 'http://localhost:3000'
+  //api_base: 'http://view.kyroslbs.com'
   //api_base: 'http://192.168.28.248:3000'
 })
 
@@ -29,6 +29,9 @@ angular.module('main')
   configUserPreferences: '/api/app/user',
   getConfigNotifications: '/api/app/notification/config/user',
   getStatusNotifications: '/api/app/notification/status/user',
+  getIconsInfo: '/api/iconInfo',
+  getIcon: '/api/icon',
+  getIcons: '/api/icons',
 
   //configNotificationsEnable: '/api/app/notification/enable/user',
   //configNotificationsDisable: '/api/app/notification/disable/user',

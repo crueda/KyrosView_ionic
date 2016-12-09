@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<svg style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;" width="500px" height="500px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+<svg class="scaling-svg" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:1.41421;" width="500px" height="500px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
   <g id="Layer-1" transform="matrix(1.215873, 0, 0, 1.205146, -6.873055, -6.66925)">
     <path d="M58,32C58,46.359 46.359,58 32,58C17.641,58 6,46.359 6,32C6,17.641 17.641,6 32,6C46.359,6 58,17.641 58,32" style="fill:rgb(222,112,71);fill-rule:nonzero;"/>
     <g clip-path="url(#_clip1)">

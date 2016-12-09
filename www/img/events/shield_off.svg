@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<svg id="Layer_1" style="enable-background:new 0 0 512 512;" width="500px" height="500px" x="0px" y="0px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+<svg class="scaling-svg" id="Layer_1" style="enable-background:new 0 0 512 512;" width="500px" height="500px" x="0px" y="0px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
   <circle cx="256" cy="256" r="256" style="fill: rgb(255, 117, 117);"/>
   <path style="fill:#D3D6D6;" d="M421.011,108.219c-97.926,4.023-164.982-44.271-164.982-44.271s-67.057,48.294-164.983,44.271&#10;&#9;c0,0-29.542,270.971,164.983,329.993C450.1,379.19,421.011,108.219,421.011,108.219z"/>
   <path style="fill:#ECF0F0;" d="M421.011,118.056c-97.926,4.024-164.982-44.269-164.982-44.269s-67.057,48.293-164.983,44.269&#10;&#9;c0,0-29.542,270.971,164.983,329.995C450.1,389.027,421.011,118.056,421.011,118.056z"/>

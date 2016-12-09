@@ -8,7 +8,7 @@
   }
 
 angular.module('main.login', [])
-.controller('LoginCtrl', function($scope, $http, LoginService, $ionicLoading, $timeout, $ionicPopup, $state, URL, MAP_MODE, APP) {
+.controller('LoginCtrl', function($scope, $rootScope, $http, LoginService, $ionicLoading, $timeout, $ionicPopup, $state, URL, MAP_MODE, APP) {
 
   $scope.clean = function() {
       $scope.data = {}; 
@@ -82,6 +82,10 @@ angular.module('main.login', [])
               } else {
                 localStorage.setItem("vehicleLicense", "");                  
               }
+              // cargar los iconos
+              var abc = JSON.parse(localStorage.getItem("eventIcons"));
+              $rootScope.eventIcon = abc;
+
               localStorage.setItem("username", $scope.data.username);
               localStorage.setItem("token_api", data.result[0].token_api);  
               localStorage.setItem("notificationSelected", "");  
