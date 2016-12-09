@@ -203,7 +203,7 @@ button.tooltipButton {
   height: 0; 
   width: 100%; 
   padding: 0;
-  padding-bottom: 100%; 
+  padding-bottom: 0; 
 }
 .iconNotificationDetail {
   position: relative; 
@@ -211,17 +211,14 @@ button.tooltipButton {
   width: 100px; 
   height: 100px; 
   padding: 0;
-   border-style: solid;
-    border: 6px solid red;
-  border-color: salmon;
   margin-left: auto;
   margin-right: auto;
   display: block;
 }
 .scaling-svg {
  position: absolute; 
- height: 55px; 
- width: 55px; 
+ height: 100%; 
+ width: 100%; 
  left: 0; 
  top: 0;
 }

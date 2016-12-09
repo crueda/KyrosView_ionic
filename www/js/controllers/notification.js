@@ -179,7 +179,7 @@ $scope.body = '<div style="width:200px; height:200px; border:1px solid blue;"></
           battery: data.result[i].battery          
         }
         notifications.push(notification);
-                  iconos.push($sce.trustAsHtml($rootScope.eventIcon[data.result[i].subtype].svg));
+        iconos.push($sce.trustAsHtml($rootScope.eventIcon[data.result[i].subtype].svg));
 
 
         }
@@ -332,6 +332,7 @@ $scope.body = '<div style="width:200px; height:200px; border:1px solid blue;"></
           notifications.push(notification);
 
           eventType = data.result[i].subtype;
+          //913
           iconos.push($sce.trustAsHtml($rootScope.eventIcon[eventType].svg));
 
         }
