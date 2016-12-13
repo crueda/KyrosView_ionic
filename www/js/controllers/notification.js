@@ -145,12 +145,20 @@ $scope.body = '<div style="width:200px; height:200px; border:1px solid blue;"></
   $scope.doRefresh = function() {
     $timeout( function() {
     var url = APP.api_base + URL.getNotificationsLimit + "?username="+localStorage.getItem("username") + "&max=" + localStorage.getItem("max_show_notifications");
+
     console.log(url);
     notifications = [];
     iconos = [];
 
-    $http.get(url)
+    $http({
+    method: 'GET',
+    url: url,
+    headers: {
+        'x-access': localStorage.getItem("token_api")
+    }})
     .success(function(data, status, headers,config){
+
+console.log(url);
 
       for (var i=0; i<data.result.length; i++) {
 
@@ -179,15 +187,27 @@ $scope.body = '<div style="width:200px; height:200px; border:1px solid blue;"></
           battery: data.result[i].battery          
         }
         notifications.push(notification);
-        iconos.push($sce.trustAsHtml($rootScope.eventIcon[data.result[i].subtype].svg));
+        //iconos.push($sce.trustAsHtml($rootScope.eventIcon[data.result[i].subtype].svg));
+
+
+          if ($rootScope.eventIcon[data.result[i].subtype]!=undefined)
+            iconos.push($sce.trustAsHtml($rootScope.eventIcon[data.result[i].subtype].svg));
+          else
+            iconos.push($sce.trustAsHtml($rootScope.eventIcon[900].svg));
 
 
         }
+
+        
+
           $scope.notifications = notifications;
         $scope.trustedHtmlIcon = iconos;
 
           // Texto del indicador
           num_notifications = data.result.length;
+
+
+
           /*if (num_notifications>99) {
             $scope.num_notifications = "99+"
             var alertPopup = $ionicPopup.alert({
@@ -265,7 +285,9 @@ $scope.body = '<div style="width:200px; height:200px; border:1px solid blue;"></
     $state.go('login');
   } else {
 
+
   var url = APP.api_base + URL.getNotificationsLimit + "?username="+localStorage.getItem("username") + "&max=" + localStorage.getItem("max_show_notifications");
+  //var url = APP.api_base + URL.getNotificationsLimit + "?username=crueda" + "&max=" + localStorage.getItem("max_show_notifications");
   //var url = URL.getNotificationsLimit + "?username=robertodat";
   console.log(url);  
   notifications = [];
@@ -303,6 +325,7 @@ $scope.body = '<div style="width:200px; height:200px; border:1px solid blue;"></
         }, 1500);        
       } else {
 
+  
         for (var i=0; i<data.result.length; i++) {        
           if (data.result[i].location!=undefined) {
             lat = data.result[i].location.coordinates[1].toFixed(4);
@@ -333,7 +356,11 @@ $scope.body = '<div style="width:200px; height:200px; border:1px solid blue;"></
 
           eventType = data.result[i].subtype;
           //913
-          iconos.push($sce.trustAsHtml($rootScope.eventIcon[eventType].svg));
+          //iconos.push($sce.trustAsHtml($rootScope.eventIcon[913].svg));
+          if ($rootScope.eventIcon[eventType]!=undefined)
+            iconos.push($sce.trustAsHtml($rootScope.eventIcon[eventType].svg));
+          else
+            iconos.push($sce.trustAsHtml($rootScope.eventIcon[900].svg));
 
         }
         $scope.notifications = notifications;
@@ -394,7 +421,7 @@ $scope.body = '<div style="width:200px; height:200px; border:1px solid blue;"></
   if (localStorage.getItem("notificationPushMongoId")==undefined || localStorage.getItem("notificationPushMongoId")==0) {
     localStorage.setItem("notificationSelected", $stateParams.notificationId);  
     $scope.notification = notifications[$stateParams.notificationId];    
-    $scope.trustedHtmlIcon = $sce.trustAsHtml($rootScope.eventIcon[notifications[$stateParams.notificationId].eventType].svg);
+    $scope.trustedHtmlIconEvent = $sce.trustAsHtml($rootScope.eventIcon[notifications[$stateParams.notificationId].eventType].svg);
   } else {
     // viene de un click sobre un mensaje push -> buscar la notificacion
     var notificationPush = {};
@@ -475,6 +502,7 @@ $scope.body = '<div style="width:200px; height:200px; border:1px solid blue;"></
     }
     $scope.notification = notifications[go_notificationId];    
     localStorage.setItem("notificationSelected", go_notificationId);
+    $scope.trustedHtmlIconEvent = $sce.trustAsHtml($rootScope.eventIcon[notifications[go_notificationId].eventType].svg);   
 
     archiveNotification ($http, notificationId, URL, APP);
     notifications.splice(go_notificationId-1, 1);
@@ -487,7 +515,7 @@ $scope.body = '<div style="width:200px; height:200px; border:1px solid blue;"></
       });
 
     if (notifications.length>0) {
-      $state.go('tab.notifications-detail', {cache: false});
+      $state.go('tab.notification-detail', {cache: false});
     } else {
       $state.go('tab.notifications', {cache: false, mode: localStorage.getItem("group_notifications")});      
     }
@@ -500,6 +528,7 @@ $scope.body = '<div style="width:200px; height:200px; border:1px solid blue;"></
       go_notificationId = 0;
     }
     $scope.notification = notifications[go_notificationId];    
+    $scope.trustedHtmlIconEvent = $sce.trustAsHtml($rootScope.eventIcon[notifications[go_notificationId].eventType].svg);   
     localStorage.setItem("notificationSelected", go_notificationId);
     $state.go('tab.notifications-detail', {cache: false});
   }
@@ -509,7 +538,8 @@ $scope.body = '<div style="width:200px; height:200px; border:1px solid blue;"></
     if (go_notificationId > notifications.length -2) {
       go_notificationId = notifications.length -1;
     }
-    $scope.notification = notifications[go_notificationId];    
+    $scope.notification = notifications[go_notificationId]; 
+    $scope.trustedHtmlIconEvent = $sce.trustAsHtml($rootScope.eventIcon[notifications[go_notificationId].eventType].svg);   
     localStorage.setItem("notificationSelected", go_notificationId);
     $state.go('tab.notifications-detail', {cache: false});
   }
@@ -546,7 +576,6 @@ $scope.notificationArchiveChange = function() {
 
 };
 
-  
 })
 
 

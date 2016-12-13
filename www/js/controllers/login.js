@@ -10,6 +10,7 @@
 angular.module('main.login', [])
 .controller('LoginCtrl', function($scope, $rootScope, $http, LoginService, $ionicLoading, $timeout, $ionicPopup, $state, URL, MAP_MODE, APP) {
 
+
   $scope.clean = function() {
       $scope.data = {}; 
        $scope.settings = {
@@ -63,7 +64,7 @@ angular.module('main.login', [])
         maxWidth: 200,
         showDelay: 0
       });
-      
+
       // peticion de login
       var url = APP.api_base + URL.login + "?version="+APP.version+"&username="+ $scope.data.username +"&password="+$scope.data.password;
       console.log(url);
@@ -83,7 +84,7 @@ angular.module('main.login', [])
                 localStorage.setItem("vehicleLicense", "");                  
               }
               // cargar los iconos
-              var abc = JSON.parse(localStorage.getItem("eventIcons"));
+              var abc = JSON.parse(localStorage.getItem("eventIconStorage"));
               $rootScope.eventIcon = abc;
 
               localStorage.setItem("username", $scope.data.username);

@@ -66,8 +66,11 @@ angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notific
     if (eventIconsStorage==undefined) {
       eventIconsStorage = {};
     }*/
-    localStorage.setItem("eventIcons", {});
-    eventIconsStorage = {};
+
+    localStorage.setItem("eventIconStorage", {});
+    eventIcons = {};
+    eventIconsLocal = localStorage.getItem("eventIconStorage");
+    //eventIconsLocal = JSON.parse(localStorage.getItem("eventIconStorage"));
 
     var url = APP.api_base + URL.getIconsInfo;
     console.log(url);
@@ -75,12 +78,12 @@ angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notific
     .success(function(data, status, headers,config){   
       var ask_icons = [];  
       for (var i=0; i<data.length; i++) { 
-        if (data[i].subtype in eventIconsStorage) {
-          if (data[i].version > eventIconsStorage[data[i].subtype].version) {
+        if (eventIconsLocal[data[i].subtype]!=undefined) {
+          if (data[i].version > eventIconsLocal[data[i].subtype].version) {
             ask_icons.push(data[i].subtype);
           }
         } else {
-          eventIconsStorage[data[i].subtype] = data[i];
+          eventIcons[data[i].subtype] = data[i];
           ask_icons.push(data[i].subtype);
         }
       }
@@ -90,8 +93,8 @@ angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notific
        $http.get(urlIcons)
       .success(function(data, status, headers,config){   
         for (var j=0; j<data.length; j++) {
-          eventIconsStorage[data[j].subtype].version = data[j].version;
-          eventIconsStorage[data[j].subtype].svg = data[j].svg;
+          eventIcons[data[j].subtype].version = data[j].version;
+          eventIcons[data[j].subtype].svg = data[j].svg;
           //eventIconsStorage[data[j].subtype].trust_svg = $sce.trustAsHtml(data[j].svg);
 
         }
@@ -100,7 +103,7 @@ angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notific
       })
       .then(function(rest) {
         //localStorage.setItem("eventIcons", eventIconsStorage);  
-        localStorage.setItem("eventIcons", JSON.stringify(eventIconsStorage));  
+        localStorage.setItem("eventIconStorage", JSON.stringify(eventIcons));  
       });
 
       

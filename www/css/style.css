@@ -143,7 +143,6 @@ button.tooltipButton {
  	padding: 0;
  }
 
-
 .item-avatar,
 .item-avatar .item-content,
 .item-avatar-left,
@@ -166,6 +165,7 @@ button.tooltipButton {
     width: 100%;
     height: 100%;
     //padding: .1em;
+    padding: 0px;
     border: 0px solid;
     background-color: cccccc;
     border-color: #cccccc;
