@@ -1,0 +1,15 @@
+{
+  "LOGIN":          "Entrar",
+  "LANGUAGE":       "Idioma",
+  "USER":      		"Usuario",
+  "PASSWORD":       "Contraseña",
+  "REMEMBER": 		"Recordar datos",
+  "CONFIG_PUSH":	"Recibir push",
+  "CONFIG_GROUP":	"Agrupar notificaciones",
+  "CONFIG_NUM_NOTIFICATIONS": "Número de notificaciones",
+  "CONFIG_LOGOUT": 	"Desconectar",
+  "CONFIG_EN": 		"Inglés",
+  "CONFIG_ES": 		"Español"
+
+
+}

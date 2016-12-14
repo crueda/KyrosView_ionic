@@ -1,0 +1,14 @@
+{
+  "LOGIN":         "Login",
+  "LANGUAGE":      "Language",
+  "USER":      		"Username",
+  "PASSWORD":       "Password",
+  "REMEMBER": 		"Remember",
+  "CONFIG_PUSH":	"Push notifications",
+  "CONFIG_GROUP":	"Group notifications",
+  "CONFIG_NUM_NOTIFICATIONS": "Number of notifications",
+  "CONFIG_LOGOUT": 	"Logout",
+  "CONFIG_EN": 		"English",
+  "CONFIG_ES": 		"Spanish"
+
+}
