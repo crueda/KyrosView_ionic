@@ -1,7 +1,12 @@
   function saveToken ($http, URL, APP) {
     var url = APP.api_base + URL.saveToken + "?username="+ localStorage.getItem("username") + "&token="+ localStorage.getItem("token");
     //console.log(url);
-    $http.get(url).success(function(data, status, headers,config){            
+    $http({
+    method: 'GET',
+    url: url,
+    headers: {
+        'x-access': localStorage.getItem("token_api")
+    }}).success(function(data, status, headers,config){ 
       })
       .error(function(data, status, headers,config){
       });

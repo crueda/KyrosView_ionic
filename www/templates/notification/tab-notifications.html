@@ -1,4 +1,4 @@
-<ion-view view-title="Notificaciones" cache-view="false">
+<ion-view view-title="Notificaciones" cache-view="true">
 
 <ion-nav-bar class="bar-assertive nav-title-slide-ios7" align-title="center">
     <ion-nav-buttons side="left">        
@@ -7,6 +7,8 @@
 
     <ion-nav-buttons side="right">
         <button class="button ion-trash-b customButtonIcon" ng-click="archiveNotifications()">            
+        </button>&nbsp;
+        <button class="button ion-ios-refresh customButtonIcon" ng-click="doRefresh()">            
         </button>
     </ion-nav-buttons>
 </ion-nav-bar>

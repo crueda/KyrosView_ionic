@@ -12,8 +12,8 @@
         Recibir push
     </ion-toggle-->
 
-     <li class="item item-toggle">
-     Recibir push
+     <li class="item item-toggle">     
+     <span translate="CONFIG_PUSH"></span>
      <label class="toggle">
        <input type="checkbox" ng-model="settings.enableNotifications" ng-change="configChange()">
        <div class="track">
@@ -24,7 +24,8 @@
 
 
     <li class="item item-toggle">
-     Agrupar notificaciones
+    <span translate="CONFIG_GROUP"></span>
+     
      <label class="toggle toggle-calm">
        <input type="checkbox" ng-model="settings.enableGroupNotifications" ng-change="configChange()">
        <div class="track">
@@ -35,8 +36,7 @@
 
 
 <label class="item item-input item-select">
-    <div class="input-label">
-      Número de notificaciones
+    <div class="input-label" translate="CONFIG_NUM_NOTIFICATIONS">
     </div>
     <select ng-model="optionSelected" ng-change="configChangeNumNotifications(optionSelected)">
       <option value="10">10</option>
@@ -48,11 +48,22 @@
   </label>
 
 
+<label class="item item-input item-select">
+    <div class="input-label" translate="LANGUAGE">
+    </div>
+    <select ng-model="key" ng-change="switchLanguage(key)">
+      <option value="es" translate="CONFIG_ES"></option>
+      <option value="en" translate="CONFIG_EN"></option>
+    </select>
+  </label>
+
+
+
     <ion-list>
     
     <br>
 
-    <button class="button button-block button-assertive" ng-click="logout()">Desconectar</button>
+    <button class="button button-block button-assertive" ng-click="logout()"><span translate="CONFIG_LOGOUT"></span></button>
 
   </ion-content>
 </ion-view>

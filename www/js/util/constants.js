@@ -30,8 +30,10 @@ angular.module('main')
   getConfigNotifications: '/api/app/notification/config/user',
   getStatusNotifications: '/api/app/notification/status/user',
   getIconsInfo: '/api/iconInfo',
-  getIcon: '/api/icon',
-  getIcons: '/api/icons',
+  getAllIcons: '/api/allicons',
+  
+  //getIcon: '/api/icon',
+  //getIcons: '/api/icons',
 
   //configNotificationsEnable: '/api/app/notification/enable/user',
   //configNotificationsDisable: '/api/app/notification/disable/user',

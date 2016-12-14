@@ -11,6 +11,8 @@
   "dependencies": {
     "ion-datetime-picker": "^0.4.1",
     "ionic-timepicker": "^0.6.0",
-    "ion-tree-list": "^0.0.10"
+    "ion-tree-list": "^0.0.10",
+    "angular-translate": "^2.13.1",
+    "angular-translate-loader-static-files": "^2.13.1"
   }
 }

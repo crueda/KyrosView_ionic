@@ -146,6 +146,16 @@ $scope.body = '<div style="width:200px; height:200px; border:1px solid blue;"></
     $timeout( function() {
     var url = APP.api_base + URL.getNotificationsLimit + "?username="+localStorage.getItem("username") + "&max=" + localStorage.getItem("max_show_notifications");
 
+$ionicLoading.show({
+    //template: '<ion-spinner icon="bubbles"></ion-spinner><p>LOADING...</p>'
+    //templateUrl: 'loading.html',
+    content: 'Loading',
+    animation: 'fade-in',
+    showBackdrop: true,
+    maxWidth: 200,
+    showDelay: 0
+  });
+
     console.log(url);
     notifications = [];
     iconos = [];
@@ -157,9 +167,7 @@ $scope.body = '<div style="width:200px; height:200px; border:1px solid blue;"></
         'x-access': localStorage.getItem("token_api")
     }})
     .success(function(data, status, headers,config){
-
-console.log(url);
-
+      $ionicLoading.hide();
       for (var i=0; i<data.result.length; i++) {
 
           if (data.result[i].location!=undefined) {
@@ -188,35 +196,18 @@ console.log(url);
         }
         notifications.push(notification);
         //iconos.push($sce.trustAsHtml($rootScope.eventIcon[data.result[i].subtype].svg));
-
-
           if ($rootScope.eventIcon[data.result[i].subtype]!=undefined)
             iconos.push($sce.trustAsHtml($rootScope.eventIcon[data.result[i].subtype].svg));
           else
-            iconos.push($sce.trustAsHtml($rootScope.eventIcon[900].svg));
-
-
+            iconos.push($sce.trustAsHtml($rootScope.eventIcon[0].svg));
         }
-
-        
-
-          $scope.notifications = notifications;
+      
+        $scope.notifications = notifications;
         $scope.trustedHtmlIcon = iconos;
 
-          // Texto del indicador
-          num_notifications = data.result.length;
+        // Texto del indicador
+        num_notifications = data.num_notifications;
 
-
-
-          /*if (num_notifications>99) {
-            $scope.num_notifications = "99+"
-            var alertPopup = $ionicPopup.alert({
-                title: 'Mensaje',
-                template: 'Tienes ' + num_notifications + ' notificaciones.\r\nSolo se muestran las 50 más recientes'
-              });
-          } else {
-            $scope.num_notifications = num_notifications          
-          }*/
           $scope.num_notifications = num_notifications;
 
           // Anchura del indicador
@@ -236,6 +227,12 @@ console.log(url);
           } else {
             $scope.top_bubble = 6;            
           }
+
+$ionicLoading.show({
+        template: 'Actualizado',
+        duration: 700,
+        scope: $scope
+      });
 
           $scope.$broadcast('scroll.refreshComplete');
         })
@@ -258,7 +255,7 @@ console.log(url);
       //Stop the ion-refresher from spinning
       //$scope.$broadcast('scroll.refreshComplete');
     
-    }, 2000);
+    }, 200); //2000
   };
 
   $scope.remove = function(notification, URL) {
@@ -360,7 +357,7 @@ console.log(url);
           if ($rootScope.eventIcon[eventType]!=undefined)
             iconos.push($sce.trustAsHtml($rootScope.eventIcon[eventType].svg));
           else
-            iconos.push($sce.trustAsHtml($rootScope.eventIcon[900].svg));
+            iconos.push($sce.trustAsHtml($rootScope.eventIcon[0].svg));
 
         }
         $scope.notifications = notifications;

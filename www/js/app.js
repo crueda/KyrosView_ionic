@@ -9,7 +9,7 @@ function saveToken ($http, URL) {
 
 // KyrosView Main App
 //angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notification', 'main.device', 'main.map', 'main.config', 'main.services', 'ngCordova', 'ion-tree-list'])
-angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notification', 'main.device', 'main.map', 'main.config', 'main.services', 'ngCordova', 'ionic.ion.autoListDivider'])
+angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notification', 'main.device', 'main.map', 'main.config', 'main.services', 'ngCordova', 'ionic.ion.autoListDivider', 'pascalprecht.translate'])
 
 .run(function($rootScope, $ionicPlatform, $http, $ionicPopup, $cordovaTouchID, $cordovaPushV5, $state, URL, APP) {
   $ionicPlatform.ready(function() {
@@ -62,52 +62,19 @@ angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notific
 
     //-------------
     
-    /*eventIconsStorage = localStorage.getItem("eventIcons");
-    if (eventIconsStorage==undefined) {
-      eventIconsStorage = {};
-    }*/
-
-    localStorage.setItem("eventIconStorage", {});
     eventIcons = {};
-    eventIconsLocal = localStorage.getItem("eventIconStorage");
-    //eventIconsLocal = JSON.parse(localStorage.getItem("eventIconStorage"));
+    defaultIcon = {
+      svg: '<svg id="Layer_1" class="scaling-svg" style="enable-background:new 0 0 496.158 496.158;" x="0px" y="0px" width="500px" height="500px" viewBox="0 0 496.158 496.158" xmlns="http://www.w3.org/2000/svg"><path d="M496.158,248.085c0-137.022-111.069-248.082-248.075-248.082C111.07,0.003,0,111.063,0,248.085&#10;&#9;c0,137.001,111.07,248.07,248.083,248.07C385.089,496.155,496.158,385.086,496.158,248.085z" style="fill: rgb(94, 81, 232);"/><g><path style="fill:#FFFFFF;" d="M315.249,359.555c-1.387-2.032-4.048-2.755-6.27-1.702c-24.582,11.637-52.482,23.94-57.958,25.015&#10;&#9;&#9;c-0.138-0.123-0.357-0.348-0.644-0.737c-0.742-1.005-1.103-2.318-1.103-4.015c0-13.905,10.495-56.205,31.192-125.719&#10;&#9;&#9;c17.451-58.406,19.469-70.499,19.469-74.514c0-6.198-2.373-11.435-6.865-15.146c-4.267-3.519-10.229-5.302-17.719-5.302&#10;&#9;&#9;c-12.459,0-26.899,4.73-44.146,14.461c-16.713,9.433-35.352,25.41-55.396,47.487c-1.569,1.729-1.733,4.314-0.395,6.228&#10;&#9;&#9;c1.34,1.915,3.825,2.644,5.986,1.764c7.037-2.872,42.402-17.359,47.557-20.597c4.221-2.646,7.875-3.989,10.861-3.989&#10;&#9;&#9;c0.107,0,0.199,0.004,0.276,0.01c0.036,0.198,0.07,0.5,0.07,0.933c0,3.047-0.627,6.654-1.856,10.703&#10;&#9;&#9;c-30.136,97.641-44.785,157.498-44.785,182.994c0,8.998,2.501,16.242,7.432,21.528c5.025,5.393,11.803,8.127,20.146,8.127&#10;&#9;&#9;c8.891,0,19.712-3.714,33.08-11.354c12.936-7.392,32.68-23.653,60.363-49.717C316.337,364.326,316.636,361.587,315.249,359.555z"/><path style="fill:#FFFFFF;" d="M314.282,76.672c-4.925-5.041-11.227-7.597-18.729-7.597c-9.34,0-17.475,3.691-24.176,10.971&#10;&#9;&#9;c-6.594,7.16-9.938,15.946-9.938,26.113c0,8.033,2.463,14.69,7.32,19.785c4.922,5.172,11.139,7.794,18.476,7.794&#10;&#9;&#9;c8.958,0,17.049-3.898,24.047-11.586c6.876-7.553,10.363-16.433,10.363-26.393C321.646,88.105,319.169,81.684,314.282,76.672z"/></g></svg>'
+    }
+    eventIcons[0] = defaultIcon;
 
-    var url = APP.api_base + URL.getIconsInfo;
+    var url = APP.api_base + URL.getAllIcons + "?type=1";
     console.log(url);
     $http.get(url)
     .success(function(data, status, headers,config){   
-      var ask_icons = [];  
-      for (var i=0; i<data.length; i++) { 
-        if (eventIconsLocal[data[i].subtype]!=undefined) {
-          if (data[i].version > eventIconsLocal[data[i].subtype].version) {
-            ask_icons.push(data[i].subtype);
-          }
-        } else {
-          eventIcons[data[i].subtype] = data[i];
-          ask_icons.push(data[i].subtype);
-        }
-      }
-      // pedir los iconos que faltan
-       var urlIcons = APP.api_base + URL.getIcons + "?subtypeList="+ask_icons.join(",");
-       console.log(urlIcons);
-       $http.get(urlIcons)
-      .success(function(data, status, headers,config){   
         for (var j=0; j<data.length; j++) {
-          eventIcons[data[j].subtype].version = data[j].version;
-          eventIcons[data[j].subtype].svg = data[j].svg;
-          //eventIconsStorage[data[j].subtype].trust_svg = $sce.trustAsHtml(data[j].svg);
-
+          eventIcons[data[j].subtype] = data[j];
         }
-      })
-      .error(function(data, status, headers,config){
-      })
-      .then(function(rest) {
-        //localStorage.setItem("eventIcons", eventIconsStorage);  
-        localStorage.setItem("eventIconStorage", JSON.stringify(eventIcons));  
-      });
-
-      
-    
     })
     .error(function(data, status, headers,config){
       $ionicLoading.show({
@@ -115,6 +82,9 @@ angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notific
         duration: 1500,
         scope: $scope
       });
+    })
+    .then(function(rest) {
+      localStorage.setItem("eventIconStorage", JSON.stringify(eventIcons));  
     });
 
 
@@ -165,12 +135,12 @@ push.on('notification', function(data) {
     // data.sound,
     // data.image,
     // data.additionalData
-    
-    /*var alertPopup = $ionicPopup.alert({
+    /*
+    var alertPopup = $ionicPopup.alert({
             title: '****',
-            template: '->' + data.additionalData.foreground + "-" + data.count + "-" + data.additionalData._id + "-" + data.additionalData.vehicle_license + "-" + data.additionalData.info
-        });*/
-    
+            template: '->' + data.additionalData.timestamp + "-" + data.additionalData._id + "-" + data.additionalData.vehicle_license
+        });
+    */
     /*
     localStorage.setItem("notificationSelectedVehicleLicense", data.additionalData.vehicle_license);
     localStorage.setItem("notificationPushMongoId", data.additionalData._id);
@@ -185,6 +155,10 @@ push.on('notification', function(data) {
     //localStorage.setItem("notificationSelectedLatitude", data.additionalData.latitude);
     //localStorage.setItem("notificationSelectedLongitude", data.additionalData.longitude);
     localStorage.setItem("notificationPushMongoId", data.additionalData._id);
+    localStorage.setItem("notificationPushLongitude", data.additionalData.coordinates[0]);
+    localStorage.setItem("notificationPushLatitude", data.additionalData.coordinates[1]);
+    localStorage.setItem("notificationPushEventType", data.additionalData.event_type);
+    localStorage.setItem("notificationPushTimestamp", data.additionalData.timestamp);
     localStorage.setItem("notificationSelectedVehicleLicense", data.additionalData.vehicle_license);
     localStorage.setItem("mapmode", 3);
     $state.go('tab.map');
@@ -203,9 +177,28 @@ push.on('error', function(e) {
 })
 
 
-.config(function($stateProvider, $ionicConfigProvider, $urlRouterProvider) {
+.config(function($stateProvider, $ionicConfigProvider, $urlRouterProvider, $translateProvider) {
 
-$ionicConfigProvider.tabs.position('bottom');
+var language = localStorage.getItem("language");
+if (language==undefined) {
+  language = 'es';
+}
+
+$translateProvider
+      .useStaticFilesLoader({
+        prefix: 'locales/',
+        suffix: '.json'
+      })
+      .registerAvailableLanguageKeys(['en', 'es'], {
+        'en' : 'en', 'en_GB': 'en', 'en_US': 'en',
+        'es' : 'es', 'es_SP': 'es', 'es_ES': 'es'
+      })
+      .preferredLanguage(language)
+      .fallbackLanguage(language)
+      .determinePreferredLanguage()
+      .useSanitizeValueStrategy('escapeParameters');
+
+  $ionicConfigProvider.tabs.position('bottom');
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -265,7 +258,7 @@ $ionicConfigProvider.tabs.position('bottom');
 
   .state('tab.notifications', {
       url: '/notifications/:mode/',
-      cache: false,
+      cache: true,
       views: {
         'tab-notifications': {
           templateUrl: function ($stateParams){

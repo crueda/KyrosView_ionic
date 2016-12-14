@@ -1,5 +1,5 @@
 angular.module('main.config', [])
-.controller('ConfigCtrl', function($scope, $state, $http, $state, URL, APP) {
+.controller('ConfigCtrl', function($scope, $state, $http, $state, URL, APP, $translate) {
 
   if (localStorage.getItem("username")=="") {
     $state.go('login');
@@ -32,6 +32,11 @@ angular.module('main.config', [])
       .error(function(data, status, headers,config){
       });
  }
+
+$scope.switchLanguage = function(key) {
+  localStorage.setItem("language", key);
+  $translate.use(key);
+};
 
   $scope.configChangeNumNotifications = function(optionSelected) {
     //console.log(optionSelected);
