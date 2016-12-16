@@ -9,7 +9,7 @@ function saveToken ($http, URL) {
 
 // KyrosView Main App
 //angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notification', 'main.device', 'main.map', 'main.config', 'main.services', 'ngCordova', 'ion-tree-list'])
-angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notification', 'main.device', 'main.map', 'main.config', 'main.services', 'ngCordova', 'ionic.ion.autoListDivider', 'pascalprecht.translate'])
+angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notification', 'main.device', 'main.map', 'main.config', 'main.services', 'ngCordova', 'ionic.ion.autoListDivider', 'pascalprecht.translate', 'chart.js'])
 
 .run(function($rootScope, $ionicPlatform, $http, $ionicPopup, $cordovaTouchID, $cordovaPushV5, $state, URL, APP) {
   $ionicPlatform.ready(function() {
@@ -177,7 +177,9 @@ push.on('error', function(e) {
 })
 
 
-.config(function($stateProvider, $ionicConfigProvider, $urlRouterProvider, $translateProvider) {
+.config(function($stateProvider, $ionicConfigProvider, $urlRouterProvider, $translateProvider, ChartJsProvider) {
+
+ChartJsProvider.setOptions({ colors : [ '#803690', '#00ADF9', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'] });
 
 var language = localStorage.getItem("language");
 if (language==undefined) {

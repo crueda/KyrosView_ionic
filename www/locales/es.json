@@ -1,15 +1,25 @@
 {
-  "LOGIN":          "Entrar",
-  "LANGUAGE":       "Idioma",
-  "USER":      		"Usuario",
-  "PASSWORD":       "Contraseña",
-  "REMEMBER": 		"Recordar datos",
-  "CONFIG_PUSH":	"Recibir push",
-  "CONFIG_GROUP":	"Agrupar notificaciones",
+  "LOGIN":          	"Entrar",
+  "LANGUAGE":       	"Idioma",
+  "USER":      			"Usuario",
+  "PASSWORD":       	"Contraseña",
+  "REMEMBER": 			"Recordar datos",
+  "CONFIG_PUSH":		"Recibir push",
+  "CONFIG_GROUP":		"Agrupar notificaciones",
   "CONFIG_NUM_NOTIFICATIONS": "Número de notificaciones",
-  "CONFIG_LOGOUT": 	"Desconectar",
-  "CONFIG_EN": 		"Inglés",
-  "CONFIG_ES": 		"Español"
-
+  "CONFIG_LOGOUT": 		"Desconectar",
+  "CONFIG_EN": 			"Inglés",
+  "CONFIG_ES": 			"Español",
+  "TITTLE_CONFIG":		"Configuración",
+  "TITTLE_NOTIFICATIONS": "Notificaciones",
+  "TITTLE_MAP": 		"Mapa",
+  "TITTLE_DEVICES": 	"Dispositivos",
+  "TITTLE_CONFIG":		"Configuración",
+  "TAB_NOTIFICATIONS":  "Notificaciones",
+  "TAB_DEVICES": 		"Dispositivos",
+  "TAB_MAP":		 	"Mapa",
+  "TAB_CONFIG": 		"Configurar",
+  "ALL": 				"Todas",
+  "RESET":				"Reiniciar"
 
 }

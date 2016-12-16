@@ -1,4 +1,4 @@
-<ion-view view-title="Configurar">
+<ion-view view-title="{{'TITTLE_CONFIG' | translate}}">
       <ion-nav-bar class="bar-dark"  align-title="center">
         <ion-nav-back-button></ion-nav-back-button>
       </ion-nav-bar>
@@ -40,10 +40,10 @@
     </div>
     <select ng-model="optionSelected" ng-change="configChangeNumNotifications(optionSelected)">
       <option value="10">10</option>
-      <option value="20">20</option>
-      <option value="30">30</option>
-      <option value="40">40</option>
-      <option value="50">50</option>
+      <option value="20">25</option>
+      <option value="30">50</option>
+      <option value="40">75</option>
+      <option value="50">100</option>
     </select>
   </label>
 
@@ -59,7 +59,7 @@
 
 
 
-    <ion-list>
+    </ion-list>
     
     <br>
 
