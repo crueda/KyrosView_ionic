@@ -1,0 +1,54 @@
+<!--ion-view view-title="{{titulo_mapa}}"-->
+<ion-view cache-view="false">
+  <ion-nav-bar class="bar-balanced"  align-title="center">
+      <ion-nav-back-button></ion-nav-back-button>
+    </ion-nav-bar>
+
+<ion-nav-title>
+      {{titulo_graphs}}
+</ion-nav-title>
+
+<ion-content>
+
+	<ion-list>
+      <ion-item>
+        <p class="center"><b>Tipos de notificación</b><p>
+<!-- Grafico 1 -->
+  <canvas id="pie" class="chart chart-pie"
+    chart-data="graph1_data" chart-labels="graph1_labels">
+  </canvas> 
+      </ion-item>
+
+      <ion-item>
+        <p class="center"><b>Posiciones y notificaciones por hora</b><p>
+     
+
+<!-- Grafico 2 -->
+<canvas id="line" class="chart chart-line" chart-data="graph2_data"
+chart-labels="graph2_labels" chart-series="graph2_series" chart-options="graph2_options"
+chart-dataset-override="datasetOverride" chart-click="onClick">
+</canvas>
+
+      </ion-item>
+
+      <ion-item>
+         <p class="center"><b>Posiciones y notificaciones por día</b></p>
+    
+
+<!-- Grafico 3 -->
+<canvas id="bar" class="chart chart-bar"
+  chart-data="graph3_data" chart-labels="graph3_labels"> chart-series="graph3_series"
+</canvas>
+
+      </ion-item>
+
+      <ion-item>
+    <button class="button button-block button-assertive" ng-click="reset()"><span translate="RESET"></span></button>
+    </ion-item>
+
+<br>
+
+</ion-content>
+
+
+</ion-view>
