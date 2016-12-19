@@ -98,7 +98,6 @@ angular.module('main.device', ['ionic'])
       maxWidth: 200,
       showDelay: 0
     });    
-    console.log(">>>");
     var url = APP.api_base + URL.getConfigNotifications + "/" + localStorage.getItem("username") + "?vehicleLicense="+ localStorage.getItem("deviceSelected");
     //console.log(url);
     $http({
@@ -177,6 +176,10 @@ angular.module('main.device', ['ionic'])
 
    }
 
+   $scope.showGraphsDevice = function() {
+      localStorage.setItem("mapmode", mapmode); 
+      $state.go('tab.graphs'); 
+   }
 
    $scope.showMapDevice = function() {
     var url = APP.api_base + URL.tracking1vehicle + "/" + localStorage.getItem("deviceSelected");

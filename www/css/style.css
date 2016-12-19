@@ -147,6 +147,7 @@ button.tooltipButton {
 .item-avatar .item-content,
 .item-avatar-left,
 .item-avatar-left .item-content {
+
   padding-left: 92px;
   min-height: 72px; }
   .item-avatar > div:first-child,
@@ -221,4 +222,134 @@ button.tooltipButton {
  width: 100%; 
  left: 0; 
  top: 0;
+}
+
+.notification1 .item-content
+{
+  background-color: cccccc;
+  //background-color: salmon;
+}
+
+.leyend
+{
+  padding: 0;
+  background-color: #f9ecf2;  
+}
+
+.leyendCol 
+{
+  margin-right: 2px;
+}
+
+.categoryEvent0
+{
+  width: 30px;
+  font-size: 8px;
+  margin-top: 3px;
+  background-color: #b3e0ff;  
+  border: 0px solid;
+  border-radius: 20%;
+}
+
+.categoryEvent1
+{
+  width: 30px;
+  font-size: 8px;
+  margin-top: 3px;
+  background-color: #ff9999;  
+  border: 0px solid;
+  border-radius: 20%;
+}
+.categoryEvent2
+{
+  width: 30px;
+  font-size: 8px;
+  margin-top: 3px;
+  background-color: #ffffb3;  
+  border: 0px solid;
+  border-radius: 20%;
+}
+.categoryEvent3
+{
+  width: 30px;
+  font-size: 8px;
+  margin-top: 3px;
+  background-color: #c6ecc6;  
+  border: 0px solid;
+  border-radius: 20%;
+}
+.categoryEvent4
+{
+  width: 30px;
+  font-size: 8px;
+  margin-top: 3px;
+  background-color: #ffd9b3;  
+  border: 0px solid;
+  border-radius: 20%;
+}
+
+.leyendCategoryEventAll
+{
+  width: 10px;
+  height: 30px;
+  font-size: 10px;
+  background-color: #cccccc;  
+  border-color: #cccccc;
+  border: 1px solid;
+  border-radius: 10%;
+}
+
+.leyendCategoryEvent0
+{
+  width: 30px;
+  height: 30px;
+  font-size: 10px;
+  background-color: #b3e0ff;  
+  border-color: #cccccc;
+  border: 1px solid;
+  border-radius: 10%;
+}
+
+.leyendCategoryEvent1
+{
+  width: 30px;
+  height: 30px;
+  font-size: 10px;
+  background-color: #ff9999;  
+  border-color: #cccccc;
+  border: 1px solid;
+  border-radius: 10%;
+}
+
+.leyendCategoryEvent2
+{
+  width: 30px;
+  height: 30px;
+  font-size: 10px;
+  background-color: #ffffb3;  
+  border-color: #cccccc;
+  border: 1px solid;
+  border-radius: 10%;
+}
+
+.leyendCategoryEvent3
+{
+  width: 30px;
+  height: 30px;
+  font-size: 10px;
+  background-color: #c6ecc6;  
+  border-color: #cccccc;
+  border: 1px solid;
+  border-radius: 10%;
+}
+
+.leyendCategoryEvent4
+{
+  width: 30px;
+  height: 30px;
+  font-size: 10px;
+  background-color: #ffd9b3;  
+  border-color: #cccccc;
+  border: 1px solid;
+  border-radius: 10%;
 }

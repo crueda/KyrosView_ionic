@@ -31,10 +31,10 @@ angular.module('main')
   getStatusNotifications: '/api/app/notification/status/user',
   getIconsInfo: '/api/iconInfo',
   getAllIcons: '/api/allicons',
-  
+  getGraphData: '/api/app/graph/vehicle',
+
   //getIcon: '/api/icon',
   //getIcons: '/api/icons',
-
   //configNotificationsEnable: '/api/app/notification/enable/user',
   //configNotificationsDisable: '/api/app/notification/disable/user',
   //treeDevices: '/api/app/monitor',

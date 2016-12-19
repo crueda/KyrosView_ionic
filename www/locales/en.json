@@ -18,9 +18,10 @@
   "TAB_NOTIFICATIONS":  "Notifications",
   "TAB_DEVICES": 		"Devices",
   "TAB_MAP":		 	"Map",
+  "TAB_GRAPHS": 		"Activity",
   "TAB_CONFIG": 		"Config",
   "ALL": 				"All",
-  "RESET":				"Reset"
+  "RESET":				"Reset counters"
 
 
 

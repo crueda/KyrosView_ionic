@@ -18,7 +18,7 @@
           <i class="icon ion-search placeholder-icon"></i>
           <input type="search" ng-model="busqueda" placeholder="Buscar">
         </label>
-        <button class="button button-clear button-stable ion-chevron-down">
+        <button class="button button-clear button-stable ion-chevron-down" ng-model="busquedaCategory" ng-click="filterCategory('')"></button>
       </div>
 
 
@@ -27,8 +27,18 @@
     <ion-refresher pulling-text="Tirar para refrescar..." on-refresh="doRefresh()"> </ion-refresher>
 
     <ion-list>
+  <ion-item class="leyend">
+  <div class="row">
+  <button class="col leyendCol text-center leyendCategoryEvent0" ng-model="busquedaCategory" ng-click="filterCategory('basicas')">Básicas</button>
+  <button class="col leyendCol text-center leyendCategoryEvent1" ng-click="filterCategory('seguridad')"><b>Seguridad</b></button>
+  <button class="col leyendCol text-center leyendCategoryEvent2" ng-click="filterCategory('geofencing')"><b>Geofencing</b></button>
+  <button class="col leyendCol text-center leyendCategoryEvent3" ng-click="filterCategory('conduccion')"><b>Conducción</b></button>
+  <button class="col leyendCol text-center leyendCategoryEvent4" ng-click="filterCategory('otras')"><b>Otras</b></button>
+  </div>
+  </ion-item> 
+
       <ion-item class="item-remove-animate item-avatar item-icon-right" auto-list-divider auto-list-divider-value="{{notification.vehicleLicense}}" 
-        ng-repeat="notification in notifications | filter: busqueda" type="item-text-wrap" href="#/tab/notifications/{{notification.id}}">
+        ng-repeat="notification in notifications | filter: busqueda | filter: busquedaCategory" type="item-text-wrap" href="#/tab/notifications/{{notification.id}}">
 
 
         <!--img ng-src="{{notification.icon}}" style="width: 38px; height: 38px"-->
@@ -50,7 +60,9 @@
         <!--p><b>{{notification.name}}</b></p-->
         <h2><b>{{notification.name}}</b></h2>
         <p>{{notification.date}}</p>
-        <i class="icon ion-chevron-right icon-accessory"></i>
+        <!--i class="icon ion-chevron-right icon-accessory"></i-->
+        <i class="icon ion-ios-arrow-right categoryEvent{{notification.category}}"></i>
+
 
         <ion-option-button class="button-assertive" ng-click="remove(notification)">
           Archivar

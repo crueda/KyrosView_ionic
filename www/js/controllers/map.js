@@ -127,7 +127,7 @@ angular.module('main.map', [])
      }
   };
 
-  var titulo = "Mapa";
+  var titulo = "";
   if (localStorage.getItem("mapmode") == MAP_MODE.push) { 
     titulo = localStorage.getItem("notificationSelectedVehicleLicense");
   } 

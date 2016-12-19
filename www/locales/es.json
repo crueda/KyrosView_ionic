@@ -19,7 +19,8 @@
   "TAB_DEVICES": 		"Dispositivos",
   "TAB_MAP":		 	"Mapa",
   "TAB_CONFIG": 		"Configurar",
+  "TAB_GRAPHS": 		"Actividad",
   "ALL": 				"Todas",
-  "RESET":				"Reiniciar"
+  "RESET":				"Reiniciar contadores"
 
 }

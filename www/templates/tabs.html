@@ -23,6 +23,11 @@ navigation history that also transitions its views in and out.
     <ion-nav-view name="tab-map"></ion-nav-view>
   </ion-tab>
   
+  <!-- Graficas -->
+  <ion-tab title="{{'TAB_GRAPHS' | translate}}" icon-off="ion-ios-pulse-strong" icon-on="ion-ios-pulse" href="#/tab/graphs">
+    <ion-nav-view name="tab-graphs"></ion-nav-view>
+  </ion-tab>
+  
   <!-- Configurar -->
   <ion-tab title="{{'TAB_CONFIG' | translate}}" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/config">
     <ion-nav-view name="tab-config"></ion-nav-view>
@@ -33,9 +38,9 @@ navigation history that also transitions its views in and out.
     <ion-nav-view name="login"></ion-nav-view>
   </ion-tab-->
 
- <ion-tab title="Test" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/test" on-select="refreshMap()">
+ <!--ion-tab title="Test" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/test" on-select="refreshMap()">
     <ion-nav-view name="tab-test"></ion-nav-view>
-  </ion-tab>
+  </ion-tab-->
 
 
 </ion-tabs>

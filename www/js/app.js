@@ -179,7 +179,7 @@ push.on('error', function(e) {
 
 .config(function($stateProvider, $ionicConfigProvider, $urlRouterProvider, $translateProvider, ChartJsProvider) {
 
-ChartJsProvider.setOptions({ colors : [ '#803690', '#00ADF9', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'] });
+ChartJsProvider.setOptions({ chartColors : [ '#00ADF9', '#b30000', '#FDB45C', '#46BFBD', '#ff3399', '#949FB1', '#4D5360'] });
 
 var language = localStorage.getItem("language");
 if (language==undefined) {
@@ -232,6 +232,17 @@ $translateProvider
       'tab-map': {
         templateUrl: 'templates/map/tab-map.html',
         controller: 'MapCtrl'
+      }
+    }
+  })
+
+  .state('tab.graphs', {
+    url: '/graphs',
+    cache: false,
+    views: {
+      'tab-graphs': {
+        templateUrl: 'templates/graph/tab-graphs.html',
+        controller: 'GraphCtrl'
       }
     }
   })

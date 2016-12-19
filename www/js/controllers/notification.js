@@ -10,6 +10,27 @@ var num_notifications = 0;
     }
   }
 
+  function getEventCategoryDescription(eventCategory) {
+    if (eventCategory==0)
+      return "basicas";
+    else if (eventCategory==1)
+      return "seguridad";
+    else if (eventCategory==2)
+      return "geofencing";
+    else if (eventCategory==3)
+      return "conduccion";
+    else
+      return "otras";
+  }
+
+  function getEventCategory(eventType) {
+    var evento = EventEnum[eventType];
+    if (evento!=undefined) {
+      return EventEnum.properties[evento].category;      
+    }
+    return "5";
+  }
+
   function getEventDescription(eventType) {
     //var evento = EVENT_ENUM.getByValue('value', eventType);
     var evento = EventEnum[eventType];
@@ -168,6 +189,7 @@ $ionicLoading.show({
 
         notification = { mongoId: data.result[i]._id,
           id: i,
+          category: getEventCategory(data.result[i].subtype),
           vehicleLicense: data.result[i].vehicle_license,
           name: getEventDescription(data.result[i].subtype),
           icon: getEventIcon(data.result[i].subtype),
@@ -244,6 +266,10 @@ $ionicLoading.show({
     
     }, 200); //2000
   };
+
+$scope.filterCategory = function(category) {  
+  $scope.busquedaCategory = category;
+}
 
   $scope.remove = function(notification, URL) {
     //console.log("-->"+ notifications.indexOf(notification));
@@ -322,6 +348,8 @@ $ionicLoading.show({
           //console.log ("-->"+ $sce.trustAsHtml(data.result[i].subtype));
           notification = { mongoId: data.result[i]._id,
             id: i,
+            categoryDescription: getEventCategoryDescription(getEventCategory(data.result[i].subtype)),
+            category: getEventCategory(data.result[i].subtype),
             vehicleLicense: data.result[i].vehicle_license,
             name: getEventDescription(data.result[i].subtype),
             eventType: data.result[i].subtype,
@@ -429,6 +457,7 @@ $ionicLoading.show({
 
           notificationPush = { 
             mongoId: data[0]._id,
+            category: getEventCategory(data[0].result[i].subtype),
             vehicleLicense: data[0].vehicle_license,
             name: getEventDescription(data[0].subtype),
             icon: getEventIcon(data[0].subtype),
@@ -527,6 +556,25 @@ $ionicLoading.show({
     localStorage.setItem("notificationSelected", go_notificationId);
     $state.go('tab.notifications-detail', {cache: false});
   }
+  $scope.showGraphsDevice = function() {
+    
+    //$scope.notification = notifications[$stateParams.notificationId];
+    $scope.notification = notifications[parseInt(localStorage.getItem("notificationSelected"))];
+    localStorage.setItem("notificationSelected", $scope.notification.id);  
+    localStorage.setItem("notificationSelectedVehicleLicense", $scope.notification.vehicleLicense);  
+    localStorage.setItem("notificationSelectedLatitude", $scope.notification.latitude);  
+    localStorage.setItem("notificationSelectedLongitude", $scope.notification.longitude);  
+    localStorage.setItem("notificationSelectedIcon", $scope.notification.icon);  
+    localStorage.setItem("notificationSelectedEventType", $scope.notification.eventType);  
+    localStorage.setItem("notificationSelectedName", $scope.notification.name); 
+    localStorage.setItem("notificationSelectedDate", $scope.notification.date); 
+
+    localStorage.setItem("mapmode", MAP_MODE.notification);
+
+    //$scope.titulo_mapa = localStorage.getItem("notificationSelected");          
+    $state.go('tab.graphs');
+
+  };
 
     $scope.showMapNotification = function() {
     
