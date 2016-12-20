@@ -409,6 +409,7 @@ $scope.filterCategory = function(category) {
         } else {
           $scope.width_bubble = 27;                        
         }
+
       } // else
   }) // success
   .error(function(data, status, headers,config){

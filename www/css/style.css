@@ -124,7 +124,7 @@ button.tooltipButton {
     height:27px;
     line-height:27px;
     border: 2px solid #f5f5f5;
-    border-radius: 50%;
+    border-radius: 30%;
     margin:0 auto;
     color:#f5f5f5;
     text-align:center;
@@ -246,9 +246,10 @@ button.tooltipButton {
   width: 30px;
   font-size: 8px;
   margin-top: 3px;
-  background-color: #b3e0ff;  
-  border: 0px solid;
-  border-radius: 20%;
+  //background-color: #b3e0ff;  
+  border-right: 10px solid #4d4dff;
+  opacity: 0.9;
+  border-radius: 0%;
 }
 
 .categoryEvent1
@@ -256,36 +257,38 @@ button.tooltipButton {
   width: 30px;
   font-size: 8px;
   margin-top: 3px;
-  background-color: #ff9999;  
-  border: 0px solid;
-  border-radius: 20%;
+  opacity: 0.9;
+  border-right: 10px solid #ff4d4d;
+  border-radius: 0%;
 }
 .categoryEvent2
 {
   width: 30px;
   font-size: 8px;
+  opacity: 0.9;
   margin-top: 3px;
-  background-color: #ffffb3;  
-  border: 0px solid;
-  border-radius: 20%;
+  border-right: 10px solid #997a00;
+  border-radius: 0%;
 }
 .categoryEvent3
 {
   width: 30px;
   font-size: 8px;
+  opacity: 0.9;
   margin-top: 3px;
-  background-color: #c6ecc6;  
+  background-color: #39ac39;  
   border: 0px solid;
-  border-radius: 20%;
+  border-radius: 0%;
 }
 .categoryEvent4
 {
   width: 30px;
   font-size: 8px;
+  opacity: 0.9;
   margin-top: 3px;
-  background-color: #ffd9b3;  
+  background-color: #4d4d4d;  
   border: 0px solid;
-  border-radius: 20%;
+  border-radius: 0%;
 }
 
 .leyendCategoryEventAll
@@ -303,53 +306,63 @@ button.tooltipButton {
 {
   width: 30px;
   height: 30px;
-  font-size: 10px;
-  background-color: #b3e0ff;  
-  border-color: #cccccc;
-  border: 1px solid;
-  border-radius: 10%;
+  font-size: 11px;
+  color: white;
+  font-family: 'open sans',arial,sans-serif;
+  background-color: #4d4dff;  
+  opacity: 0.9;
+  border: 0px solid;
+  border-radius: 0%;
 }
 
 .leyendCategoryEvent1
 {
   width: 30px;
   height: 30px;
-  font-size: 10px;
-  background-color: #ff9999;  
-  border-color: #cccccc;
-  border: 1px solid;
-  border-radius: 10%;
+  font-size: 11px;
+  color: white;
+  font-family: 'open sans',arial,sans-serif;
+  background-color: #ff4d4d;  
+  opacity: 0.9;
+  border: 0px solid;
+  border-radius: 0%;
 }
 
 .leyendCategoryEvent2
 {
   width: 30px;
   height: 30px;
-  font-size: 10px;
-  background-color: #ffffb3;  
-  border-color: #cccccc;
-  border: 1px solid;
-  border-radius: 10%;
+  font-size: 11px;
+  color: white;
+  font-family: 'open sans',arial,sans-serif;
+  background-color: #997a00;  
+  opacity: 0.9;
+  border: 0px solid;
+  border-radius: 0%;
 }
 
 .leyendCategoryEvent3
 {
   width: 30px;
   height: 30px;
-  font-size: 10px;
-  background-color: #c6ecc6;  
-  border-color: #cccccc;
-  border: 1px solid;
-  border-radius: 10%;
+  font-size: 11px;
+  color: white;
+  font-family: 'open sans',arial,sans-serif;
+  background-color: #39ac39;  
+  opacity: 0.9;
+  border: 0px solid;
+  border-radius: 0%;
 }
 
 .leyendCategoryEvent4
 {
   width: 30px;
   height: 30px;
-  font-size: 10px;
-  background-color: #ffd9b3;  
-  border-color: #cccccc;
-  border: 1px solid;
-  border-radius: 10%;
+  font-size: 11px;
+  color: white;
+  font-family: 'open sans',arial,sans-serif;
+  background-color: #4d4d4d;  
+  opacity: 0.9;
+  border: 0px solid;
+  border-radius: 0%;
 }
