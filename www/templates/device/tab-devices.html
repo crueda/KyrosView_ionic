@@ -2,7 +2,6 @@
  	<ion-nav-bar class="bar-calm"  align-title="center">
   </ion-nav-bar>
 
-
 <!--ion-content>
     <ion-list>
         <ion-tree-list items="tasks" collapsed="true"></ion-tree-list>
@@ -10,31 +9,24 @@
 </ion-view-->
 
 
+  <ion-header-bar class="bar-subheader item-input-inset">
+    <label class="item-input-wrapper">
+      <i class="icon ion-search placeholder-icon"></i>
+      <input type="search" placeholder="{{'ENTER_LICENSE' | translate}}" ng-change="search()" ng-model="data.search">
+    </label>
+    <button class="button button-clear button-stable ion-chevron-down">
+      
+    </button>      
+  </ion-header-bar>
+  <ion-content>
 
-<ion-header-bar class="bar-subheader item-input-inset">
-  <label class="item-input-wrapper">
-    <i class="icon ion-search placeholder-icon"></i>
-    <input type="search" placeholder="Introduce matrícula" ng-change="search()" ng-model="data.search">
-  </label>
-  <button class="button button-clear button-stable ion-chevron-down">
+  <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="device in data.devices" type="item-text-wrap" ng-click="selectDevice(device);">
     
-  </button>      
-</ion-header-bar>
-<ion-content>
+    <img ng-src="img/devices/{{device.icon_real_time}}">
+    <h2>{{device.vehicle_license}}</h2>
+    <p>{{device.alias}}</p>
+    <i class="icon ion-chevron-right icon-accessory"></i>
 
-  <!--div class="list">
-    <li class="item" data-ng-click="selectDevice(device)" ng-repeat="device in data.devices">{{device.vehicle_license}}
-    </li>
-  </div-->
-
-  <ion-item class="item-remove-animate item-avatar item-icon-right" 
-        ng-repeat="device in data.devices" type="item-text-wrap" ng-click="selectDevice(device);">
-        <img ng-src="img/devices/{{device.icon_real_time}}">
-        <h2>{{device.vehicle_license}}</h2>
-        <p>{{device.alias}}</p>
-        <i class="icon ion-chevron-right icon-accessory"></i>
-
-      </ion-item>
-
+  </ion-item>
 
 </ion-content>

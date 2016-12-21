@@ -1,5 +1,5 @@
 {
-  "LOGIN":          	"Entrar",
+  "LOGIN":            "Entrar",
   "LANGUAGE":       	"Idioma",
   "USER":      			"Usuario",
   "PASSWORD":       	"Contraseña",
@@ -21,6 +21,23 @@
   "TAB_CONFIG": 		"Configurar",
   "TAB_GRAPHS": 		"Actividad",
   "ALL": 				"Todas",
-  "RESET":				"Reiniciar contadores"
+  "RESET":				"Reiniciar contadores",
+  "GRAPH_EVENTS": "Tipos de notificación",
+  "GRAPH_HOUR": "Posiciones y notificaciones por hora",
+  "GRAPH_WEEK": "Posiciones y notificaciones por día",
+  "ENTER_LICENSE": "Introduce matrícula",
+  "SELECT_VEHICLE": "Seleccionar por defecto",
+  "SHOW_MAP": "Ver en mapa",
+  "SHOW_ACTIVITY": "Ver actividad",
+  "CONFIG_NOTIFICATIONS": "Configuración de notificaciones",
+  "SEARCH": "Buscar",
+  "PULL_REFRESH": "Tira para refrescar...",
+  "CATEGORY_BASIC": "Básicas",
+  "CATEGORY_SECURITY": "Seguridad",
+  "CATEGORY_GEOFENCING": "Geofencing",
+  "CATEGORY_DRIVE": "Conducción",
+  "CATEGORY_OTHERS": "Otras"
+
+
 
 }

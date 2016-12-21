@@ -2,8 +2,8 @@ angular.module('main')
 
 .constant('APP', {
   version: 3,
-  //api_base: 'http://localhost:3000'
-  api_base: 'http://view.kyroslbs.com'
+  api_base: 'http://localhost:3000'
+  //api_base: 'http://view.kyroslbs.com'
   //api_base: 'http://192.168.28.248:3000'
 })
 
@@ -32,6 +32,7 @@ angular.module('main')
   getIconsInfo: '/api/iconInfo',
   getAllIcons: '/api/allicons',
   getGraphData: '/api/app/graph/vehicle',
+  resetGraphData: '/api/app/graph/reset/vehicle',
 
   //getIcon: '/api/icon',
   //getIcons: '/api/icons',

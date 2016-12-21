@@ -21,7 +21,23 @@
   "TAB_GRAPHS": 		"Activity",
   "TAB_CONFIG": 		"Config",
   "ALL": 				"All",
-  "RESET":				"Reset counters"
+  "RESET":				"Reset counters",
+  "GRAPH_EVENTS": "Tipos de notificación",
+  "GRAPH_HOUR": "Posiciones y notificaciones por hora",
+  "GRAPH_WEEK": "Posiciones y notificaciones por día",
+  "ENTER_LICENSE": "Enter vehicle license",
+  "SELECT_VEHICLE": "Select default vehicle",
+  "SHOW_MAP": "Show on map",
+  "SHOW_ACTIVITY": "Show activity",
+  "CONFIG_NOTIFICATIONS": "Config notifications",
+  "SEARCH": "Search",
+  "PULL_REFRESH": "Pull to refresh...",
+  "CATEGORY_BASIC": "Basic",
+  "CATEGORY_SECURITY": "Segurity",
+  "CATEGORY_GEOFENCING": "Geofencing",
+  "CATEGORY_DRIVE": "Driving",
+  "CATEGORY_OTHERS": "Others"
+
 
 
 

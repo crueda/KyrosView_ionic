@@ -16,7 +16,7 @@
       <div class="bar bar-subheader item-input-inset bar-light">
         <label class="item-input-wrapper">
           <i class="icon ion-search placeholder-icon"></i>
-          <input type="search" ng-model="busqueda" placeholder="Buscar">
+          <input type="search" ng-model="{{'SEARCH' | translate}}" placeholder="Buscar">
         </label>
         <button class="button button-clear button-stable ion-chevron-down" ng-model="busquedaCategory" ng-click="filterCategory('')"></button>
       </div>
@@ -24,18 +24,23 @@
 
 <ion-content class="has-subheader" ng-controller="DevicesCtrl">
 
-    <ion-refresher pulling-text="Tirar para refrescar..." on-refresh="doRefresh()"> </ion-refresher>
+    <ion-refresher pulling-text="{{'PULL_REFRESH' | translate}}" on-refresh="doRefresh()"> </ion-refresher>
 
     <ion-list>
-  <ion-item class="leyend">
-  <div class="row">
-  <button class="col leyendCol text-center leyendCategoryEvent0" ng-model="busquedaCategory" ng-click="filterCategory('basicas')">Básicas</button>
-  <button class="col leyendCol text-center leyendCategoryEvent1" ng-click="filterCategory('seguridad')"><b>Seguridad</b></button>
-  <button class="col leyendCol text-center leyendCategoryEvent2" ng-click="filterCategory('geofencing')"><b>Geofencing</b></button>
-  <button class="col leyendCol text-center leyendCategoryEvent3" ng-click="filterCategory('conduccion')"><b>Conducción</b></button>
-  <button class="col leyendCol text-center leyendCategoryEvent4" ng-click="filterCategory('otras')"><b>Otras</b></button>
-  </div>
-  </ion-item> 
+    <ion-item class="leyend">
+      <div class="row">
+        <button ng-class="{'col leyendCol text-center pushLeyendCategoryEvent0': busquedaCategory == 'basicas', 'col leyendCol text-center leyendCategoryEvent0' : busquedaCategory != 'basicas' }" ng-model="busquedaCategory" ng-click="filterCategory('basicas')">{{'CATEGORY_BASIC' | translate}}</button>
+      
+      <button ng-class="{'col leyendCol text-center pushLeyendCategoryEvent1': busquedaCategory == 'seguridad', 'col leyendCol text-center leyendCategoryEvent1' : busquedaCategory != 'seguridad' }" ng-model="busquedaCategory" ng-click="filterCategory('seguridad')">{{'CATEGORY_SECURITY' | translate}}</button>
+      
+      <button ng-class="{'col leyendCol text-center pushLeyendCategoryEvent2': busquedaCategory == 'geofencing', 'col leyendCol text-center leyendCategoryEvent2' : busquedaCategory != 'geofencing' }" ng-model="busquedaCategory" ng-click="filterCategory('geofencing')">{{'CATEGORY_GEOFENCING' | translate}}</button>
+      
+      <button ng-class="{'col leyendCol text-center pushLeyendCategoryEvent3': busquedaCategory == 'conduccion', 'col leyendCol text-center leyendCategoryEvent3' : busquedaCategory != 'conduccion' }" ng-model="busquedaCategory" ng-click="filterCategory('conduccion')">{{'CATEGORY_DRIVE' | translate}}</button>
+
+      <button ng-class="{'col leyendCol text-center pushLeyendCategoryEvent4': busquedaCategory == 'otras', 'col leyendCol text-center leyendCategoryEvent4' : busquedaCategory != 'otras' }" ng-model="busquedaCategory" ng-click="filterCategory('otras')">{{'CATEGORY_OTHERS' | translate}}</button>
+
+    </div>
+    </ion-item> 
 
       <ion-item class="item-remove-animate item-avatar item-icon-right" auto-list-divider auto-list-divider-value="{{notification.vehicleLicense}}" 
         ng-repeat="notification in notifications | filter: busqueda | filter: busquedaCategory" type="item-text-wrap" href="#/tab/notifications/{{notification.id}}">
@@ -59,6 +64,7 @@
         <!--h2>{{notification.vehicleLicense}}</h2-->
         <!--p><b>{{notification.name}}</b></p-->
         <h2><b>{{notification.name}}</b></h2>
+        <p>{{notification.geocoding}}</p>
         <p>{{notification.date}}</p>
         <!--i class="icon ion-chevron-right icon-accessory"></i-->
         <i class="icon ion-ios-arrow-right categoryEvent{{notification.category}}"></i>

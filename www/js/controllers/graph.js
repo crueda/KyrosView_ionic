@@ -7,24 +7,65 @@ function getEventDescription(eventType) {
     return "";
   }
 
+function getGraphVehicleLicense(MAP_MODE) {
+  var vehicleLicense = "";
+  if (localStorage.getItem("mapmode") == MAP_MODE.push) { 
+    vehicleLicense = localStorage.getItem("notificationSelectedVehicleLicense");
+  } 
+  else if (localStorage.getItem("mapmode") == MAP_MODE.notification) { 
+    vehicleLicense = localStorage.getItem("notificationSelectedVehicleLicense");
+  } 
+  else if (localStorage.getItem("mapmode") == MAP_MODE.device) { 
+    vehicleLicense = localStorage.getItem("deviceSelected");
+  }  
+  else { 
+    vehicleLicense = localStorage.getItem("vehicleLicense");
+  } 
+  return vehicleLicense;
+}
+
+
 angular.module('main.controllers', [])
 .controller('GraphCtrl', function($scope, $compile, $http, $state, $ionicPopup, $ionicLoading, APP, URL, MAP_MODE) {
 
-  var titulo = "";
-  if (localStorage.getItem("mapmode") == MAP_MODE.push) { 
-    titulo = localStorage.getItem("notificationSelectedVehicleLicense");
-  } 
-  else if (localStorage.getItem("mapmode") == MAP_MODE.notification) { 
-    titulo = localStorage.getItem("notificationSelectedVehicleLicense");
-  } 
-  else if (localStorage.getItem("mapmode") == MAP_MODE.device) { 
-    titulo = localStorage.getItem("deviceSelected");
-  }  
-  else { 
-    titulo = localStorage.getItem("vehicleLicense");
-  }  
+  $scope.resetCounters = function() {
+    var confirmPopup = $ionicPopup.confirm({
+     title: 'Confirmar',
+     template: '¿Deseas reiniciar los contadores para ese vehículo?'
+    });
+    confirmPopup.then(function(res) {
+      if(res) {
+        var vehicleLicense = getGraphVehicleLicense(MAP_MODE);
+        var url = APP.api_base + URL.resetGraphData + "/" + vehicleLicense;
+        console.log(url);
+        $http({
+          method: 'GET',
+          url: url,
+          headers: {
+            'x-access': localStorage.getItem("token_api")
+          }})
+        .success(function(data, status, headers,config){    
+            $scope.graph1_labels = ['Sin eventos'];
+            $scope.graph1_data = [1];
+            $scope.graph2_data = [[0],[0]];      
+            $scope.graph3_data = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]];        
+          })
+          .error(function(data, status, headers,config){
+          })
+          .then(function(data, status, headers,config){
+            //$state.go('tab.notifications', {cache: false, mode: localStorage.getItem("group_notifications")});      
+            //$state.go('tab.graphs', {cache: false});      
 
-  $scope.titulo_graphs = titulo;  
+          })
+      } else {
+       //console.log('You are not sure');
+      }
+    });   
+  }
+
+ 
+  var vehicleLicense = getGraphVehicleLicense(MAP_MODE);  
+  $scope.titulo_graphs = vehicleLicense;  
 
   $ionicLoading.show({
     content: 'Loading',
@@ -34,7 +75,7 @@ angular.module('main.controllers', [])
     showDelay: 0
   });
 
-  var url = APP.api_base + URL.getGraphData + "/" + titulo;
+  var url = APP.api_base + URL.getGraphData + "/" + vehicleLicense;
   console.log(url);
   $http({
     method: 'GET',
@@ -49,18 +90,18 @@ angular.module('main.controllers', [])
     var graph1_data = [];
 
     if (data[0]!=undefined) {
-      for (var i=0; i<data[0].eventTypeOrdered.length; i++) {
-        graph1_labels.push(data[0].eventTypeOrdered[i][0]);
-        graph1_data.push(data[0].eventTypeOrdered[i][1]);
-      }        
+      if (data[0].eventTypeVector.length>0) {
+        for (var i=0; i<data[0].eventTypeVector.length; i++) {
+          graph1_labels.push(getEventDescription(parseInt(data[0].eventTypeVector[i][0])));
+          graph1_data.push(data[0].eventTypeVector[i][1]);
+        }                
+      } else {
+        var graph1_labels = ['Sin eventos'];
+        var graph1_data = [1];        
+      }
     } else {
       var graph1_labels = ['Sin eventos'];
       var graph1_data = [1];
-    }
-
-    // Cambiar los ids por los nombres
-    for(var i=0; i<graph1_labels.length; i++) {
-      graph1_labels[i] = getEventDescription(parseInt(graph1_labels[i]));
     }
 
     $scope.graph1_labels = graph1_labels;
