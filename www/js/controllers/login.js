@@ -1,5 +1,5 @@
-  function saveToken ($http, URL, APP) {
-    var url = APP.api_base + URL.saveToken + "?username="+ localStorage.getItem("username") + "&token="+ localStorage.getItem("token");
+function saveToken ($http, URL, APP) {
+  var url = APP.api_base + URL.saveToken + "?username="+ localStorage.getItem("username") + "&token="+ localStorage.getItem("token");
     //console.log(url);
     $http({
     method: 'GET',
@@ -10,7 +10,31 @@
       })
       .error(function(data, status, headers,config){
       });
-  }
+}
+
+function saveDeviceInfo ($http, URL, APP) {
+  var url = APP.api_base + URL.saveDeviceInfo + "/"
+  + localStorage.getItem("username") + "?token="+ localStorage.getItem("token") 
+  + "&device_model=" + localStorage.getItem("device_model")
+  + "&device_platform=" + localStorage.getItem("device_platform")
+  + "&device_version=" + localStorage.getItem("device_version")
+  + "&device_manufacturer=" + localStorage.getItem("device_manufacturer")
+  + "&device_serial=" + localStorage.getItem("device_serial")
+  + "&device_uuid=" + localStorage.getItem("device_uuid")
+  + "&device_height=" + localStorage.getItem("device_height")
+  + "&device_width=" + localStorage.getItem("device_width")
+  + "&device_language=" + localStorage.getItem("device_language");
+    console.log(url);
+    $http({
+    method: 'GET',
+    url: url,
+    headers: {
+        'x-access': localStorage.getItem("token_api")
+    }}).success(function(data, status, headers,config){ 
+      })
+      .error(function(data, status, headers,config){
+      });
+}
 
 angular.module('main.login', [])
 .controller('LoginCtrl', function($scope, $rootScope, $http, LoginService, $ionicLoading, $timeout, $ionicPopup, $state, URL, MAP_MODE, APP) {
@@ -36,7 +60,7 @@ angular.module('main.login', [])
     } else {
       $scope.data = {};      
     }
-    $scope.data = {username: 'crueda', password: 'dat1234'};
+    //$scope.data = {username: 'crueda', password: 'dat1234'};
     //$scope.data = {username: 'test', password: 'test'};
 
 
@@ -107,7 +131,8 @@ angular.module('main.login', [])
               }  
               //if (ionic.Platform.isAndroid() && localStorage.getItem("token")!="") {
               if (localStorage.getItem("token")!=null && localStorage.getItem("token")!="") {
-                  saveToken($http, URL, APP);
+                  //saveToken($http, URL, APP);
+                  saveDeviceInfo($http, URL, APP);
               }
 
               if (localStorage.getItem("check_remember")=="true") {

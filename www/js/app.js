@@ -32,6 +32,30 @@ angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notific
     var isAndroid = ionic.Platform.isAndroid();
     var isWindowsPhone = ionic.Platform.isWindowsPhone();
 
+    localStorage.setItem("device_model", device.model);
+    localStorage.setItem("device_platform", device.platform);
+    localStorage.setItem("device_version", device.version);
+    localStorage.setItem("device_manufacturer", device.manufacturer);
+    localStorage.setItem("device_serial", device.serial);
+    localStorage.setItem("device_uuid", device.uuid);
+    localStorage.setItem("device_height", window.innerHeight);
+    localStorage.setItem("device_width", window.innerWidth);
+     
+    navigator.globalization.getPreferredLanguage(
+        function (language) {
+          localStorage.setItem("device_language", language.value);
+        },
+        function () {localStorage.setItem("device_language", "unknow")}
+    );
+
+    /*
+    navigator.globalization.getLocaleName(
+        function (locale) {
+          alert('locale2: ' + locale.value + '\n');
+          localStorage.setItem("device_language", language.value);
+        },
+        function () {alert('Error getting locale\n');}
+    );*/
 
     // Soporte para TouchID
     /*

@@ -2,8 +2,8 @@ angular.module('main')
 
 .constant('APP', {
   version: 3,
-  api_base: 'http://localhost:3000'
-  //api_base: 'http://view.kyroslbs.com'
+  //api_base: 'http://localhost:3000'
+  api_base: 'http://view.kyroslbs.com'
   //api_base: 'http://192.168.28.248:3000'
 })
 
@@ -22,6 +22,7 @@ angular.module('main')
   getNotificationsLimit: '/api/app/notificationLimit',
   listDevices: '/api/app/monitorList',
   saveToken: '/api/app/notification/setToken',
+  saveDeviceInfo: '/api/app/setDeviceInfo/user',
   tracking1vehicle: '/api/app/tracking1/vehicle',
   trackingVehicle: '/api/app/tracking/vehicle',
   setDefaultVehicle: '/api/app/vehicle/setAsDefault',
