@@ -164,6 +164,7 @@ angular.module('main.map', [])
     // Cuando el mapa esta cargado, pintar el vehiculo 
     google.maps.event.addListenerOnce($scope.map, 'idle', function(){
      
+
     if (localStorage.getItem("mapmode") == MAP_MODE.notification) {  
 
         var latLngNotification = new google.maps.LatLng(localStorage.getItem("notificationSelectedLatitude"), localStorage.getItem("notificationSelectedLongitude"));
@@ -237,12 +238,18 @@ angular.module('main.map', [])
     }
     else if (localStorage.getItem("mapmode") == MAP_MODE.push) {  
 
-    var latLngNotification = new google.maps.LatLng(localStorage.getItem("notificationPushLatitude"), localStorage.getItem("notificationPushLongitude"));
+      var url = APP.api_base + URL.getNotification + "/" + localStorage.getItem("notificationPushMongoId");
+      $http.get(url)
+      .success(function(data, status, headers,config){  
+
+    //var latLngNotification = new google.maps.LatLng(localStorage.getItem("notificationPushLatitude"), localStorage.getItem("notificationPushLongitude"));
+    var latLngNotification = new google.maps.LatLng(data[0].location.coordinates[1], data[0].location.coordinates[0]);
         var image = {
           //url: getEventIcon(localStorage.getItem("notificationPushEventType")),
           //scaledSize: new google.maps.Size(40, 40)
           scaledSize: new google.maps.Size(40, 40),
-          url: 'data:image/svg+xml;utf-8,' + $sce.trustAsHtml($rootScope.eventIcon[localStorage.getItem("notificationPushEventType")].svg) 
+          //url: 'data:image/svg+xml;utf-8,' + $sce.trustAsHtml($rootScope.eventIcon[localStorage.getItem("notificationPushEventType")].svg) 
+          url: 'data:image/svg+xml;utf-8,' + $sce.trustAsHtml($rootScope.eventIcon[data[0].subtype].svg) 
         };
 
       var marker = new google.maps.Marker({
@@ -254,12 +261,14 @@ angular.module('main.map', [])
 
       // InfoWindow content
       var content = '<div id="iw-container">' +
-        '<div class="iw-title">' + getEventDescription(localStorage.getItem("notificationPushEventType")) + '</div>' +
+        //'<div class="iw-title">' + getEventDescription(localStorage.getItem("notificationPushEventType")) + '</div>' +
+        '<div class="iw-title">' + getEventDescription(data[0].subtype) + '</div>' +
         '<div class="iw-content">' +
         '<div class="iw-subTitle">Matricula:</div>' +
         '<p>' + localStorage.getItem("notificationSelectedVehicleLicense") + '</p>' +
         '<div class="iw-subTitle">Fecha:</div>' +
-        '<p>'  + getEventDate(parseInt(localStorage.getItem("notificationPushTimestamp"))) + '</p>' + 
+        //'<p>'  + getEventDate(parseInt(localStorage.getItem("notificationPushTimestamp"))) + '</p>' + 
+        '<p>'  + getEventDate(parseInt(data[0].timestamp)) + '</p>' + 
         '<button class="button button-block button-balanced tooltipButton" ng-click="historic()">Histórico 8h.</button>'+
         '</div>' +
         '<div class="iw-bottom-gradient"></div>' +
@@ -302,6 +311,9 @@ angular.module('main.map', [])
       $scope.map.setCenter(latLngNotification);  
       $scope.map.setZoom(15);
 
+      })
+      .error(function(data, status, headers,config){
+      });
       
     }else if (localStorage.getItem("mapmode") == MAP_MODE.device) {   
       if (localStorage.getItem("deviceSelectedLatitude") != 0) {

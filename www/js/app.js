@@ -185,6 +185,7 @@ push.on('notification', function(data) {
     localStorage.setItem("notificationPushTimestamp", data.additionalData.timestamp);
     localStorage.setItem("notificationSelectedVehicleLicense", data.additionalData.vehicle_license);
     localStorage.setItem("mapmode", 3);
+
     $state.go('tab.map');
 
 
@@ -207,7 +208,12 @@ ChartJsProvider.setOptions({ chartColors : [ '#00ADF9', '#b30000', '#FDB45C', '#
 
 var language = localStorage.getItem("language");
 if (language==undefined) {
-  language = 'es';
+  if (localStorage.getItem("device_language")!=undefined) {
+    var device_lang = localStorage.getItem("device_language");
+    language = device_lang.substring(0, 2);
+  } else {
+    language = 'es';    
+  }
 }
 
 $translateProvider
