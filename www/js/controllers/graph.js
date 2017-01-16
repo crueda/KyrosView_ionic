@@ -26,12 +26,29 @@ function getGraphVehicleLicense(MAP_MODE) {
 
 
 angular.module('main.controllers', [])
-.controller('GraphCtrl', function($scope, $compile, $http, $state, $ionicPopup, $ionicLoading, APP, URL, MAP_MODE) {
+.controller('GraphCtrl', function($scope, $compile, $http, $state, $ionicPopup, $ionicLoading, APP, URL, MAP_MODE, $translate) {
+
+    $translate(['MSG_CONFIRM_COUNTERS', 'NO_EVENTS', 'NOTIFICATIONS', 'TRACKINGS', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY']).then(function (translations) {
+      msg_confirm = translations.MSG_CONFIRM_COUNTERS;
+      msg_noevents = translations.NO_EVENTS;
+      msg_trackings = translations.TRACKINGS;
+      msg_notifications = translations.NOTIFICATIONS;
+      msg_mon = translations.MONDAY;
+      msg_tue = translations.TUESDAY;
+      msg_wed = translations.WEDNESDAY;
+      msg_thu = translations.THURSDAY;
+      msg_fri = translations.FRIDAY;
+      msg_sat = translations.SATURDAY;
+      msg_sun = translations.SUNDAY;
+    });
+
+  'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'
 
   $scope.resetCounters = function() {
+
     var confirmPopup = $ionicPopup.confirm({
      title: 'Confirmar',
-     template: '¿Deseas reiniciar los contadores para ese vehículo?'
+     template: msg_confirm
     });
     confirmPopup.then(function(res) {
       if(res) {
@@ -45,7 +62,7 @@ angular.module('main.controllers', [])
             'x-access': localStorage.getItem("token_api")
           }})
         .success(function(data, status, headers,config){    
-            $scope.graph1_labels = ['Sin eventos'];
+            $scope.graph1_labels = [no_events];
             $scope.graph1_data = [1];
             $scope.graph2_data = [[0],[0]];      
             $scope.graph3_data = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]];        
@@ -96,11 +113,11 @@ angular.module('main.controllers', [])
           graph1_data.push(data[0].eventTypeVector[i][1]);
         }                
       } else {
-        var graph1_labels = ['Sin eventos'];
+        var graph1_labels = [msg_noevents];
         var graph1_data = [1];        
       }
     } else {
-      var graph1_labels = ['Sin eventos'];
+      var graph1_labels = [msg_noevents];
       var graph1_data = [1];
     }
 
@@ -108,7 +125,7 @@ angular.module('main.controllers', [])
     $scope.graph1_data = graph1_data;
 
     $scope.graph2_labels = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"];
-    $scope.graph2_series = ['Tracking', 'Notificaciones'];
+    $scope.graph2_series = [msg_trackings, msg_notifications];
 
     if (data[0]!=undefined) {
       $scope.graph2_data = [
@@ -141,8 +158,8 @@ angular.module('main.controllers', [])
       }
     };
 
-    $scope.graph3_labels = ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'];
-    $scope.graph3_series = ['Tracking', 'Notificaciones'];
+    $scope.graph3_labels = [msg_mon, msg_tue, msg_wed, msg_thu, msg_fri, msg_sat, msg_sun];
+    $scope.graph3_series = [msg_trackings, msg_notifications];
     if (data[0]!=undefined) {
     $scope.graph3_data = [
       [data[0].weekTrackingCounter.monday, data[0].weekTrackingCounter.tuesday, data[0].weekTrackingCounter.wednesday, data[0].weekTrackingCounter.thursday, data[0].weekTrackingCounter.friday, data[0].weekTrackingCounter.saturday, data[0].weekTrackingCounter.sunday],

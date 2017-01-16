@@ -36,7 +36,18 @@
   "CATEGORY_SECURITY": "Seguridad",
   "CATEGORY_GEOFENCING": "Geofencing",
   "CATEGORY_DRIVE": "Conducción",
-  "CATEGORY_OTHERS": "Otras"
+  "CATEGORY_OTHERS": "Otras",
+  "MSG_CONFIRM_COUNTERS": "¿Deseas reiniciar los contadores para ese vehículo?",
+  "NO_EVENTS": "Sin eventos",
+  "TRACKINGS": "Posiciones",
+  "NOTIFICATIONS": "Notificaciones",
+  "MONDAY": "Lun",
+  "TUESDAY": "Mar",
+  "WEDNESDAY": "Mie",
+  "THURSDAY": "Jue",
+  "FRIDAY": "Vie",
+  "SATURDAY": "Sab",
+  "SUNDAY": "Dom"
 
 
 

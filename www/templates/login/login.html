@@ -18,11 +18,11 @@
     <div class="list list-inset">
       <label class="item item-input item-floating-label">
         <span class="input-label" translate="USER"></span>
-        <input type="text" autocapitalize="off" autocorrect="off" placeholder="Usuario" ng-model="data.username">
+        <input type="text" autocapitalize="off" autocorrect="off" placeholder="{{USER | translate}}" ng-model="data.username">
       </label>
       <label class="item item-input item-floating-label">
         <span class="input-label" translate="PASSWORD"></span>
-        <input type="password" autocapitalize="off" autocorrect="off" placeholder="Contraseña" ng-model="data.password">
+        <input type="password" autocapitalize="off" autocorrect="off" placeholder="{{PASSWORD | translate}}" ng-model="data.password">
       </label>
     </div>
     

@@ -36,7 +36,18 @@
   "CATEGORY_SECURITY": "Segurity",
   "CATEGORY_GEOFENCING": "Geofencing",
   "CATEGORY_DRIVE": "Driving",
-  "CATEGORY_OTHERS": "Others"
+  "CATEGORY_OTHERS": "Others",
+  "MSG_CONFIRM_COUNTERS": "Do you want to reset the counters for that vehicle?",
+  "NO_EVENTS": "No events",
+  "TRACKINGS": "Trackings",
+  "NOTIFICATIONS": "Notifications",
+  "MONDAY": "Mon",
+  "TUESDAY": "Tue",
+  "WEDNESDAY": "Wed",
+  "THURSDAY": "Thu",
+  "FRIDAY": "Fri",
+  "SATURDAY": "Sat",
+  "SUNDAY": "Sun"
 
 
 

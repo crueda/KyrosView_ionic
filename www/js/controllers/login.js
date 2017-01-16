@@ -60,7 +60,7 @@ angular.module('main.login', [])
     } else {
       $scope.data = {};      
     }
-    //$scope.data = {username: 'crueda', password: 'dat1234'};
+    $scope.data = {username: 'crueda', password: 'dat1234'};
     //$scope.data = {username: 'test', password: 'test'};
 
 
@@ -113,8 +113,8 @@ angular.module('main.login', [])
                 localStorage.setItem("vehicleLicense", "");                  
               }
               // cargar los iconos
-              var abc = JSON.parse(localStorage.getItem("eventIconStorage"));
-              $rootScope.eventIcon = abc;
+              var icons = JSON.parse(localStorage.getItem("eventIconStorage"));
+              $rootScope.eventIcon = icons;
 
               localStorage.setItem("username", $scope.data.username);
               localStorage.setItem("token_api", data.result[0].token_api);  
