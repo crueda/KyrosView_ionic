@@ -52,8 +52,10 @@
         <!--img ng-src="img/sign_stop.svg"-->
 
 
-        <!--img ng-src="{{notification.icon}}"-->
-         <div class="iconNotification" ng-bind-html="trustedHtmlIcon[notification.id]"></div>
+        <img ng-if="trustedHtmlIcon[notification.id] == undefined" ng-src="{{notification.icon}}">
+        <div ng-if="trustedHtmlIcon[notification.id] != undefined" class="iconNotification" ng-bind-html="trustedHtmlIcon[notification.id]"></div>
+
+
 
         <!--div class="icon-container" [innerHTML]="eventIconSVG">
              </div-->

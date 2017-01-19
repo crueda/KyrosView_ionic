@@ -43,10 +43,10 @@
 
   <ion-content class="padding has-header has-subheader">
 
-    <!--img ng-src="{{notification.icon}}" class="center" style="width: 100px; height: 100px"-->
-    <div class="iconNotificationDetail" ng-bind-html="trustedHtmlIconEvent"></div>
+    <img ng-if="trustedHtmlIcon[notification.id] == undefined" ng-src="{{notification.icon}}" class="center" style="width: 100px; height: 100px">
+    <div ng-if="trustedHtmlIcon[notification.id] != undefined" class="iconNotificationDetail" ng-bind-html="trustedHtmlIconEvent"></div>
 
-<br>
+    <br>
 
     <button class="button button-block button-balanced" ng-click="showMapNotification()">Ver en mapa</button>
 

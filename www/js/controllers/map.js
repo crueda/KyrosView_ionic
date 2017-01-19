@@ -143,6 +143,11 @@ angular.module('main.map', [])
 
   $scope.titulo_mapa = titulo;  
 
+var alertPopup = $ionicPopup.alert({
+            title: '**',
+            template: '-->'
+        });
+
   var options = {timeout: 10000, enableHighAccuracy: true};
   $cordovaGeolocation.getCurrentPosition(options).then(function(position){
 
@@ -161,9 +166,19 @@ angular.module('main.map', [])
     }
  
 
+var alertPopup = $ionicPopup.alert({
+            title: '**',
+            template: '-->2'
+        });
+
     // Cuando el mapa esta cargado, pintar el vehiculo 
     google.maps.event.addListenerOnce($scope.map, 'idle', function(){
      
+     var alertPopup = $ionicPopup.alert({
+            title: '**',
+            template: '-->3'
+        });
+
 
     if (localStorage.getItem("mapmode") == MAP_MODE.notification) {  
 
@@ -173,12 +188,25 @@ angular.module('main.map', [])
           //anchor: new google.maps.Point(30, 30),
           scaledSize: new google.maps.Size(40, 40),
         };*/
+/*
+        var icono = "";
+        if ($rootScope.eventIcon!=undefined)
+          icono = 'data:image/svg+xml;utf-8,' + $sce.trustAsHtml($rootScope.eventIcon[localStorage.getItem("notificationSelectedEventType")].svg);
+        else
+           icono = getEventIcon(localStorage.getItem("notificationPushEventType")),
+*/
+
+var alertPopup = $ionicPopup.alert({
+            title: '**',
+            template: '2:' + getEventIcon(localStorage.getItem("notificationPushEventType"))
+        });
 
       var marker = new google.maps.Marker({
           map: $scope.map,
           icon: {
             scaledSize: new google.maps.Size(40, 40),
-            url: 'data:image/svg+xml;utf-8,' + $sce.trustAsHtml($rootScope.eventIcon[localStorage.getItem("notificationSelectedEventType")].svg) 
+            url: getEventIcon(localStorage.getItem("notificationSelectedEventType"))
+
           },
           draggable: false,
           animation: google.maps.Animation.DROP,
@@ -245,11 +273,10 @@ angular.module('main.map', [])
     //var latLngNotification = new google.maps.LatLng(localStorage.getItem("notificationPushLatitude"), localStorage.getItem("notificationPushLongitude"));
     var latLngNotification = new google.maps.LatLng(data[0].location.coordinates[1], data[0].location.coordinates[0]);
         var image = {
-          //url: getEventIcon(localStorage.getItem("notificationPushEventType")),
           //scaledSize: new google.maps.Size(40, 40)
           scaledSize: new google.maps.Size(40, 40),
-          //url: 'data:image/svg+xml;utf-8,' + $sce.trustAsHtml($rootScope.eventIcon[localStorage.getItem("notificationPushEventType")].svg) 
-          url: 'data:image/svg+xml;utf-8,' + $sce.trustAsHtml($rootScope.eventIcon[data[0].subtype].svg) 
+          //url: 'data:image/svg+xml;utf-8,' + $sce.trustAsHtml($rootScope.eventIcon[data[0].subtype].svg) 
+          url: getEventIcon(localStorage.getItem("notificationPushEventType")),
         };
 
       var marker = new google.maps.Marker({
