@@ -143,11 +143,6 @@ angular.module('main.map', [])
 
   $scope.titulo_mapa = titulo;  
 
-var alertPopup = $ionicPopup.alert({
-            title: '**',
-            template: '-->'
-        });
-
   var options = {timeout: 10000, enableHighAccuracy: true};
   $cordovaGeolocation.getCurrentPosition(options).then(function(position){
 
@@ -166,19 +161,9 @@ var alertPopup = $ionicPopup.alert({
     }
  
 
-var alertPopup = $ionicPopup.alert({
-            title: '**',
-            template: '-->2'
-        });
-
     // Cuando el mapa esta cargado, pintar el vehiculo 
     google.maps.event.addListenerOnce($scope.map, 'idle', function(){
      
-     var alertPopup = $ionicPopup.alert({
-            title: '**',
-            template: '-->3'
-        });
-
 
     if (localStorage.getItem("mapmode") == MAP_MODE.notification) {  
 
@@ -196,17 +181,12 @@ var alertPopup = $ionicPopup.alert({
            icono = getEventIcon(localStorage.getItem("notificationPushEventType")),
 */
 
-var alertPopup = $ionicPopup.alert({
-            title: '**',
-            template: '2:' + getEventIcon(localStorage.getItem("notificationPushEventType"))
-        });
-
       var marker = new google.maps.Marker({
           map: $scope.map,
           icon: {
             scaledSize: new google.maps.Size(40, 40),
-            url: getEventIcon(localStorage.getItem("notificationSelectedEventType"))
-
+            //url: getEventIcon(localStorage.getItem("notificationSelectedEventType"))
+            url: 'data:image/svg+xml;utf-8,' + $sce.trustAsHtml($rootScope.eventIcon[localStorage.getItem("notificationSelectedEventType")].svg)
           },
           draggable: false,
           animation: google.maps.Animation.DROP,
@@ -275,8 +255,8 @@ var alertPopup = $ionicPopup.alert({
         var image = {
           //scaledSize: new google.maps.Size(40, 40)
           scaledSize: new google.maps.Size(40, 40),
-          //url: 'data:image/svg+xml;utf-8,' + $sce.trustAsHtml($rootScope.eventIcon[data[0].subtype].svg) 
-          url: getEventIcon(localStorage.getItem("notificationPushEventType")),
+          url: 'data:image/svg+xml;utf-8,' + $sce.trustAsHtml($rootScope.eventIcon[data[0].subtype].svg) 
+          //url: getEventIcon(localStorage.getItem("notificationPushEventType")),
         };
 
       var marker = new google.maps.Marker({
