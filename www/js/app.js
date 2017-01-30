@@ -122,6 +122,24 @@ angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notific
     localStorage.setItem("username", "");
     localStorage.setItem("max_show_notifications", 50);
 
+  //Soporte SMS
+  /*
+ if ( isIPad || isIOS || isAndroid || isWindowsPhone) {
+  SMS.startWatch(function(){
+    console.log('Watching SMS');
+  }, function(){
+    console.log('Not Watching SMS');
+  });
+
+    document.addEventListener('onSMSArrive', function(e){
+      var data = e.data;
+      var alertPopup = $ionicPopup.alert({
+            title: '*SMS*',
+            template: '->:' + data
+      });
+      $smsarrive.periksa(data);
+    });
+  }*/
 
 var push = PushNotification.init({
     "android": {

@@ -468,7 +468,7 @@ $scope.filterCategory = function(category) {
 
           notificationPush = { 
             mongoId: data[0]._id,
-            category: getEventCategory(data[0].result[i].subtype),
+            category: getEventCategory(data[0].subtype),
             vehicleLicense: data[0].vehicle_license,
             name: getEventDescription(data[0].subtype),
             icon: getEventIcon(data[0].subtype),
