@@ -183,10 +183,10 @@ push.on('notification', function(data) {
     // data.sound,
     // data.image,
     // data.additionalData
-    /*
-    var alertPopup = $ionicPopup.alert({
+    
+    /*var alertPopup = $ionicPopup.alert({
             title: '****',
-            template: '->' + data.additionalData.timestamp + "-" + data.additionalData._id + "-" + data.additionalData.vehicle_license
+            template: '->' + data.additionalData.username + "-" + data.additionalData._id + "-" + data.additionalData.vehicle_license
         });
     */
     /*
@@ -208,6 +208,10 @@ push.on('notification', function(data) {
     localStorage.setItem("notificationPushEventType", data.additionalData.event_type);
     localStorage.setItem("notificationPushTimestamp", data.additionalData.timestamp);
     localStorage.setItem("notificationSelectedVehicleLicense", data.additionalData.vehicle_license);
+    if (data.additionalData.username!=undefined) {
+        localStorage.setItem("username", data.additionalData.username);      
+    }
+
     localStorage.setItem("mapmode", 3);
 
     $state.go('tab.map');

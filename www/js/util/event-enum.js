@@ -159,6 +159,21 @@
   1053: "BACK_DOOR_OPENING",
   1054: "BACK_DOOR_CLOSING",
   1055: "JAMMER",
+  1056: "CHECK_IN_ALREADY_DONE",
+  1058: "CHECK_IN",
+  1059: "CHECK_OUT",
+  1060: "JOB_OPEN",
+  1061: "JOB_CLOSED",
+  1062: "CHECK_OUT_WITHOUT_CHECK_IN",
+  1063: "JOB_PAUSED_BREAKFAST",
+  1064: "JOB_RESUMED_BREAKFAST",
+  1065: "JOB_PAUSED_LUNCH",
+  1066: "JOB_RESUMED_LUNCH",
+  1067: "JOB_PAUSED_DINNER",
+  1068: "JOB_RESUMED_DINNER",
+  1069: "SYSTEM_AREA_ACTIVATED",
+  1070: "SYSTEM_AREA_DEACTIVATED",
+
   properties: {
     "EVENTS": {icon: "info.svg", description: "Eventos", category: "4"},
     "ALARM": {icon: "warning.svg", description: "Alarma", category: "1"},
@@ -310,7 +325,22 @@
     "SIDE_DOOR_CLOSING": {icon: "door_off.svg", description: "Cierre de puerta lateral", category: "4"},
     "BACK_DOOR_OPENING": {icon: "door_on.svg", description: "Apertura de puerta trasera", category: "4"},
     "BACK_DOOR_CLOSING": {icon: "door_off.svg", description: "Cierre de puerta trasera", category: "4"},
-    "JAMMER": {icon: "jammer.svg", description: "Inhibidor GPS", category: "1"}
+    "JAMMER": {icon: "jammer.svg", description: "Inhibidor GPS", category: "1"},
+    "CHECK_IN_ALREADY_DONE": {icon: "info.svg", description: "Registro de entrada ya realizado", category: "4"},
+    "CHECK_IN": {icon: "info.svg", description: "Registro de entrada", category: "4"},
+    "CHECK_OUT": {icon: "info.svg", description: "Registro de salida", category: "4"},
+    "JOB_OPEN": {icon: "info.svg", description: "Apertura de trabajo", category: "4"},
+    "JOB_CLOSED": {icon: "info.svg", description: "Cierre de trabajo", category: "4"},
+    "CHECK_OUT_WITHOUT_CHECK_IN": {icon: "info.svg", description: "Registro de salida sin entrada previa", category: "4"},
+    "JOB_PAUSED_BREAKFAST": {icon: "info.svg", description: "Trabajo pausado para el desayuno", category: "4"},
+    "JOB_RESUMED_BREAKFAST": {icon: "info.svg", description: "Trabajo reanudado después del desayuno", category: "4"},
+    "JOB_PAUSED_LUNCH": {icon: "info.svg", description: "Trabajo pausado para la comida", category: "4"},
+    "JOB_RESUMED_LUNCH": {icon: "info.svg", description: "Trabajo reanudado después de la comida", category: "4"},
+    "JOB_PAUSED_DINNER": {icon: "info.svg", description: "Trabajo pausado para la cena", category: "4"},
+    "JOB_RESUMED_DINNER": {icon: "info.svg", description: "Trabajo reanudado después del cena", category: "4"},
+    "SYSTEM_AREA_ACTIVATED": {icon: "info.svg", description: "Área de sistema activada", category: "4"},
+    "SYSTEM_AREA_DEACTIVATED": {icon: "info.svg", description: "Área de sistema desactivada", category: "4"},
+
   }
 };
 

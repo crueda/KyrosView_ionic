@@ -48,7 +48,7 @@ angular.module('main.login', [])
   }
 
   $scope.version = function() {
-    //navigator.notification.alert("Versión: " + APP.version, null, "Kyros App", "Ok");
+    //navigator.notification.alert("Versión : " + APP.version, null, "Kyros App", "Ok");
     var alertPopup = $ionicPopup.alert({
       title: 'Kyros App',
       template: 'Vesión: ' + APP.version
@@ -131,7 +131,6 @@ angular.module('main.login', [])
               }  
               //if (ionic.Platform.isAndroid() && localStorage.getItem("token")!="") {
               if (localStorage.getItem("token")!=null && localStorage.getItem("token")!="") {
-                  //saveToken($http, URL, APP);
                   saveDeviceInfo($http, URL, APP);
               }
 
@@ -143,16 +142,6 @@ angular.module('main.login', [])
               // ir a estaña de notificaciones
               $state.go('tab.notifications',  {cache: false, mode: localStorage.getItem("group_notifications")});      
 
-/*
-    localStorage.setItem("notificationSelectedVehicleLicense", "Test_1");
-        localStorage.setItem("notificationPushMongoId", "583d2c2e8af5cc1083516027");
-    localStorage.setItem("mapmode", MAP_MODE.push);
-   $state.go('tab.map');
-   */
-
-              /*console.log ("voy");
-              localStorage.setItem("notificationPushMongoId", "583bf0538af5cc32917a308a");
-              $state.go('tab.notification-detail',  {cache: false});*/
 
             } else {
               var alertPopup = $ionicPopup.alert({
@@ -172,15 +161,5 @@ angular.module('main.login', [])
             }, 1500);
           });
 
-      /*
-        LoginService.loginUser($scope.data.username, $scope.data.password).success(function(data) {
-            $state.go('tab.notifications');
-        }).error(function(data) {
-            var alertPopup = $ionicPopup.alert({
-                title: 'Login incorrecto!',
-                template: 'Por favor, compruebe sus credenciales'
-            });
-        });
-        */
     }
 });

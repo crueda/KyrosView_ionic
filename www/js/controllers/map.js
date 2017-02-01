@@ -185,8 +185,8 @@ angular.module('main.map', [])
           map: $scope.map,
           icon: {
             scaledSize: new google.maps.Size(40, 40),
-            //url: getEventIcon(localStorage.getItem("notificationSelectedEventType"))
-            url: 'data:image/svg+xml;utf-8,' + $sce.trustAsHtml($rootScope.eventIcon[localStorage.getItem("notificationSelectedEventType")].svg)
+            url: getEventIcon(localStorage.getItem("notificationSelectedEventType"))
+            //url: 'data:image/svg+xml;utf-8,' + $sce.trustAsHtml($rootScope.eventIcon[localStorage.getItem("notificationSelectedEventType")].svg)
           },
           draggable: false,
           animation: google.maps.Animation.DROP,
@@ -246,17 +246,16 @@ angular.module('main.map', [])
     }
     else if (localStorage.getItem("mapmode") == MAP_MODE.push) {  
 
-      var url = APP.api_base + URL.getNotification + "/" + localStorage.getItem("notificationPushMongoId");
-      $http.get(url)
-      .success(function(data, status, headers,config){  
+      //var url = APP.api_base + URL.getNotification + "/" + localStorage.getItem("notificationPushMongoId");
+      //$http.get(url)
+      //.success(function(data, status, headers,config){  
 
-    //var latLngNotification = new google.maps.LatLng(localStorage.getItem("notificationPushLatitude"), localStorage.getItem("notificationPushLongitude"));
-    var latLngNotification = new google.maps.LatLng(data[0].location.coordinates[1], data[0].location.coordinates[0]);
+    var latLngNotification = new google.maps.LatLng(localStorage.getItem("notificationPushLatitude"), localStorage.getItem("notificationPushLongitude"));
+    //var latLngNotification = new google.maps.LatLng(data[0].location.coordinates[1], data[0].location.coordinates[0]);
         var image = {
-          //scaledSize: new google.maps.Size(40, 40)
           scaledSize: new google.maps.Size(40, 40),
-          url: 'data:image/svg+xml;utf-8,' + $sce.trustAsHtml($rootScope.eventIcon[data[0].subtype].svg) 
-          //url: getEventIcon(localStorage.getItem("notificationPushEventType")),
+          //url: 'data:image/svg+xml;utf-8,' + $sce.trustAsHtml($rootScope.eventIcon[data[0].subtype].svg) 
+          url: getEventIcon(localStorage.getItem("notificationPushEventType")),
         };
 
       var marker = new google.maps.Marker({
@@ -268,14 +267,14 @@ angular.module('main.map', [])
 
       // InfoWindow content
       var content = '<div id="iw-container">' +
-        //'<div class="iw-title">' + getEventDescription(localStorage.getItem("notificationPushEventType")) + '</div>' +
-        '<div class="iw-title">' + getEventDescription(data[0].subtype) + '</div>' +
+        '<div class="iw-title">' + getEventDescription(localStorage.getItem("notificationPushEventType")) + '</div>' +
+        //'<div class="iw-title">' + getEventDescription(data[0].subtype) + '</div>' +
         '<div class="iw-content">' +
         '<div class="iw-subTitle">Matricula:</div>' +
         '<p>' + localStorage.getItem("notificationSelectedVehicleLicense") + '</p>' +
         '<div class="iw-subTitle">Fecha:</div>' +
-        //'<p>'  + getEventDate(parseInt(localStorage.getItem("notificationPushTimestamp"))) + '</p>' + 
-        '<p>'  + getEventDate(parseInt(data[0].timestamp)) + '</p>' + 
+        '<p>'  + getEventDate(parseInt(localStorage.getItem("notificationPushTimestamp"))) + '</p>' + 
+        //'<p>'  + getEventDate(parseInt(data[0].timestamp)) + '</p>' + 
         '<button class="button button-block button-balanced tooltipButton" ng-click="historic()">Histórico 8h.</button>'+
         '</div>' +
         '<div class="iw-bottom-gradient"></div>' +
@@ -318,16 +317,12 @@ angular.module('main.map', [])
       $scope.map.setCenter(latLngNotification);  
       $scope.map.setZoom(15);
 
-      })
-      .error(function(data, status, headers,config){
-      });
+      //})
+      //.error(function(data, status, headers,config){
+      //});
       
     }else if (localStorage.getItem("mapmode") == MAP_MODE.device) {   
       if (localStorage.getItem("deviceSelectedLatitude") != 0) {
-        //localStorage.setItem("deviceSelected", "");   
-
-        //$scope.titulo_mapa = localStorage.getItem("deviceSelected");
-        //console.log("titulo a:"+localStorage.getItem("deviceSelected"));
         var latLngDevice = new google.maps.LatLng(localStorage.getItem("deviceSelectedLatitude"), localStorage.getItem("deviceSelectedLongitude"));
         var image = {
           url: 'img/devices/' + localStorage.getItem("deviceSelectedIcon"),
@@ -340,9 +335,6 @@ angular.module('main.map', [])
             animation: google.maps.Animation.DROP,
             position: latLngDevice
         });   
-        /*var infoWindow = new google.maps.InfoWindow({
-            content: localStorage.getItem("deviceSelectedAlias")
-        });*/
 
        
         google.maps.event.addListener(marker, 'click', function () {
@@ -381,12 +373,8 @@ angular.module('main.map', [])
     }
     else if (localStorage.getItem("vehicleLicense")!="") {    
 
-      //$scope.titulo_mapa = localStorage.getItem("vehicleLicense");
-      //console.log("titulo a:"+localStorage.getItem("vehicleLicense"));
-
       var bounds = new google.maps.LatLngBounds();
       var url = APP.api_base + URL.tracking1vehicle + "/" + localStorage.getItem("vehicleLicense");
-      //console.log(url);
       $http({
         method: 'GET',
         url: url,
@@ -452,5 +440,97 @@ angular.module('main.map', [])
  
   }, function(error){
     console.log("Could not get location");
+    if (localStorage.getItem("mapmode") == MAP_MODE.push) {  
+
+    $scope.$on('$destroy', function () {
+      $scope.map = null;
+    });
+
+    if ($scope.map ==null) {
+      var latLng = new google.maps.LatLng(41, -3);
+      var mapOptions = {
+        center: latLng,
+        zoom: 5,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    }
+ 
+
+    // Cuando el mapa esta cargado, pintar el vehiculo 
+    google.maps.event.addListenerOnce($scope.map, 'idle', function(){
+
+      var latLngNotification = new google.maps.LatLng(localStorage.getItem("notificationPushLatitude"), localStorage.getItem("notificationPushLongitude"));
+      var image = {
+          scaledSize: new google.maps.Size(40, 40),
+          url: getEventIcon(localStorage.getItem("notificationPushEventType")),
+      };
+
+      var marker = new google.maps.Marker({
+          map: $scope.map,
+          icon: image,
+          animation: google.maps.Animation.DROP,
+          position: latLngNotification
+      });   
+
+
+      // InfoWindow content
+      var content = '<div id="iw-container">' +
+        '<div class="iw-title">' + getEventDescription(localStorage.getItem("notificationPushEventType")) + '</div>' +
+        '<div class="iw-content">' +
+        '<div class="iw-subTitle">Matricula:</div>' +
+        '<p>' + localStorage.getItem("notificationSelectedVehicleLicense") + '</p>' +
+        '<div class="iw-subTitle">Fecha:</div>' +
+        '<p>'  + getEventDate(parseInt(localStorage.getItem("notificationPushTimestamp"))) + '</p>' + 
+        '<button class="button button-block button-balanced tooltipButton" ng-click="historic()">Histórico 8h.</button>'+
+        '</div>' +
+        '<div class="iw-bottom-gradient"></div>' +
+        '</div>';
+
+      var compiled = $compile(content)($scope);
+      var infoWindow = new google.maps.InfoWindow({
+          content: compiled[0],
+          maxWidth: 180
+      });
+     
+      google.maps.event.addListener(marker, 'click', function () {
+          infoWindow.open($scope.map, marker);
+      }); 
+      google.maps.event.addListener($scope.map, 'click', function() {
+        infoWindow.close();
+      });
+     
+      google.maps.event.addListener(infoWindow, 'domready', function() {
+        var iwOuter = $('.gm-style-iw');
+        var iwBackground = iwOuter.prev();
+        iwBackground.children(':nth-child(2)').css({'display' : 'none'});
+        iwBackground.children(':nth-child(4)').css({'display' : 'none'});
+        iwOuter.parent().parent().css({left: '10px'});
+        iwBackground.children(':nth-child(1)').attr('style', function(i,s){ return s + 'left: 96px !important;'});
+        iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'left: 96px !important;'});
+        iwBackground.children(':nth-child(3)').find('div').children().css({'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 1px 6px', 'z-index' : '1'});
+        var iwCloseBtn = iwOuter.next();
+        iwCloseBtn.css({opacity: '1', right: '1px', top: '1px', border: '7px solid #48b5e9', 'border-radius': '23px', 'box-shadow': '0 0 5px #3990B9'});
+
+        if($('.iw-content').height() < 140){
+          $('.iw-bottom-gradient').css({display: 'none'});
+        } 
+
+        iwCloseBtn.mouseout(function(){
+          $(this).css({opacity: '1'});
+        });
+      });
+      
+      $scope.map.setCenter(latLngNotification);  
+      $scope.map.setZoom(15);
+
+    });
+      
+    } else {
+      navigator.notification.alert("Servicio de localización requerido", null, "Kyros App", "Ok");      
+    }
+
+
+
   });
 })

@@ -326,10 +326,6 @@ $scope.filterCategory = function(category) {
       $ionicLoading.hide(); 
 
       if (data.result==undefined) {
-        /*var alertPopup = $ionicPopup.alert({
-          title: 'Mensaje',
-          template: 'Error de red'
-        });*/
         $ionicLoading.show({
           template: 'Error de red',
           scope: $scope
@@ -388,17 +384,6 @@ $scope.filterCategory = function(category) {
         $scope.trustedHtmlIcon = iconos;
 
         num_notifications = data.num_notifications;
-
-        // Texto del indicador
-        /*if (num_notifications>99) {
-          $scope.num_notifications = "99+"
-          var alertPopup = $ionicPopup.alert({
-            title: 'Mensaje',
-            template: 'Tienes ' + num_notifications + ' notificaciones.\r\nSolo se muestran las 50 más recientes'
-          });
-        } else {
-          $scope.num_notifications = num_notifications;        
-        }*/
         $scope.num_notifications = num_notifications;    
 
         // Altura del indicador
@@ -440,11 +425,14 @@ $scope.filterCategory = function(category) {
   //$scope.notification = Notifications.get($stateParams.notificationId);
 
   //console.log($scope.mongoId);
-  if (localStorage.getItem("notificationPushMongoId")==undefined || localStorage.getItem("notificationPushMongoId")==0) {
+  //if (localStorage.getItem("notificationPushMongoId")==undefined || localStorage.getItem("notificationPushMongoId")==0) {
+
     localStorage.setItem("notificationSelected", $stateParams.notificationId);  
     $scope.notification = notifications[$stateParams.notificationId];  
     if ($rootScope.eventIcon!=undefined)  
       $scope.trustedHtmlIconEvent = $sce.trustAsHtml($rootScope.eventIcon[notifications[$stateParams.notificationId].eventType].svg);
+  
+  /*
   } else {
     // viene de un click sobre un mensaje push -> buscar la notificacion
     var notificationPush = {};
@@ -503,7 +491,7 @@ $scope.filterCategory = function(category) {
     //console.log(notificationPush.vehicleLicense);
     //$scope.notification = notificationPush;   
   }
-
+  */
   $scope.archiveSelectNotification = function(notificationId) { 
     /*
     var confirmPopup = $ionicPopup.confirm({
