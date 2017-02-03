@@ -3,7 +3,7 @@ angular.module('main')
 .constant('APP', {
   version: 4,
   //api_base: 'http://localhost:3000'
-  api_base: 'http://view.kyroslbs.com'
+  api_base: 'https://view.kyroslbs.com'
   //api_base: 'http://192.168.28.248:3000'
 })
 
