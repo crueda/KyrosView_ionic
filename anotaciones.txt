@@ -1,0 +1,14 @@
+ionic serve --lab
+ionic build android
+
+
+/Users/Carlos/android-sdk/platform-tools/adb kill-server
+/Users/Carlos/android-sdk/platform-tools/adb devices
+
+chrome://inspect
+
+---
+SUBIR APK:
+
+scp /Users/Carlos/Workspace/KyrosView/KyrosView_ionic/platforms/android/build/outputs/apk/android-debug.apk android-debug.apk root@192.168.29.4:/home/kyros/www/files/app/apk/mypush/
+
