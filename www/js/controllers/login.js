@@ -60,7 +60,7 @@ angular.module('main.login', [])
     } else {
       $scope.data = {};      
     }
-    //$scope.data = {username: 'crueda', password: 'dat1234'};
+    $scope.data = {username: 'crueda', password: 'dat1234'};
     //$scope.data = {username: 'test', password: 'test'};
 
 
@@ -112,9 +112,10 @@ angular.module('main.login', [])
               } else {
                 localStorage.setItem("vehicleLicense", "");                  
               }
+              
               // cargar los iconos
-              var icons = JSON.parse(localStorage.getItem("eventIconStorage"));
-              $rootScope.eventIcon = icons;
+              //var icons = JSON.parse(localStorage.getItem("eventIconStorage"));
+              //$rootScope.eventIcon = icons;
 
               localStorage.setItem("username", $scope.data.username);
               localStorage.setItem("token_api", data.result[0].token_api);  
@@ -122,6 +123,7 @@ angular.module('main.login', [])
               localStorage.setItem("deviceSelected", "");  
               localStorage.setItem("mapmode", MAP_MODE.init);  
               localStorage.setItem("group_notifications", "1");
+              localStorage.setItem("max_show_notifications", "100");
               if (data.result[0].max_show_notifications!=undefined) {
                 localStorage.setItem("max_show_notifications", data.result[0].max_show_notifications);
               }  

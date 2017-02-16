@@ -80,7 +80,7 @@ var num_notifications = 0;
       
       notifications = [];
       $scope.notifications = notifications;
-      $scope.num_notifications = 0;
+      $rootScope.num_notifications = 0;
       if (ionic.Platform.isIOS()) {
         $scope.top_bubble = 24;
       } else {
@@ -152,7 +152,11 @@ angular.module('main.notification', [])
 
   $scope.doRefresh = function() {
     $timeout( function() {
-    var url = APP.api_base + URL.getNotificationsLimit + "?username="+localStorage.getItem("username") + "&max=" + localStorage.getItem("max_show_notifications") + "&group=" + localStorage.getItem("group_notifications");
+  var max_notifications = 100;
+  if (localStorage.getItem("max_show_notifications")!=undefined) {
+    max_notifications = localStorage.getItem("max_show_notifications");
+  }
+    var url = APP.api_base + URL.getNotificationsLimit + "?username="+localStorage.getItem("username") + "&max=" + max_notifications + "&group=" + localStorage.getItem("group_notifications");
 
 $ionicLoading.show({
     //template: '<ion-spinner icon="bubbles"></ion-spinner><p>LOADING...</p>'
@@ -205,22 +209,23 @@ $ionicLoading.show({
         }
         notifications.push(notification);
         //iconos.push($sce.trustAsHtml($rootScope.eventIcon[data.result[i].subtype].svg));
+          /*
           if ($rootScope.eventIcon!=undefined)  
           {
             if ($rootScope.eventIcon[data.result[i].subtype]!=undefined)
               iconos.push($sce.trustAsHtml($rootScope.eventIcon[data.result[i].subtype].svg));
             else
               iconos.push($sce.trustAsHtml($rootScope.eventIcon[0].svg));
-          }
+          }*/
         }
       
         $scope.notifications = notifications;
-        $scope.trustedHtmlIcon = iconos;
+        //$scope.trustedHtmlIcon = iconos;
 
         // Texto del indicador
         num_notifications = data.num_notifications;
 
-          $scope.num_notifications = num_notifications;
+          $rootScope.num_notifications = num_notifications;
 
           // Anchura del indicador
           if (num_notifications > 999) {
@@ -261,9 +266,6 @@ $ionicLoading.show({
           //$state.go('login');            
         });
 
-      //simulate async response
-      //scope.items.push('New Item ' + Math.floor(Math.random() * 1000) + 4);
-
       //Stop the ion-refresher from spinning
       //$scope.$broadcast('scroll.refreshComplete');
     
@@ -275,8 +277,9 @@ $scope.filterCategory = function(category) {
 }
 
   $scope.remove = function(notification, URL) {
-    //console.log("-->"+ notifications.indexOf(notification));
     notifications.splice(notifications.indexOf(notification), 1);
+    $rootScope.num_notifications = $scope.num_notifications - 1;    
+
     //archiveNotification($http, notification['mongoId'], URL, APP);
 
 
@@ -299,8 +302,12 @@ $scope.filterCategory = function(category) {
   } else {
 
 
+ var max_notifications = 100;
+  if (localStorage.getItem("max_show_notifications")!=undefined) {
+    max_notifications = localStorage.getItem("max_show_notifications");
+  }
 
-  var url = APP.api_base + URL.getNotificationsLimit + "?username="+localStorage.getItem("username") + "&max=" + localStorage.getItem("max_show_notifications") + "&group=" + localStorage.getItem("group_notifications");
+  var url = APP.api_base + URL.getNotificationsLimit + "?username="+localStorage.getItem("username") + "&max=" + max_notifications + "&group=" + localStorage.getItem("group_notifications");
 
   //var url = APP.api_base + URL.getNotificationsLimit + "?username=crueda" + "&max=" + localStorage.getItem("max_show_notifications");
   //var url = URL.getNotificationsLimit + "?username=robertodat";
@@ -370,21 +377,22 @@ $scope.filterCategory = function(category) {
           //913
           //iconos.push($sce.trustAsHtml($rootScope.eventIcon[913].svg));
 
+          /* 
           if ($rootScope.eventIcon!=undefined) {
             if ($rootScope.eventIcon[eventType]!=undefined)
               iconos.push($sce.trustAsHtml($rootScope.eventIcon[eventType].svg));
             else
               iconos.push($sce.trustAsHtml($rootScope.eventIcon[0].svg));            
-          } 
+          } */
 
           
         }
 
         $scope.notifications = notifications;
-        $scope.trustedHtmlIcon = iconos;
+        //$scope.trustedHtmlIcon = iconos;
 
         num_notifications = data.num_notifications;
-        $scope.num_notifications = num_notifications;    
+        $rootScope.num_notifications = num_notifications;    
 
         // Altura del indicador
         if (ionic.Platform.isIOS()) {
@@ -429,8 +437,8 @@ $scope.filterCategory = function(category) {
 
     localStorage.setItem("notificationSelected", $stateParams.notificationId);  
     $scope.notification = notifications[$stateParams.notificationId];  
-    if ($rootScope.eventIcon!=undefined)  
-      $scope.trustedHtmlIconEvent = $sce.trustAsHtml($rootScope.eventIcon[notifications[$stateParams.notificationId].eventType].svg);
+    //if ($rootScope.eventIcon!=undefined)  
+      //$scope.trustedHtmlIconEvent = $sce.trustAsHtml($rootScope.eventIcon[notifications[$stateParams.notificationId].eventType].svg);
   
   /*
   } else {
@@ -515,8 +523,11 @@ $scope.filterCategory = function(category) {
     }
     $scope.notification = notifications[go_notificationId];    
     localStorage.setItem("notificationSelected", go_notificationId);
-    if ($rootScope.eventIcon!=undefined)  
-      $scope.trustedHtmlIconEvent = $sce.trustAsHtml($rootScope.eventIcon[notifications[go_notificationId].eventType].svg);   
+    
+    $rootScope.num_notifications = $rootScope.num_notifications - 1;    
+
+    //if ($rootScope.eventIcon!=undefined)  
+      //$scope.trustedHtmlIconEvent = $sce.trustAsHtml($rootScope.eventIcon[notifications[go_notificationId].eventType].svg);   
 
     archiveNotification ($http, notificationId, URL, APP);
     notifications.splice(go_notificationId-1, 1);
@@ -542,8 +553,8 @@ $scope.filterCategory = function(category) {
       go_notificationId = 0;
     }
     $scope.notification = notifications[go_notificationId];   
-    if ($rootScope.eventIcon!=undefined)   
-      $scope.trustedHtmlIconEvent = $sce.trustAsHtml($rootScope.eventIcon[notifications[go_notificationId].eventType].svg);   
+    //if ($rootScope.eventIcon!=undefined)   
+      //$scope.trustedHtmlIconEvent = $sce.trustAsHtml($rootScope.eventIcon[notifications[go_notificationId].eventType].svg);   
     localStorage.setItem("notificationSelected", go_notificationId);
     $state.go('tab.notifications-detail', {cache: false});
   }
@@ -554,8 +565,8 @@ $scope.filterCategory = function(category) {
       go_notificationId = notifications.length -1;
     }
     $scope.notification = notifications[go_notificationId]; 
-    if ($rootScope.eventIcon!=undefined)  
-      $scope.trustedHtmlIconEvent = $sce.trustAsHtml($rootScope.eventIcon[notifications[go_notificationId].eventType].svg);   
+    //if ($rootScope.eventIcon!=undefined)  
+      //$scope.trustedHtmlIconEvent = $sce.trustAsHtml($rootScope.eventIcon[notifications[go_notificationId].eventType].svg);   
     localStorage.setItem("notificationSelected", go_notificationId);
     $state.go('tab.notifications-detail', {cache: false});
   }
