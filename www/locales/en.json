@@ -47,9 +47,9 @@
   "THURSDAY": "Thu",
   "FRIDAY": "Fri",
   "SATURDAY": "Sat",
-  "SUNDAY": "Sun"
-
-
+  "SUNDAY": "Sun",
+  "GENERAL": "General",
+  "DAILY": "Daily"
 
 
 }

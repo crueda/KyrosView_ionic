@@ -47,7 +47,9 @@
   "THURSDAY": "Jue",
   "FRIDAY": "Vie",
   "SATURDAY": "Sab",
-  "SUNDAY": "Dom"
+  "SUNDAY": "Dom",
+  "GENERAL": "General",
+  "DAILY": "Diario"
 
 
 

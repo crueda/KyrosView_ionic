@@ -1,15 +1,31 @@
+
+  
+
 <!--ion-view view-title="{{titulo_mapa}}"-->
 <ion-view cache-view="false">
   <ion-nav-bar class="bar-balanced"  align-title="center">
       <ion-nav-back-button></ion-nav-back-button>
   </ion-nav-bar>
 
+
   <ion-nav-title>
 	{{titulo_graphs}}
   </ion-nav-title>
 
+
+<ion-header-bar class="bar-subheader" align-title='center'>
+  <button class="button ion-ios-arrow-back" ng-click="goSumary()"  ng-hide='showSumary'></button>
+  <h1 class="title"><b>{{subtitulo_graphs}}</b></h1>
+  <button class="button ion-ios-arrow-forward" ng-click="goReport()"  ng-hide='showReport'></button>            
+</ion-header-bar>
+
+
+
   <ion-content>
-	<ion-list>
+
+
+
+	<ion-list  ng-show='showSumary'>
       <ion-item>
         <p class="center"><b>{{ 'GRAPH_EVENTS' | translate}}</b><p>
 
@@ -40,6 +56,12 @@
     	<button class="button button-block button-assertive" ng-click="resetCounters()"><span translate="RESET"></span></button>
       </ion-item>
 <br>
+</ion-list>
+  
+
 
 </ion-content>
+
 </ion-view>
+
+

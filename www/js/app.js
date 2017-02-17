@@ -6,7 +6,6 @@ function saveToken ($http, URL) {
       .error(function(data, status, headers,config){
       });
 }
-
 // KyrosView Main App
 //angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notification', 'main.device', 'main.map', 'main.config', 'main.services', 'ngCordova', 'ion-tree-list'])
 angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notification', 'main.device', 'main.map', 'main.config', 'main.services', 'ngCordova', 'ionic.ion.autoListDivider', 'pascalprecht.translate', 'chart.js'])
@@ -299,6 +298,18 @@ $translateProvider
     }
   })
 
+
+.state('tab.graphs0', {
+    url: '/graphs0',
+cache: false,
+    views: {
+      'tab-graphs0': {
+        templateUrl: 'templates/graph/tab-graphs0.html',
+        controller: 'GraphCtrl'
+      }
+    }
+  })
+
   .state('tab.graphs', {
     url: '/graphs',
     cache: false,
@@ -338,13 +349,14 @@ $translateProvider
       views: {
         'tab-notifications': {
           templateUrl: function ($stateParams){
-                //if ($stateParams.mode == 0) {
+                /*
                 if (localStorage.getItem("group_notifications") == 0) {
                     return 'templates/notification/tab-notifications.html'
                 }
                 else {
                     return 'templates/notification/tab-notifications-group.html'
-                }
+                }*/
+                return 'templates/notification/tab-notifications.html'
             },
           controller: 'NotificationsCtrl'
         }

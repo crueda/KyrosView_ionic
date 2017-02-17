@@ -95,9 +95,13 @@ angular.module('main.login', [])
       });
 
       // peticion de login
-      var url = APP.api_base + URL.login + "?version="+APP.version+"&username="+ $scope.data.username +"&password="+$scope.data.password;
+      var url = APP.api_base + URL.login;
       console.log(url);
-        $http.get(url)
+        $http({
+           method: 'POST',
+           url: url,
+           data: {username: $scope.data.username, password: $scope.data.password}
+         })
           .success(function(data, status, headers,config){     
             $ionicLoading.hide();        
             if (data.status=="msg") {

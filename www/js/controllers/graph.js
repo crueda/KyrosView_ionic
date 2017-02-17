@@ -44,7 +44,21 @@ angular.module('main.controllers', [])
 
   'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'
 
+    $scope.goSumary = function() {
+      $scope.showSumary = true;
+      $scope.showReport = false;
+      $scope.subtitulo_graphs = "Resumen global";
+      $state.go('tab.graphs', {cache: false});
+    }
+    $scope.goReport = function() {
+      $scope.showSumary = false;
+      $scope.showReport = true;
+      $scope.subtitulo_graphs = "Informe diario";
+      $state.go('tab.graphs', {cache: false});
+    }
+
   $scope.resetCounters = function() {
+
 
     var confirmPopup = $ionicPopup.confirm({
      title: 'Confirmar',
@@ -80,9 +94,12 @@ angular.module('main.controllers', [])
     });   
   }
 
- 
+ $scope.showSumary = true;
+$scope.showReport = false;
+
   var vehicleLicense = getGraphVehicleLicense(MAP_MODE);  
   $scope.titulo_graphs = vehicleLicense;  
+  $scope.subtitulo_graphs = "Resumen global";  
 
   $ionicLoading.show({
     content: 'Loading',
