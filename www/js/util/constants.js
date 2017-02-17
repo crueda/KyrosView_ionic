@@ -34,6 +34,7 @@ angular.module('main')
   getIconsInfo: '/api/iconInfo',
   getAllIcons: '/api/allicons',
   getGraphData: '/api/app/graph/vehicle',
+  getReportDailyData: '/api/app/report_daily/vehicle',
   resetGraphData: '/api/app/graph/reset/vehicle',
 
   //getIcon: '/api/icon',
