@@ -14,9 +14,9 @@
 
 
 <ion-header-bar class="bar-subheader" align-title='center'>
-  <button class="button ion-ios-arrow-back" ng-click="goSumary()"  ng-hide='showSumary'></button>
+  <button class="button ion-ios-arrow-back" ng-click="goLeft()" ng-show='showLeftArrow'></button>
   <h1 class="title"><b>{{subtitulo_graphs}}</b></h1>
-  <button class="button ion-ios-arrow-forward" ng-click="goReport()"  ng-hide='showReport'></button>            
+  <button class="button ion-ios-arrow-forward" ng-click="goRight()"  ng-show='showRightArrow'></button>            
 </ion-header-bar>
 
 
@@ -63,15 +63,15 @@
 <div class="item ion-clock item-divider"> Tiempo</div>
 
       <ion-item>
-        <b>Inicio de la jornada</b> <span class="item-note">08:32:48</span>
-        <br> <span class="item-note">Calle Alonso Briceño, 14</span>
+        <b>Inicio de la jornada</b> <span class="item-note">{{startDate}}</span>
+        <br> <span class="item-note">{{startGeocoding}}</span>
       </ion-item>
       <ion-item>
-        <b>Fin de la jornada</b> <span class="item-note">08:32:48</span>
-        <br> <span class="item-note">Calle Alonso Briceño, 14</span>
+        <b>Fin de la jornada</b> <span class="item-note">{{endDate}}</span>
+        <br> <span class="item-note">{{endGeocoding}}</span>
       </ion-item>
       <ion-item>
-        <b>Duración</b> <span class="item-note">08:32:48</span>
+        <b>Duración</b> <span class="item-note">{{duration}}</span>
       </ion-item>
 
 
@@ -108,19 +108,19 @@
 </div-->
 
       <ion-item>
-        <b>Velocidad media (Km/h)</b> <span class="item-note">22,5</span>
+        <b>Velocidad media (Km/h)</b> <span class="item-note">{{averageSpeed}}</span>
       </ion-item>
       <ion-item>
-        <b>Velocidad máxima (Km/h)</b> <span class="item-note">22,5</span>
+        <b>Velocidad máxima (Km/h)</b> <span class="item-note">{{maxSpeed}}</span>
       </ion-item>
       <ion-item>
-        <b>Distancia (Km)</b> <span class="item-note">22,5</span>
+        <b>Distancia (Km)</b> <span class="item-note">{{distance}}</span>
       </ion-item>
       <ion-item>
-        <b>Consumo (L)</b> <span class="item-note">22,5</span>
+        <b>Consumo (L)</b> <span class="item-note">{{consumption}}</span>
       </ion-item>
       <ion-item>
-        <b>Emisión de CO2 (Kg)</b> <span class="item-note">22,5</span>
+        <b>Emisión de CO2 (Kg)</b> <span class="item-note">{{co2}}</span>
       </ion-item>
 
 <div class="item ion-arrow-graph-up-right item-divider"> Eventos</div>
@@ -137,11 +137,9 @@
         <b>Velocidad excedida</b> <span class="item-note">2</span>
       </ion-item>
 
-<div class="item ion-ion-map item-divider"> Mapa</div>
-<div id="map" class="map" data-tap-disabled="true"></div>
-
   </ion-list>
 
+    <div ng-show='showMap' id="map" class="map" data-tap-disabled="true"></div>
 
 </ion-content>
 

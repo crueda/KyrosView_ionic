@@ -298,18 +298,6 @@ $translateProvider
     }
   })
 
-
-.state('tab.graphs0', {
-    url: '/graphs0',
-cache: false,
-    views: {
-      'tab-graphs0': {
-        templateUrl: 'templates/graph/tab-graphs0.html',
-        controller: 'GraphCtrl'
-      }
-    }
-  })
-
   .state('tab.graphs', {
     url: '/graphs',
     cache: false,

@@ -26,7 +26,7 @@ function getGraphVehicleLicense(MAP_MODE) {
 
 
 angular.module('main.controllers', [])
-.controller('GraphCtrl', function($scope, $compile, $http, $state, $ionicPopup, $ionicLoading, APP, URL, MAP_MODE, $translate) {
+.controller('GraphCtrl', function($scope, $rootScope, $compile, $timeout, $http, $state, $ionicPopup, $ionicLoading, $cordovaGeolocation, APP, URL, MAP_MODE, $translate) {
 
     $translate(['MSG_CONFIRM_COUNTERS', 'NO_EVENTS', 'NOTIFICATIONS', 'TRACKINGS', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY']).then(function (translations) {
       msg_confirm = translations.MSG_CONFIRM_COUNTERS;
@@ -44,16 +44,44 @@ angular.module('main.controllers', [])
 
   'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'
 
-    $scope.goSumary = function() {
-      $scope.showSumary = true;
-      $scope.showReport = false;
-      $scope.subtitulo_graphs = "Resumen global";
+    $scope.goLeft = function() {
+      $scope.showLeftArrow = true;
+      $scope.showRightArrow = true;
+
+      if ($scope.showSumary) {
+        // ir a mapa diario
+        $scope.subtitulo_graphs = "Mapa diario";
+        $scope.showMap = true;
+        $scope.showReport = false;
+        $scope.showSumary = false;
+        $scope.showLeftArrow = false;
+      } else if ($scope.showReport) {
+        // ir a graficos
+        $scope.subtitulo_graphs = "Resumen global";
+        $scope.showSumary = true;
+        $scope.showMap = false;
+        $scope.showReport = false;
+      } 
       $state.go('tab.graphs', {cache: false});
     }
-    $scope.goReport = function() {
-      $scope.showSumary = false;
-      $scope.showReport = true;
-      $scope.subtitulo_graphs = "Informe diario";
+    $scope.goRight = function() {
+      $scope.showLeftArrow = true;
+      $scope.showRightArrow = true;
+
+      if ($scope.showSumary) {
+        // ir a informe
+        $scope.subtitulo_graphs = "Informe diario";
+        $scope.showReport = true;
+        $scope.showMap = false;
+        $scope.showSumary = false;
+        $scope.showRightArrow = false;
+      } else if ($scope.showMap) {
+        // ir a graficos
+        $scope.subtitulo_graphs = "Resumen global";
+        $scope.showSumary = true;
+        $scope.showMap = false;
+        $scope.showReport = false;
+      } 
       $state.go('tab.graphs', {cache: false});
     }
 
@@ -95,7 +123,10 @@ angular.module('main.controllers', [])
   }
 
  $scope.showSumary = true;
-$scope.showReport = false;
+ $scope.showReport = false;
+ $scope.showMap = false;
+  $scope.showLeftArrow = true;
+  $scope.showRightArrow = true;
 
   var vehicleLicense = getGraphVehicleLicense(MAP_MODE);  
   $scope.titulo_graphs = vehicleLicense;  
@@ -186,6 +217,41 @@ $scope.showReport = false;
       $scope.graph3_data = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]];
     }
 
+    var urlReport = APP.api_base + URL.getReportDailyData + "/" + vehicleLicense;
+    console.log(url);
+    $http({
+      method: 'GET',
+      url: urlReport,
+      headers: {
+        'x-access': localStorage.getItem("token_api")
+      }
+    }).success(function(data, status, headers,config){
+      $scope.startDate = data.reportDailyStartDate;
+      $scope.endDate = data.reportDailyEndDate;
+      $scope.startGeocoding = data.reportDailyStartGeocoding;
+      $scope.endGeocoding = data.reportDailyEndGeocoding;
+      $scope.duration = data.reportDailyDuration;
+      $scope.distance = data.reportDailyDistance;
+      $scope.maxSpeed = data.reportDailyMaxSpeed;
+      $scope.averageSpeed = data.reportDailyAverageSpeed;
+      $scope.consumption = data.reportDailyConsumption;
+      $scope.co2 = data.reportDailyCO2;
+
+    })
+    .error(function(data, status, headers,config){
+      $ionicLoading.hide();
+      $ionicLoading.show({
+        template: 'Error de red',
+          scope: $scope
+        });
+        $timeout(function() {
+          $ionicLoading.hide();
+          $state.go('tab.notifications');
+        }, 1500);
+      });
+
+
+
   })
   .error(function(data, status, headers,config){
     $ionicLoading.hide();
@@ -198,5 +264,48 @@ $scope.showReport = false;
         $state.go('tab.notifications');
       }, 1500);
   });
+
+
+  var options = {timeout: 10000, enableHighAccuracy: true};
+  $cordovaGeolocation.getCurrentPosition(options).then(function(position){
+    $scope.$on('$destroy', function () {
+      $scope.map = null;
+    });
+
+    if ($scope.map ==null) {
+      var latLng = new google.maps.LatLng(41, -3);
+      var mapOptions = {
+        center: latLng,
+        zoom: 5,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+console.log("--->");
+    }
+
+    google.maps.event.addListenerOnce($scope.map, 'idle', function(){
+
+      //var point = {lat: 41, lng: -3};
+
+      //    pathCoordinates.push(point);
+          var latLng = new google.maps.LatLng(41, -3);
+         
+         var image = {
+            url: 'img/beacon_ball_blue.gif',
+            anchor: new google.maps.Point(10, 10),
+            scaledSize: new google.maps.Size(20, 20)
+          };
+          var marker = new google.maps.Marker({
+              map: $scope.map,
+              icon: image,
+              position: latLng
+          });   
+                   
+          //bounds.extend(latLng);
+
+    });
+
+  });
+
 
 })
