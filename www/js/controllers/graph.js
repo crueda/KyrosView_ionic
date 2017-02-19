@@ -24,6 +24,14 @@ function getGraphVehicleLicense(MAP_MODE) {
   return vehicleLicense;
 }
 
+function getEventDescription(eventType) {
+    //var evento = EVENT_ENUM.getByValue('value', eventType);
+    var evento = EventEnum[eventType];
+    if (evento!=undefined) {
+      return EventEnum.properties[evento].description;      
+    }
+    return "";
+  }
 
 angular.module('main.controllers', [])
 .controller('GraphCtrl', function($scope, $rootScope, $compile, $timeout, $http, $state, $ionicPopup, $ionicLoading, $cordovaGeolocation, APP, URL, MAP_MODE, $translate) {
@@ -122,9 +130,20 @@ angular.module('main.controllers', [])
     });   
   }
 
- $scope.showSumary = true;
- $scope.showReport = false;
- $scope.showMap = false;
+  var options = {timeout: 10000, enableHighAccuracy: true};
+  $cordovaGeolocation.getCurrentPosition(options).then(function(position){
+
+      var latLng = new google.maps.LatLng(41, -3);
+      var mapOptions = {
+        center: latLng,
+        zoom: 5,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+  $scope.showSumary = true;
+  $scope.showReport = false;
+  $scope.showMap = false;
   $scope.showLeftArrow = true;
   $scope.showRightArrow = true;
 
@@ -217,7 +236,7 @@ angular.module('main.controllers', [])
       $scope.graph3_data = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]];
     }
 
-    var urlReport = APP.api_base + URL.getReportDailyData + "/" + vehicleLicense;
+    var urlReport = APP.api_base + URL.getReportDailyData + "/" + "0904FMP"; //vehicleLicense;
     console.log(url);
     $http({
       method: 'GET',
@@ -236,6 +255,31 @@ angular.module('main.controllers', [])
       $scope.averageSpeed = data.reportDailyAverageSpeed;
       $scope.consumption = data.reportDailyConsumption;
       $scope.co2 = data.reportDailyCO2;
+
+      // eventos
+      var events = [];
+      Object.keys(data.events).forEach(function(key) {
+          var event = {"eventType": getEventDescription(key), "eventValue": data.events[key]};
+          events.push(event);
+      });
+      $scope.events = events;
+
+      //tracking
+            console.log("--**>");
+      for (var t=0;t<data.tracking.length;t++) {
+        var latLng = new google.maps.LatLng(data.tracking[t].latitude, data.tracking[t].longitude);         
+         var image = {
+            url: 'img/beacon_ball_blue.gif',
+            anchor: new google.maps.Point(10, 10),
+            scaledSize: new google.maps.Size(20, 20)
+          };
+          var marker = new google.maps.Marker({
+              map: $scope.map,
+              icon: image,
+              position: latLng
+          });           
+      }
+
 
     })
     .error(function(data, status, headers,config){
@@ -266,28 +310,10 @@ angular.module('main.controllers', [])
   });
 
 
-  var options = {timeout: 10000, enableHighAccuracy: true};
-  $cordovaGeolocation.getCurrentPosition(options).then(function(position){
-    $scope.$on('$destroy', function () {
-      $scope.map = null;
-    });
-
-    if ($scope.map ==null) {
-      var latLng = new google.maps.LatLng(41, -3);
-      var mapOptions = {
-        center: latLng,
-        zoom: 5,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      };
-      $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
-console.log("--->");
-    }
 
     google.maps.event.addListenerOnce($scope.map, 'idle', function(){
-
-      //var point = {lat: 41, lng: -3};
-
       //    pathCoordinates.push(point);
+      console.log("-->");
           var latLng = new google.maps.LatLng(41, -3);
          
          var image = {
@@ -299,11 +325,9 @@ console.log("--->");
               map: $scope.map,
               icon: image,
               position: latLng
-          });   
-                   
+          });                     
           //bounds.extend(latLng);
-
-    });
+        });
 
   });
 

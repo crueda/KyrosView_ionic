@@ -124,18 +124,12 @@
       </ion-item>
 
 <div class="item ion-arrow-graph-up-right item-divider"> Eventos</div>
-      <ion-item>
-        <b>Arranque</b> <span class="item-note">2</span>
+
+      <ion-item  ng-repeat="event in events">
+        <b>{{event.eventType}}</b> <span class="item-note">{{event.eventValue}}</span>
       </ion-item>
-      <ion-item>
-        <b>Parada</b> <span class="item-note">2</span>
-      </ion-item>
-      <ion-item>
-        <b>Desconexión a alimentación</b> <span class="item-note">2</span>
-      </ion-item>
-      <ion-item>
-        <b>Velocidad excedida</b> <span class="item-note">2</span>
-      </ion-item>
+
+     
 
   </ion-list>
 
