@@ -48,9 +48,10 @@
 
     <br>
 
-    <button class="button button-block button-balanced" ng-click="showMapNotification()">Ver en mapa</button>
 
-    <button class="button button-block button-royal" ng-click="showGraphsDevice()">Ver actividad</button>
+    
+    <button class="button button-block button-balanced" ng-click="showMapNotification()">{{'SHOW_MAP' | translate}}</button>
+
 
     <ion-list>
 
@@ -76,6 +77,12 @@
     </ion-toggle-->
 
     </ion-list>
+
+    <br>
+    
+    <button class="button button-block button-royal" ng-click="showGraphsDevice()">{{'SHOW_ACTIVITY' | translate}}</button>
+
+    <button class="button button-block button-calm" ng-click="setAsDefault()">{{'SELECT_VEHICLE' | translate}}</button>
 
 <!--script>
 $("#aaa").toggleClass("scaling-svg-detail");

@@ -137,6 +137,9 @@ angular.module('main.map', [])
   else if (localStorage.getItem("mapmode") == MAP_MODE.device) { 
     titulo = localStorage.getItem("deviceSelected");
   }  
+  else if (localStorage.getItem("mapmode") == MAP_MODE.report) { 
+    titulo = localStorage.getItem("deviceSelected");
+  }  
   else { 
     titulo = localStorage.getItem("vehicleLicense");
   }  
@@ -367,10 +370,49 @@ angular.module('main.map', [])
               infoWindow.open($scope.map, marker);
           });*/ 
       }
+    }else if (localStorage.getItem("mapmode") == MAP_MODE.report) {   
+      if ($rootScope.tracking.length>0) {
+        var pathCoordinates = [];
+        var bounds = new google.maps.LatLngBounds();
+        for (var t=0; t<$rootScope.tracking.length; t++) {
+          var latLng = new google.maps.LatLng($rootScope.tracking[t].latitude, $rootScope.tracking[t].longitude);         
+          var point = {lat: $rootScope.tracking[t].latitude, lng: $rootScope.tracking[t].longitude};
+          pathCoordinates.push(point);
+          var image = {
+            url: 'img/beacon_ball_blue.gif',
+            anchor: new google.maps.Point(10, 10),
+            scaledSize: new google.maps.Size(20, 20)
+          };
+          var marker = new google.maps.Marker({
+              map: $scope.map,
+              icon: image,
+              position: latLng
+          }); 
+        bounds.extend(latLng);
+        }      
+        var historicPath = new google.maps.Polyline({
+          path: pathCoordinates,
+          strokeColor: '#0000FF',
+          strokeOpacity: 1.0,
+          strokeWeight: 3
+        });
+        historicPath.setMap($scope.map);
+        $scope.map.fitBounds(bounds);
 
- 
 
+      
+      } else {
+          var alertPopup = $ionicPopup.alert({
+            title: 'Mensaje',
+            template: 'No existen puntos de tracking'
+          });
+          //var actualLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+          var actualLatLng = new google.maps.LatLng(41, -3);
+          $scope.map.setCenter(actualLatLng);
+          $scope.map.setZoom(15);
+      }
     }
+
     else if (localStorage.getItem("vehicleLicense")!="") {    
 
       var bounds = new google.maps.LatLngBounds();

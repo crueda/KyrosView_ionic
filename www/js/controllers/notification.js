@@ -115,10 +115,11 @@ var num_notifications = 0;
     }
   }
 
+
+
  
 angular.module('main.notification', [])
 .controller('NotificationsCtrl', function($rootScope, $scope, $state, $http, Notifications, $ionicPopup, $ionicLoading, $timeout, URL, APP, $sce) {
-
 
     $scope.archiveNotifications = function() {
 
@@ -430,10 +431,37 @@ $scope.filterCategory = function(category) {
 })
 
 .controller('NotificationDetailCtrl', function($scope, $rootScope, $http, $state, $ionicPopup, $ionicLoading, $cordovaNativeAudio, $stateParams, Notifications, MAP_MODE, URL, APP, $sce) {
-  //$scope.notification = Notifications.get($stateParams.notificationId);
 
-  //console.log($scope.mongoId);
-  //if (localStorage.getItem("notificationPushMongoId")==undefined || localStorage.getItem("notificationPushMongoId")==0) {
+$scope.setAsDefault = function() {
+    $scope.notification = notifications[parseInt(localStorage.getItem("notificationSelected"))];
+    localStorage.setItem("notificationSelected", $scope.notification.id);  
+    localStorage.setItem("notificationSelectedVehicleLicense", $scope.notification.vehicleLicense);  
+    localStorage.setItem("notificationSelectedLatitude", $scope.notification.latitude);  
+    localStorage.setItem("notificationSelectedLongitude", $scope.notification.longitude);  
+    localStorage.setItem("notificationSelectedIcon", $scope.notification.icon);  
+    localStorage.setItem("notificationSelectedEventType", $scope.notification.eventType);  
+    localStorage.setItem("notificationSelectedName", $scope.notification.name); 
+    localStorage.setItem("notificationSelectedDate", $scope.notification.date); 
+
+
+    var selectedVehicle = localStorage.getItem("notificationSelectedVehicleLicense");
+    localStorage.setItem("deviceSelected", selectedVehicle);
+    var url = APP.api_base + URL.setDefaultVehicle;// + "?username=" + localStorage.getItem("username") + "&vehicleLicense=" + localStorage.getItem("deviceSelected");
+    console.log(url);
+    $http({
+      method: 'POST',
+      url: url,
+      data: {username: localStorage.getItem("username"), vehicleLicense: localStorage.getItem("deviceSelected")},
+      headers: {
+        'x-access': localStorage.getItem("token_api")
+      }})
+    .success(function(data, status, headers,config){  
+        localStorage.setItem("mapmode", MAP_MODE.notification);
+        $state.go('tab.map');
+    })
+    .error(function(data, status, headers,config){       
+    });      
+  }  
 
     localStorage.setItem("notificationSelected", $stateParams.notificationId);  
     $scope.notification = notifications[$stateParams.notificationId];  

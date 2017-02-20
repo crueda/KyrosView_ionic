@@ -13,6 +13,7 @@ angular.module('main')
   notification: 1,
   device: 2,
   push: 3,
+  report: 4,
 })
 
 .constant('URL', {

@@ -50,24 +50,24 @@ angular.module('main.controllers', [])
       msg_sun = translations.SUNDAY;
     });
 
-  'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'
-
+  
     $scope.goLeft = function() {
       $scope.showLeftArrow = true;
       $scope.showRightArrow = true;
 
       if ($scope.showSumary) {
-        // ir a mapa diario
-        $scope.subtitulo_graphs = "Mapa diario";
-        $scope.showMap = true;
+        // ir a odometro
+        $scope.subtitulo_graphs = "Odometro";  
+        $scope.showOdometer = true;
         $scope.showReport = false;
         $scope.showSumary = false;
         $scope.showLeftArrow = false;
       } else if ($scope.showReport) {
         // ir a graficos
-        $scope.subtitulo_graphs = "Resumen global";
+        $scope.subtitulo_graphs = "Resumen global";  
         $scope.showSumary = true;
-        $scope.showMap = false;
+        $scope.showOdometer = false;
+        $scope.showLeftArrow = true;
         $scope.showReport = false;
       } 
       $state.go('tab.graphs', {cache: false});
@@ -78,20 +78,29 @@ angular.module('main.controllers', [])
 
       if ($scope.showSumary) {
         // ir a informe
-        $scope.subtitulo_graphs = "Informe diario";
+        var today = new Date();
+        var yesterday = new Date();
+        yesterday.setDate(today.getDate() - 1);
+        $scope.subtitulo_graphs = "Informe diario: " + yesterday.getDate() + "/" + (yesterday.getMonth() +1) + "/" + yesterday.getFullYear();
         $scope.showReport = true;
-        $scope.showMap = false;
+        $scope.showOdometer = false;
         $scope.showSumary = false;
         $scope.showRightArrow = false;
-      } else if ($scope.showMap) {
+      } else if ($scope.showOdometer) {
         // ir a graficos
-        $scope.subtitulo_graphs = "Resumen global";
+        $scope.subtitulo_graphs = "Resumen global";  
         $scope.showSumary = true;
-        $scope.showMap = false;
+        $scope.showOdometer = false;
         $scope.showReport = false;
+        $scope.showRightArrow = true;
       } 
       $state.go('tab.graphs', {cache: false});
     }
+
+  $scope.showMapHistoricDevice = function() {
+      localStorage.setItem("mapmode", MAP_MODE.report);
+      $state.go('tab.map', {cache: false});
+  }
 
   $scope.resetCounters = function() {
 
@@ -120,30 +129,15 @@ angular.module('main.controllers', [])
           .error(function(data, status, headers,config){
           })
           .then(function(data, status, headers,config){
-            //$state.go('tab.notifications', {cache: false, mode: localStorage.getItem("group_notifications")});      
-            //$state.go('tab.graphs', {cache: false});      
-
           })
-      } else {
-       //console.log('You are not sure');
-      }
+      } 
     });   
   }
 
-  var options = {timeout: 10000, enableHighAccuracy: true};
-  $cordovaGeolocation.getCurrentPosition(options).then(function(position){
-
-      var latLng = new google.maps.LatLng(41, -3);
-      var mapOptions = {
-        center: latLng,
-        zoom: 5,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      };
-      $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
   $scope.showSumary = true;
   $scope.showReport = false;
-  $scope.showMap = false;
+  $scope.showOdometer = false;
   $scope.showLeftArrow = true;
   $scope.showRightArrow = true;
 
@@ -159,6 +153,7 @@ angular.module('main.controllers', [])
     showDelay: 0
   });
 
+  localStorage.setItem("deviceSelected", vehicleLicense);
   var url = APP.api_base + URL.getGraphData + "/" + vehicleLicense;
   console.log(url);
   $http({
@@ -236,7 +231,7 @@ angular.module('main.controllers', [])
       $scope.graph3_data = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]];
     }
 
-    var urlReport = APP.api_base + URL.getReportDailyData + "/" + "0904FMP"; //vehicleLicense;
+    var urlReport = APP.api_base + URL.getReportDailyData + "/" + vehicleLicense;
     console.log(url);
     $http({
       method: 'GET',
@@ -245,6 +240,15 @@ angular.module('main.controllers', [])
         'x-access': localStorage.getItem("token_api")
       }
     }).success(function(data, status, headers,config){
+      $scope.dayDistance = data.dayDistance.toFixed(3);
+      $scope.weekDistance = data.weekDistance.toFixed(3);
+      $scope.monthDistance = data.monthDistance.toFixed(3);
+      $scope.daySpeed = data.daySpeed.toFixed(2);
+      $scope.weekSpeed = data.weekSpeed.toFixed(2);
+      $scope.monthSpeed = data.monthSpeed.toFixed(2);
+      $scope.dayConsumption = data.dayConsume.toFixed(2);
+      $scope.weekConsumption = data.weekConsume.toFixed(2);
+      $scope.monthConsumption = data.monthConsume.toFixed(2);
       $scope.startDate = data.reportDailyStartDate;
       $scope.endDate = data.reportDailyEndDate;
       $scope.startGeocoding = data.reportDailyStartGeocoding;
@@ -265,21 +269,7 @@ angular.module('main.controllers', [])
       $scope.events = events;
 
       //tracking
-            console.log("--**>");
-      for (var t=0;t<data.tracking.length;t++) {
-        var latLng = new google.maps.LatLng(data.tracking[t].latitude, data.tracking[t].longitude);         
-         var image = {
-            url: 'img/beacon_ball_blue.gif',
-            anchor: new google.maps.Point(10, 10),
-            scaledSize: new google.maps.Size(20, 20)
-          };
-          var marker = new google.maps.Marker({
-              map: $scope.map,
-              icon: image,
-              position: latLng
-          });           
-      }
-
+      $rootScope.tracking = data.tracking;
 
     })
     .error(function(data, status, headers,config){
@@ -310,26 +300,6 @@ angular.module('main.controllers', [])
   });
 
 
-
-    google.maps.event.addListenerOnce($scope.map, 'idle', function(){
-      //    pathCoordinates.push(point);
-      console.log("-->");
-          var latLng = new google.maps.LatLng(41, -3);
-         
-         var image = {
-            url: 'img/beacon_ball_blue.gif',
-            anchor: new google.maps.Point(10, 10),
-            scaledSize: new google.maps.Size(20, 20)
-          };
-          var marker = new google.maps.Marker({
-              map: $scope.map,
-              icon: image,
-              position: latLng
-          });                     
-          //bounds.extend(latLng);
-        });
-
-  });
 
 
 })

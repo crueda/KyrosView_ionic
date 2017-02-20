@@ -208,13 +208,13 @@ angular.module('main.device', ['ionic'])
   }    
 
   $scope.setAsDefault = function() {
-    //var actualDefaultVehicle = localStorage.getItem("defaultVehicleLicense");
     var selectedVehicle = localStorage.getItem("deviceSelected");
-    var url = APP.api_base + URL.setDefaultVehicle + "?username=" + localStorage.getItem("username") + "&vehicleLicense=" + localStorage.getItem("deviceSelected");
+    var url = APP.api_base + URL.setDefaultVehicle;// + "?username=" + localStorage.getItem("username") + "&vehicleLicense=" + localStorage.getItem("deviceSelected");
     //console.log(url);
     $http({
-      method: 'GET',
+      method: 'POST',
       url: url,
+      data: {username: localStorage.getItem("username"), vehicleLicense: localStorage.getItem("deviceSelected")},
       headers: {
         'x-access': localStorage.getItem("token_api")
       }})
