@@ -19,11 +19,7 @@
   <button class="button ion-ios-arrow-forward" ng-click="goRight()"  ng-show='showRightArrow'></button>            
 </ion-header-bar>
 
-
-
   <ion-content>
-
-
 
 	<ion-list  ng-show='showSumary'>
       <ion-item>
@@ -60,7 +56,7 @@
   
     <ion-list  ng-show='showReport'>
 
-<div class="item ion-clock item-divider"> Tiempo</div>
+<div class="item ion-clock item-divider positive"> Tiempo</div>
 
       <ion-item>
         <b>Inicio de la jornada</b> <span class="item-note">{{startDate}}</span>
@@ -76,36 +72,7 @@
 
 
 
-<div class="item ion-speedometer item-divider"> Velocidad y distancia</div>
-
-<!--div class="list">
-
-  <a class="item item-icon-left" href="#">
-    <i class="icon ion-email"></i>
-    Check mail
-  </a>
-
-  <a class="item item-icon-left item-icon-right" href="#">
-    <i class="icon ion-chatbubble-working"></i>
-    Call Ma
-    <i class="icon ion-ios-telephone-outline"></i>
-  </a>
-
-  <a class="item item-icon-left" href="#">
-    <i class="icon ion-mic-a"></i>
-    Record album
-    <span class="item-note">
-      Grammy
-    </span>
-  </a>
-
-  <a class="item item-icon-left" href="#">
-    <i class="icon ion-person-stalker"></i>
-    Friends
-    <span class="badge badge-assertive">0</span>
-  </a>
-
-</div-->
+<div class="item ion-speedometer item-divider balanced"> Velocidad y distancia</div>
 
       <ion-item>
         <b>Velocidad media (Km/h)</b> <span class="item-note">{{averageSpeed}}</span>
@@ -123,22 +90,18 @@
         <b>Emisión de CO2 (Kg)</b> <span class="item-note">{{co2}}</span>
       </ion-item>
 
-<div class="item ion-arrow-graph-up-right item-divider"> Eventos</div>
+<div class="item ion-arrow-graph-up-right item-divider assertive"> Eventos</div>
 
       <ion-item  ng-repeat="event in events">
         <b>{{event.eventType}}</b> <span class="item-note">{{event.eventValue}}</span>
       </ion-item>
 
-      <!--br>
-      <div class="item ion-arrow-graph-up-right item-divider"> Mapa</div>
-  <ion-item>
-      <div id="map" class="map" data-tap-disabled="true"></div>
-
-</ion-item-->
 
 <br>
 
-    <button class="button button-block button-balanced" ng-click="showMapHistoricDevice()">{{'SHOW_MAP' | translate}}</button>
+    <ion-item>
+      <button class="button button-block button-balanced" ng-click="showMapHistoricDevice()">{{'SHOW_MAP' | translate}}</button>
+    </ion-item>
 
 <br>
 

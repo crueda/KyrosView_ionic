@@ -115,8 +115,6 @@ var num_notifications = 0;
     }
   }
 
-
-
  
 angular.module('main.notification', [])
 .controller('NotificationsCtrl', function($rootScope, $scope, $state, $http, Notifications, $ionicPopup, $ionicLoading, $timeout, URL, APP, $sce) {
@@ -141,9 +139,7 @@ angular.module('main.notification', [])
    confirmPopup.then(function(res) {
      if(res) {
         archiveAllNotification ($http, $scope, URL, APP);
-     } else {
-       //console.log('You are not sure');
-     }
+     } 
    });
    
 
@@ -157,7 +153,7 @@ angular.module('main.notification', [])
   if (localStorage.getItem("max_show_notifications")!=undefined) {
     max_notifications = localStorage.getItem("max_show_notifications");
   }
-    var url = APP.api_base + URL.getNotificationsLimit + "?username="+localStorage.getItem("username") + "&max=" + max_notifications + "&group=" + localStorage.getItem("group_notifications");
+    var url = APP.api_base + URL.getNotificationsLimit;// + "?username="+localStorage.getItem("username") + "&max=" + max_notifications + "&group=" + localStorage.getItem("group_notifications");
 
 $ionicLoading.show({
     //template: '<ion-spinner icon="bubbles"></ion-spinner><p>LOADING...</p>'
@@ -174,8 +170,12 @@ $ionicLoading.show({
     iconos = [];
 
     $http({
-    method: 'GET',
+    method: 'POST',
     url: url,
+      data: {username: localStorage.getItem("username"), 
+        max: max_notifications,
+        vehicleLicense: localStorage.getItem("deviceSelected"),
+        group: localStorage.getItem("group_notifications")},
     headers: {
         'x-access': localStorage.getItem("token_api")
     }})
@@ -191,9 +191,9 @@ $ionicLoading.show({
             lon = 0;                        
           }
 
-
         notification = { mongoId: data.result[i]._id,
           id: i,
+          categoryDescription: getEventCategoryDescription(getEventCategory(data.result[i].subtype)),
           category: getEventCategory(data.result[i].subtype),
           vehicleLicense: data.result[i].vehicle_license,
           name: getEventDescription(data.result[i].subtype),
@@ -308,7 +308,7 @@ $scope.filterCategory = function(category) {
     max_notifications = localStorage.getItem("max_show_notifications");
   }
 
-  var url = APP.api_base + URL.getNotificationsLimit + "?username="+localStorage.getItem("username") + "&max=" + max_notifications + "&group=" + localStorage.getItem("group_notifications");
+  var url = APP.api_base + URL.getNotificationsLimit;// + "?username="+localStorage.getItem("username") + "&max=" + max_notifications + "&group=" + localStorage.getItem("group_notifications");
 
   //var url = APP.api_base + URL.getNotificationsLimit + "?username=crueda" + "&max=" + localStorage.getItem("max_show_notifications");
   //var url = URL.getNotificationsLimit + "?username=robertodat";
@@ -325,8 +325,12 @@ $scope.filterCategory = function(category) {
     showDelay: 0
   });
   $http({
-    method: 'GET',
+    method: 'POST',
     url: url,
+    data: {username: localStorage.getItem("username"), 
+        max: max_notifications,
+        vehicleLicense: localStorage.getItem("deviceSelected"),
+        group: localStorage.getItem("group_notifications")},
     headers: {
         'x-access': localStorage.getItem("token_api")
     }})
