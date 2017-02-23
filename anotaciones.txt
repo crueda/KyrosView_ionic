@@ -12,3 +12,7 @@ SUBIR APK:
 
 scp /Users/Carlos/Workspace/KyrosView/KyrosView_ionic/platforms/android/build/outputs/apk/android-debug.apk android-debug.apk root@192.168.29.4:/home/kyros/www/files/app/apk/mypush/
 
+---
+SUBIR CHANGELOG:
+gulp gen-changelog
+scp /Applications/MAMP/htdocs/webkyrosapp/changelog.html root@192.168.29.4:/home/kyros/www/files/app/apk/mypush/

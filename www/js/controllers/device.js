@@ -159,10 +159,11 @@ angular.module('main.device', ['ionic'])
         if (config.enabled)
           enableConfig = 1;
         
-        var url = APP.api_base + URL.configEventChange + "?vehicleLicense=" + localStorage.getItem("deviceSelected") + "&username=" + localStorage.getItem("username") + "&eventType=" + eventType + "&enabled=" + enableConfig;
+        var url = APP.api_base + URL.configEventChange;// + "?vehicleLicense=" + localStorage.getItem("deviceSelected") + "&username=" + localStorage.getItem("username") + "&eventType=" + eventType + "&enabled=" + enableConfig;
         $http({
-          method: 'GET',
+          method: 'POST',
           url: url,
+          data: {username: localStorage.getItem("username"), vehicleLicense: localStorage.getItem("deviceSelected"), eventType: eventType, enabled: enableConfig},
           headers: {
             'x-access': localStorage.getItem("token_api")
           }})
