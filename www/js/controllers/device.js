@@ -130,6 +130,11 @@ angular.module('main.device', ['ionic'])
             notificationsConfig.push(notificationConfig);
           }
           $scope.notificationsConfig = notificationsConfig;
+          if (notificationsConfig.length>0) {
+            $scope.showNotifications = true;
+          } else {
+            $scope.showNotifications = false;
+          }
         }   
         $ionicLoading.hide();        
       })

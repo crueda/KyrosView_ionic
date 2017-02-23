@@ -94,13 +94,14 @@ var num_notifications = 0;
   }
 
   function archiveNotification ($http, notificationId, URL, APP) {
-    var url = APP.api_base + URL.archiveNotification + "?username="+ localStorage.getItem("username") + "&notificationId="+notificationId;
+    var url = APP.api_base + URL.archiveNotification;// + "?username="+ localStorage.getItem("username") + "&notificationId="+notificationId;
     console.log(url);
     $http({
-      method: 'GET',
+      method: 'POST',
       url: url,
+      data: {username: localStorage.getItem("username"), notificationId: notificationId},
       headers: {
-        'x-access': localStorage.getItem("token_api")
+        'x-access': localStorage.getItem("token_api"),
       }})
     .success(function(data, status, headers,config){       
       })
@@ -281,13 +282,11 @@ $scope.filterCategory = function(category) {
     notifications.splice(notifications.indexOf(notification), 1);
     $rootScope.num_notifications = $scope.num_notifications - 1;    
 
-    //archiveNotification($http, notification['mongoId'], URL, APP);
-
-
-    var url = APP.api_base + URL.archiveNotification + "?username="+ localStorage.getItem("username") + "&notificationId="+notification['mongoId'];
+    var url = APP.api_base + URL.archiveNotification;// + "?username="+ localStorage.getItem("username") + "&notificationId="+notification['mongoId'];
     $http({
-      method: 'GET',
+      method: 'POST',
       url: url,
+      data: {username: localStorage.getItem("username"), notificationId: notification['mongoId']},
       headers: {
         'x-access': localStorage.getItem("token_api")
     }})
