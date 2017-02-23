@@ -15,4 +15,9 @@ scp /Users/Carlos/Workspace/KyrosView/KyrosView_ionic/platforms/android/build/ou
 ---
 SUBIR CHANGELOG:
 gulp gen-changelog
-scp /Applications/MAMP/htdocs/webkyrosapp/changelog.html root@192.168.29.4:/home/kyros/www/files/app/apk/mypush/
+scp /Applications/MAMP/htdocs/webkyrosapp/changelog.html root@192.168.29.4:/home/kyros/www/files/app
+
+
+--
+SUBIR manual de usuario:
+scp /Volumes/Macintosh HD/Users/Carlos/DeimosCloud/Manuales/KyrosAPP/KyrosApp_1_0.doc root@192.168.29.4:/home/kyros/www/files/app
