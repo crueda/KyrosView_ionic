@@ -1,23 +1,15 @@
-# Registro de cambios
+# Kyros MyPush - Registro de cambios
 Todos los cambios importantes realizados en este proyecto será documentado en este fichero
 
-## [1.0.0] - 2017-01-31
+## [0.7] - 2017-02-20
 ### Funcionalidades añadidas
-- Gestion de permisos:
-	- Se han definido permisos de lectura y escritura para cada entidad
+- Informe de actividad diaria y mapa:
+	- En la pestaña "actividad" se ha includo la información de actividad diaria del día anterior.
+	- Tambien se han incluido los datos de odometro en esta misma pestaña de "actividad".
 
 ### Mejoras y funcionalidades menores
-- Validación por token JWT.
-- Test automáticos con mocha.
-
-## [1.0.1] - 2017-02-02
-### Funcionalidades añadidas
-- Areas:
-	- Consultar todas las áreas.
-
-### Mejoras y funcionalidades menores
-- 
+- Corrección de bug en el filtro de notificaciones.
+- Corrección de bug en la configuración de push para un dispositivo.
 
 
-[1.0.0]: https://api.kyroslbs.com/
-[1.0.1]: https://api.kyroslbs.com/
+[0.7]: https://files.kyroslbs.com/app/apk/mypush/kyrosV0_7.apk
