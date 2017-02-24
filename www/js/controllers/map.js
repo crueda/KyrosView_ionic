@@ -374,6 +374,9 @@ angular.module('main.map', [])
       if ($rootScope.tracking.length>0) {
         var pathCoordinates = [];
         var bounds = new google.maps.LatLngBounds();
+        var infoWindowStart;
+        var infoWindowEnd;
+        var markers = [];
         for (var t=0; t<$rootScope.tracking.length; t++) {
           var latLng = new google.maps.LatLng($rootScope.tracking[t].latitude, $rootScope.tracking[t].longitude);         
           var point = {lat: $rootScope.tracking[t].latitude, lng: $rootScope.tracking[t].longitude};
@@ -388,8 +391,103 @@ angular.module('main.map', [])
               icon: image,
               position: latLng
           }); 
-        bounds.extend(latLng);
-        }      
+          markers.push(marker);
+
+          if (t==0) {
+            // InfoWindow content
+            var content = '<div id="iw-container">' +
+              '<div class="iw-title">' + 'Inicio jornada' + '</div>' +
+              '<div class="iw-content">' +
+              '<div class="iw-subTitle">Coordenadas:</div>' +
+              '<p>' + $rootScope.tracking[t].latitude.toFixed(4) + ',' + $rootScope.tracking[t].longitude.toFixed(4) + '</p>' +
+              '<div class="iw-subTitle">Fecha:</div>' +
+              '<p>'  + getEventDate(parseInt($rootScope.tracking[t].timestamp)) + '</p>' + 
+              '</div>' +
+              '<div class="iw-bottom-gradient"></div>' +
+              '</div>';
+
+            var compiled = $compile(content)($scope);
+            infoWindowStart = new google.maps.InfoWindow({
+                content: compiled[0],
+                maxWidth: 180
+            });
+          
+          } else if (t==$rootScope.tracking.length-1) {
+
+            // InfoWindow content
+            var content = '<div id="iw-container">' +
+              '<div class="iw-title">' + 'Fin jornada' + '</div>' +
+              '<div class="iw-content">' +
+              '<div class="iw-subTitle">Coordenadas:</div>' +
+              '<p>' + $rootScope.tracking[t].latitude.toFixed(4) + ',' + $rootScope.tracking[t].longitude.toFixed(4) + '</p>' +
+              '<div class="iw-subTitle">Fecha:</div>' +
+              '<p>'  + getEventDate(parseInt($rootScope.tracking[t].timestamp)) + '</p>' + 
+              '</div>' +
+              '<div class="iw-bottom-gradient"></div>' +
+              '</div>';
+
+            var compiled = $compile(content)($scope);
+            infoWindowEnd = new google.maps.InfoWindow({
+                content: compiled[0],
+                maxWidth: 180
+            });
+          }
+
+            google.maps.event.addListener(marker, 'click', function () {
+                infoWindowStart.open($scope.map, markers[0]);
+                infoWindowEnd.open($scope.map, markers[$rootScope.tracking.length-1]);
+            }); 
+
+          bounds.extend(latLng);
+        } // for    
+
+            google.maps.event.addListener($scope.map, 'click', function() {
+              infoWindowStart.close();
+              infoWindowEnd.close();
+            });
+           
+            google.maps.event.addListener(infoWindowStart, 'domready', function() {
+              var iwOuter = $('.gm-style-iw');
+              var iwBackground = iwOuter.prev();
+              iwBackground.children(':nth-child(2)').css({'display' : 'none'});
+              iwBackground.children(':nth-child(4)').css({'display' : 'none'});
+              iwOuter.parent().parent().css({left: '10px'});
+              iwBackground.children(':nth-child(1)').attr('style', function(i,s){ return s + 'left: 96px !important;'});
+              iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'left: 96px !important;'});
+              iwBackground.children(':nth-child(3)').find('div').children().css({'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 1px 6px', 'z-index' : '1'});
+              var iwCloseBtn = iwOuter.next();
+              iwCloseBtn.css({opacity: '1', right: '1px', top: '1px', border: '7px solid #48b5e9', 'border-radius': '23px', 'box-shadow': '0 0 5px #3990B9'});
+
+              if($('.iw-content').height() < 140){
+                $('.iw-bottom-gradient').css({display: 'none'});
+              } 
+
+              iwCloseBtn.mouseout(function(){
+                $(this).css({opacity: '1'});
+              });
+            });
+
+            google.maps.event.addListener(infoWindowEnd, 'domready', function() {
+              var iwOuter = $('.gm-style-iw');
+              var iwBackground = iwOuter.prev();
+              iwBackground.children(':nth-child(2)').css({'display' : 'none'});
+              iwBackground.children(':nth-child(4)').css({'display' : 'none'});
+              iwOuter.parent().parent().css({left: '10px'});
+              iwBackground.children(':nth-child(1)').attr('style', function(i,s){ return s + 'left: 96px !important;'});
+              iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'left: 96px !important;'});
+              iwBackground.children(':nth-child(3)').find('div').children().css({'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 1px 6px', 'z-index' : '1'});
+              var iwCloseBtn = iwOuter.next();
+              iwCloseBtn.css({opacity: '1', right: '1px', top: '1px', border: '7px solid #48b5e9', 'border-radius': '23px', 'box-shadow': '0 0 5px #3990B9'});
+
+              if($('.iw-content').height() < 140){
+                $('.iw-bottom-gradient').css({display: 'none'});
+              } 
+
+              iwCloseBtn.mouseout(function(){
+                $(this).css({opacity: '1'});
+              });
+            });
+
         var historicPath = new google.maps.Polyline({
           path: pathCoordinates,
           strokeColor: '#0000FF',
