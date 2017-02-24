@@ -1,9 +1,10 @@
 function saveToken ($http, URL, APP) {
-  var url = APP.api_base + URL.saveToken + "?username="+ localStorage.getItem("username") + "&token="+ localStorage.getItem("token");
+  var url = APP.api_base + URL.saveToken; // + "?username="+ localStorage.getItem("username") + "&token="+ localStorage.getItem("token");
     //console.log(url);
     $http({
-    method: 'GET',
+    method: 'POST',
     url: url,
+    data: {username: localStorage.getItem("username"), token: localStorage.getItem("token")},
     headers: {
         'x-access': localStorage.getItem("token_api")
     }}).success(function(data, status, headers,config){ 
@@ -13,8 +14,9 @@ function saveToken ($http, URL, APP) {
 }
 
 function saveDeviceInfo ($http, URL, APP) {
-  var url = APP.api_base + URL.saveDeviceInfo + "/"
-  + localStorage.getItem("username") + "?token="+ localStorage.getItem("token") 
+  var url = APP.api_base + URL.saveDeviceInfo + "/" + localStorage.getItem("username"); 
+
+  /* + "?token="+ localStorage.getItem("token") 
   + "&device_model=" + localStorage.getItem("device_model")
   + "&device_platform=" + localStorage.getItem("device_platform")
   + "&device_version=" + localStorage.getItem("device_version")
@@ -23,11 +25,23 @@ function saveDeviceInfo ($http, URL, APP) {
   + "&device_uuid=" + localStorage.getItem("device_uuid")
   + "&device_height=" + localStorage.getItem("device_height")
   + "&device_width=" + localStorage.getItem("device_width")
-  + "&device_language=" + localStorage.getItem("device_language");
+  + "&device_language=" + localStorage.getItem("device_language");*/
     console.log(url);
     $http({
-    method: 'GET',
+    method: 'POST',
     url: url,
+    data: {
+      token: localStorage.getItem("token"), 
+      device_model: localStorage.getItem("device_model"), 
+      device_platform: localStorage.getItem("device_platform"), 
+      device_version: localStorage.getItem("device_version"), 
+      device_manufacturer: localStorage.getItem("device_manufacturer"), 
+      device_serial: localStorage.getItem("device_serial"), 
+      device_uuid: localStorage.getItem("device_uuid"), 
+      device_height: localStorage.getItem("device_height"), 
+      device_width: localStorage.getItem("device_width"), 
+      device_language: localStorage.getItem("device_language") 
+    },
     headers: {
         'x-access': localStorage.getItem("token_api")
     }}).success(function(data, status, headers,config){ 
@@ -61,8 +75,6 @@ angular.module('main.login', [])
       $scope.data = {};      
     }
     $scope.data = {username: 'crueda', password: 'dat1234'};
-    //$scope.data = {username: 'test', password: 'test'};
-
 
     if (localStorage.getItem("check_remember")=="true") {
       $scope.settings = {

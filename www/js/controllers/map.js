@@ -52,11 +52,12 @@ angular.module('main.map', [])
       var initDate = actualDate - (86400000/12)*8;
 
       var bounds = new google.maps.LatLngBounds();
-      var url = APP.api_base + URL.trackingVehicle + "/" + localStorage.getItem("notificationSelectedVehicleLicense") + "?initDate=" + initDate + "&endDate=" + actualDate;
+      var url = APP.api_base + URL.trackingVehicle + "/" + localStorage.getItem("notificationSelectedVehicleLicense");// + "?initDate=" + initDate + "&endDate=" + actualDate;
       //console.log(url);
       $http({
-        method: 'GET',
+        method: 'POST',
         url: url,
+        data: {initDate: initDate, endDate: actualDate},
         headers: {
           'x-access': localStorage.getItem("token_api")
         }}).success(function(data, status, headers,config){  

@@ -20,13 +20,13 @@ angular.module('main')
   login: '/api/app/login',
   archiveNotification: '/api/app/notification/archive',
   archiveAllNotifications: '/api/app/notification/archive/user',
-  getNotification: '/api/app/push/notification',
   getNotificationsLimit: '/api/app/notificationLimit',
   listDevices: '/api/app/monitorList',
   saveToken: '/api/app/notification/setToken',
   saveDeviceInfo: '/api/app/setDeviceInfo/user',
   tracking1vehicle: '/api/app/tracking1/vehicle',
   trackingVehicle: '/api/app/tracking/vehicle',
+
   setDefaultVehicle: '/api/app/vehicle/setAsDefault',
   configEventChange: '/api/app/notification/config/change',
   configUserPreferences: '/api/app/user',
@@ -38,6 +38,9 @@ angular.module('main')
   getReportDailyData: '/api/app/report_daily/vehicle',
   resetGraphData: '/api/app/graph/reset/vehicle',
 
+
+
+  //getNotification: '/api/app/push/notification',
   //getIcon: '/api/icon',
   //getIcons: '/api/icons',
   //configNotificationsEnable: '/api/app/notification/enable/user',
