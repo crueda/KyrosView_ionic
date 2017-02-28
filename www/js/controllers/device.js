@@ -98,11 +98,12 @@ angular.module('main.device', ['ionic'])
       maxWidth: 200,
       showDelay: 0
     });    
-    var url = APP.api_base + URL.getConfigNotifications + "/" + localStorage.getItem("username") + "?vehicleLicense="+ localStorage.getItem("deviceSelected");
+    var url = APP.api_base + URL.getConfigNotifications + "/" + localStorage.getItem("username");// + "?vehicleLicense="+ localStorage.getItem("deviceSelected");
     //console.log(url);
     $http({
-      method: 'GET',
+      method: 'POST',
       url: url,
+      data: {vehicleLicense: localStorage.getItem("deviceSelected")},
       headers: {
         'x-access': localStorage.getItem("token_api")
       }})
@@ -168,7 +169,7 @@ angular.module('main.device', ['ionic'])
         $http({
           method: 'POST',
           url: url,
-          data: {username: localStorage.getItem("username"), vehicleLicense: localStorage.getItem("deviceSelected"), eventType: eventType, enabled: enableConfig},
+          data: {username: localStorage.getItem("username"), vehicle_license: localStorage.getItem("deviceSelected"), eventType: event_type, enabled: enableConfig},
           headers: {
             'x-access': localStorage.getItem("token_api")
           }})
@@ -185,6 +186,7 @@ angular.module('main.device', ['ionic'])
    $scope.showGraphsDevice = function() {
       localStorage.setItem("mapmode", mapmode); 
       $state.go('tab.graphs'); 
+      
    }
 
    $scope.showMapDevice = function() {

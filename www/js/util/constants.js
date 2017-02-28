@@ -26,18 +26,19 @@ angular.module('main')
   saveDeviceInfo: '/api/app/setDeviceInfo/user',
   tracking1vehicle: '/api/app/tracking1/vehicle',
   trackingVehicle: '/api/app/tracking/vehicle',
-
   setDefaultVehicle: '/api/app/vehicle/setAsDefault',
   configEventChange: '/api/app/notification/config/change',
   configUserPreferences: '/api/app/user',
   getConfigNotifications: '/api/app/notification/config/user',
   getStatusNotifications: '/api/app/notification/status/user',
-  getIconsInfo: '/api/iconInfo',
-  getAllIcons: '/api/allicons',
+
   getGraphData: '/api/app/graph/vehicle',
   getReportDailyData: '/api/app/report_daily/vehicle',
   resetGraphData: '/api/app/graph/reset/vehicle',
 
+
+  //getIconsInfo: '/api/iconInfo',
+  //getAllIcons: '/api/allicons',
 
 
   //getNotification: '/api/app/push/notification',

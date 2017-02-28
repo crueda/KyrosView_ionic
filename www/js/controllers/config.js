@@ -54,10 +54,11 @@ $scope.switchLanguage = function(key) {
     } else {
       localStorage.setItem("group_notifications", 0);
     } 
-    url = APP.api_base + URL.configUserPreferences + "/" + localStorage.getItem("username") + "?push_mode=" + push_mode + "&group_mode=" + group_mode + "&max_show_notifications=" + optionSelected;    
+    url = APP.api_base + URL.configUserPreferences + "/" + localStorage.getItem("username");// + "?push_mode=" + push_mode + "&group_mode=" + group_mode + "&max_show_notifications=" + optionSelected;    
     $http({
-      method: 'GET',
+      method: 'POST',
       url: url,
+      data: {push_mode: push_mode, group_mode: group_mode, max_show_notifications: optionSelected},
       headers: {
         'x-access': localStorage.getItem("token_api")
       }})
@@ -80,10 +81,11 @@ $scope.switchLanguage = function(key) {
     } else {
     	localStorage.setItem("group_notifications", 0);
     } 
-    url = APP.api_base + URL.configUserPreferences + "/" + localStorage.getItem("username") + "?push_mode=" + push_mode + "&group_mode=" + group_mode;    
+    url = APP.api_base + URL.configUserPreferences + "/" + localStorage.getItem("username");// + "?push_mode=" + push_mode + "&group_mode=" + group_mode;    
     $http({
-      method: 'GET',
+      method: 'POST',
       url: url,
+      data: {push_mode: push_mode, group_mode: group_mode},
       headers: {
         'x-access': localStorage.getItem("token_api")
       }})
