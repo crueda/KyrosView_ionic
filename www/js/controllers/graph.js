@@ -33,7 +33,7 @@ function getEventDescription(eventType) {
     return "";
   }
 
-angular.module('main.controllers', [])
+angular.module('main.graphs', [])
 .controller('GraphCtrl', function($scope, $rootScope, $compile, $timeout, $http, $state, $ionicPopup, $ionicLoading, $cordovaGeolocation, APP, URL, MAP_MODE, $translate) {
 
     $translate(['MSG_CONFIRM_COUNTERS', 'NO_EVENTS', 'NOTIFICATIONS', 'TRACKINGS', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY']).then(function (translations) {

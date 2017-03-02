@@ -8,7 +8,7 @@ function saveToken ($http, URL) {
 }
 // KyrosView Main App
 //angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notification', 'main.device', 'main.map', 'main.config', 'main.services', 'ngCordova', 'ion-tree-list'])
-angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notification', 'main.device', 'main.map', 'main.config', 'main.services', 'ngCordova', 'ionic.ion.autoListDivider', 'pascalprecht.translate', 'chart.js'])
+angular.module('main', ['ionic', 'main.intro', 'main.controllers', 'main.graphs', 'main.login', 'main.notification', 'main.device', 'main.map', 'main.config', 'main.services', 'ngCordova', 'ionic.ion.autoListDivider', 'pascalprecht.translate', 'chart.js'])
 
 .run(function($rootScope, $ionicPlatform, $http, $ionicPopup, $cordovaTouchID, $cordovaPushV5, $state, URL, APP) {
   $ionicPlatform.ready(function() {
@@ -60,23 +60,27 @@ angular.module('main', ['ionic', 'main.controllers', 'main.login', 'main.notific
     var isAndroid = ionic.Platform.isAndroid();
     var isWindowsPhone = ionic.Platform.isWindowsPhone();
 
-    if (device!=undefined) {
+    try {
       localStorage.setItem("device_model", device.model);
       localStorage.setItem("device_platform", device.platform);
       localStorage.setItem("device_version", device.version);
       localStorage.setItem("device_manufacturer", device.manufacturer);
       localStorage.setItem("device_serial", device.serial);
       localStorage.setItem("device_uuid", device.uuid);      
-    }
+    } catch (error) {}
+
     localStorage.setItem("device_height", window.innerHeight);
     localStorage.setItem("device_width", window.innerWidth);
-     
+    
+
+    try {   
     navigator.globalization.getPreferredLanguage(
         function (language) {
           localStorage.setItem("device_language", language.value);
         },
         function () {localStorage.setItem("device_language", "unknow")}
     );
+    } catch (error) {}
 
     /*
     navigator.globalization.getLocaleName(
@@ -270,14 +274,17 @@ $translateProvider
   // Each state's controller can be found in controllers.js
   $stateProvider
 
-  // setup an abstract state for the tabs directive
-    .state('tab', {
+  .state('intro', {
+    url: '/intro',
+    templateUrl: 'templates/intro.html',
+    controller: 'IntroCtrl'
+  })
+
+  .state('tab', {
     url: '/tab',
     abstract: true,
     templateUrl: 'templates/tabs.html'
   })
-
-  // Each tab has its own nav history stack:
 
   .state('login', {
       url: '/login',
@@ -285,7 +292,6 @@ $translateProvider
       templateUrl: 'templates/login/login.html',
       controller: 'LoginCtrl'
   })
-
 
   .state('tab.map', {
     url: '/map',
@@ -378,6 +384,7 @@ $translateProvider
     }
   })
 
+
   .state('tab.test', {
     url: '/test',
     cache: false,
@@ -391,7 +398,8 @@ $translateProvider
 
   // if none of the above states are matched, use this as the fallback
   //$urlRouterProvider.otherwise('/tab/dash');
-  $urlRouterProvider.otherwise('login');
+  //$urlRouterProvider.otherwise('login');
+  $urlRouterProvider.otherwise('intro');
 
 });
 

@@ -31,7 +31,6 @@ angular.module('main')
   configUserPreferences: '/api/app/user',
   getConfigNotifications: '/api/app/notification/config/user',
   getStatusNotifications: '/api/app/notification/status/user',
-
   getGraphData: '/api/app/graph/vehicle',
   getReportDailyData: '/api/app/report_daily/vehicle',
   resetGraphData: '/api/app/graph/reset/vehicle',
@@ -39,7 +38,6 @@ angular.module('main')
 
   //getIconsInfo: '/api/iconInfo',
   //getAllIcons: '/api/allicons',
-
 
   //getNotification: '/api/app/push/notification',
   //getIcon: '/api/icon',
