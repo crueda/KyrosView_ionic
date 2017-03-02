@@ -69,9 +69,15 @@ angular.module('main', ['ionic', 'main.intro', 'main.controllers', 'main.graphs'
       localStorage.setItem("device_uuid", device.uuid);      
     } catch (error) {}
 
+//console.log ( window.innerHeight);
+//console.log ( window.innerWidth);
     localStorage.setItem("device_height", window.innerHeight);
     localStorage.setItem("device_width", window.innerWidth);
-    
+    /*
+      var alertPopup = $ionicPopup.alert({
+            title: '**',
+            template: '->'+window.innerHeight +"---" + window.innerWidth
+        });*/
 
     try {   
     navigator.globalization.getPreferredLanguage(
@@ -397,9 +403,12 @@ $translateProvider
   });
 
   // if none of the above states are matched, use this as the fallback
-  //$urlRouterProvider.otherwise('/tab/dash');
-  //$urlRouterProvider.otherwise('login');
-  $urlRouterProvider.otherwise('intro');
+  if (localStorage.getItem("intro_status")==1) {
+    $urlRouterProvider.otherwise('login');
+    //$urlRouterProvider.otherwise('intro');
+  } else {
+    $urlRouterProvider.otherwise('intro');
+  }
 
 });
 
