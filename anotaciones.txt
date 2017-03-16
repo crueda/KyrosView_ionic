@@ -22,4 +22,6 @@ scp /Applications/MAMP/htdocs/webkyrosapp/changelog.html root@192.168.29.4:/home
 SUBIR manual de usuario:
 scp /Volumes/Macintosh HD/Users/Carlos/DeimosCloud/Manuales/KyrosAPP/KyrosApp_1_0.docx root@192.168.29.4:/home/kyros/www/files/app
 
+scp ./Users/Carlos/DeimosCloud/Manuales/KyrosAPP/KyrosApp_1_0.docx root@192.168.29.4:/home/kyros/www/files/app
+
 scp KyrosApp_1_0.docx root@192.168.29.4:/home/kyros/www/files/app

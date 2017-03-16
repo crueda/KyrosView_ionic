@@ -1,6 +1,10 @@
 # Kyros MyPush - Registro de cambios
 Todos los cambios importantes realizados en este proyecto será documentado en este fichero
 
+## [0.8] - 2017-03-02
+### Funcionalidades añadidas
+- Pantalla inicial con descripción de funcionalidades.
+
 ## [0.7] - 2017-02-20
 ### Funcionalidades añadidas
 - Informe de actividad diaria y mapa:
@@ -12,4 +16,5 @@ Todos los cambios importantes realizados en este proyecto será documentado en e
 - Corrección de bug en la configuración de push para un dispositivo.
 
 
+[0.8]: https://files.kyroslbs.com/app/apk/mypush/kyrosV0_8.apk
 [0.7]: https://files.kyroslbs.com/app/apk/mypush/kyrosV0_7.apk
