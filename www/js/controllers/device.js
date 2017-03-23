@@ -11,7 +11,6 @@ devices = devices.sort(function(a, b) {
 
 
 function getEventDescription(eventType) {
-    //var evento = EVENT_ENUM.getByValue('value', eventType);
     var evento = EventEnum[eventType];
     if (evento!=undefined) {
       return EventEnum.properties[evento].description;      
@@ -48,7 +47,6 @@ angular.module('main.device', ['ionic'])
       }})
     .success(function(data, status, headers,config){   
       devices = data;
-      //$scope.data = { "devices" : [], "search" : '' };
       $scope.data = { "devices" : devices, "search" : '' };
       $scope.search = function() {
       DevicesDataService.searchDevices($scope.data.search).then(
@@ -67,25 +65,10 @@ angular.module('main.device', ['ionic'])
           });
         $timeout(function() {
              $ionicLoading.hide();
+             $state.go('login');
           }, 1500);
     })
   }
-  /*
-  $scope.$on('$ionTreeList:LoadComplete', function(event, items) {
-     $ionicLoading.hide();
-  });
-
-    $scope.$on('$ionTreeList:ItemClicked', function(event, item) {
-  // process 'item'
-
-  if (item.type===1) {
-    localStorage.setItem("deviceSelected", item.name); 
-    //console.log("click: " + item.name); 
-    $state.go('tab.device-detail');
-  }
-  });
-    */
-
 
 })
 
@@ -99,7 +82,6 @@ angular.module('main.device', ['ionic'])
       showDelay: 0
     });    
     var url = APP.api_base + URL.getConfigNotifications + "/" + localStorage.getItem("username");// + "?vehicleLicense="+ localStorage.getItem("deviceSelected");
-    //console.log(url);
     $http({
       method: 'POST',
       url: url,
@@ -147,14 +129,13 @@ angular.module('main.device', ['ionic'])
             });
             $timeout(function() {
                $ionicLoading.hide();
+               $state.go('login');
             }, 1500);
       });
 
 
    var mapmode = MAP_MODE.device;
-
    $scope.titulo_device = localStorage.getItem("deviceSelected");
-   //console.log (localStorage.getItem("deviceSelected"));
 
    $scope.configNotificationChange = function(id, eventType) {
     for (var i=0; i<$scope.notificationsConfig.length; i++) {

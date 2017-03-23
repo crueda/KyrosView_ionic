@@ -1,6 +1,5 @@
 function saveToken ($http, URL, APP) {
   var url = APP.api_base + URL.saveToken; // + "?username="+ localStorage.getItem("username") + "&token="+ localStorage.getItem("token");
-    //console.log(url);
     $http({
     method: 'POST',
     url: url,
@@ -15,18 +14,6 @@ function saveToken ($http, URL, APP) {
 
 function saveDeviceInfo ($http, URL, APP) {
   var url = APP.api_base + URL.saveDeviceInfo + "/" + localStorage.getItem("username"); 
-
-  /* + "?token="+ localStorage.getItem("token") 
-  + "&device_model=" + localStorage.getItem("device_model")
-  + "&device_platform=" + localStorage.getItem("device_platform")
-  + "&device_version=" + localStorage.getItem("device_version")
-  + "&device_manufacturer=" + localStorage.getItem("device_manufacturer")
-  + "&device_serial=" + localStorage.getItem("device_serial")
-  + "&device_uuid=" + localStorage.getItem("device_uuid")
-  + "&device_height=" + localStorage.getItem("device_height")
-  + "&device_width=" + localStorage.getItem("device_width")
-  + "&device_language=" + localStorage.getItem("device_language");*/
-    console.log(url);
     $http({
     method: 'POST',
     url: url,
@@ -52,8 +39,6 @@ function saveDeviceInfo ($http, URL, APP) {
 
 angular.module('main.login', [])
 .controller('LoginCtrl', function($scope, $rootScope, $http, LoginService, $ionicLoading, $timeout, $ionicPopup, $state, URL, MAP_MODE, APP) {
-
-
   $scope.clean = function() {
       $scope.data = {}; 
        $scope.settings = {
@@ -176,6 +161,7 @@ angular.module('main.login', [])
             });
             $timeout(function() {
                $ionicLoading.hide();
+               $state.go('login');
             }, 1500);
           });
 

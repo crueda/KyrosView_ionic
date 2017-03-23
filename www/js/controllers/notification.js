@@ -118,7 +118,7 @@ var num_notifications = 0;
 
  
 angular.module('main.notification', [])
-.controller('NotificationsCtrl', function($rootScope, $scope, $state, $http, Notifications, $ionicPopup, $ionicLoading, $timeout, URL, APP, $sce) {
+.controller('NotificationsCtrl', function($rootScope, $scope, $state, $http, Notifications, $ionicPopup, $ionicLoading, $timeout, URL, APP, $sce, $translate) {
 
     $translate(['MSG_CONFIRM_TITLE', 'MSG_CONFIRM_ARCHIVE_ALL']).then(function (translations) {
       msg_confirm_title = translations.MSG_CONFIRM_TITLE;
@@ -139,36 +139,32 @@ angular.module('main.notification', [])
     var confirmPopup = $ionicPopup.confirm({
      title: msg_confirm_title,
      template: msg_confirm_archive_all
-   });
+    });
 
-   confirmPopup.then(function(res) {
-     if(res) {
-        archiveAllNotification ($http, $scope, URL, APP);
-     } 
-   });
-   
-
-  }
+     confirmPopup.then(function(res) {
+       if(res) {
+          archiveAllNotification ($http, $scope, URL, APP);
+       } 
+     });   
+    }
 
 
 
   $scope.doRefresh = function() {
     $timeout( function() {
-  var max_notifications = 100;
-  if (localStorage.getItem("max_show_notifications")!=undefined) {
-    max_notifications = localStorage.getItem("max_show_notifications");
-  }
+    var max_notifications = 100;
+    if (localStorage.getItem("max_show_notifications")!=undefined) {
+      max_notifications = localStorage.getItem("max_show_notifications");
+    }
     var url = APP.api_base + URL.getNotificationsLimit;// + "?username="+localStorage.getItem("username") + "&max=" + max_notifications + "&group=" + localStorage.getItem("group_notifications");
 
-$ionicLoading.show({
-    //template: '<ion-spinner icon="bubbles"></ion-spinner><p>LOADING...</p>'
-    //templateUrl: 'loading.html',
-    content: 'Loading',
-    animation: 'fade-in',
-    showBackdrop: true,
-    maxWidth: 200,
-    showDelay: 0
-  });
+    $ionicLoading.show({
+        content: 'Loading',
+        animation: 'fade-in',
+        showBackdrop: true,
+        maxWidth: 200,
+        showDelay: 0
+      });
 
     console.log(url);
     notifications = [];
@@ -231,7 +227,7 @@ $ionicLoading.show({
         // Texto del indicador
         num_notifications = data.num_notifications;
 
-          $rootScope.num_notifications = num_notifications;
+        $rootScope.num_notifications = num_notifications;
 
           // Anchura del indicador
           if (num_notifications > 999) {
@@ -251,11 +247,11 @@ $ionicLoading.show({
             $scope.top_bubble = 6;            
           }
 
-      $ionicLoading.show({
-        template: 'Actualizado',
-        duration: 700,
-        scope: $scope
-      });
+        $ionicLoading.show({
+          template: 'Actualizado',
+          duration: 700,
+          scope: $scope
+        });
 
           $scope.$broadcast('scroll.refreshComplete');
         })
@@ -267,13 +263,11 @@ $ionicLoading.show({
           });
           $timeout(function() {
              $scope.$broadcast('scroll.refreshComplete');
-             //$state.go('login');
+             $ionicLoading.hide();
+             $state.go('login');
           }, 1500);
-          $state.go('login');            
         });
 
-      //Stop the ion-refresher from spinning
-      //$scope.$broadcast('scroll.refreshComplete');
     
     }, 200); //2000
   };
@@ -472,84 +466,9 @@ $scope.setAsDefault = function() {
 
     localStorage.setItem("notificationSelected", $stateParams.notificationId);  
     $scope.notification = notifications[$stateParams.notificationId];  
-    //if ($rootScope.eventIcon!=undefined)  
-      //$scope.trustedHtmlIconEvent = $sce.trustAsHtml($rootScope.eventIcon[notifications[$stateParams.notificationId].eventType].svg);
   
-  /*
-  } else {
-    // viene de un click sobre un mensaje push -> buscar la notificacion
-    var notificationPush = {};
-
-    var url = APP.api_base + URL.getNotification + "/"+localStorage.getItem("notificationPushMongoId");
-    localStorage.setItem("notificationPushMongoId", 0);
-
-    $ionicLoading.show({
-      content: 'Loading',
-      animation: 'fade-in',
-      showBackdrop: true,
-      maxWidth: 200,
-      showDelay: 0
-    });
-    $http.get(url)
-      .success(function(data, status, headers,config){
-        $ionicLoading.hide();
-
-
-        if (data[0]!=undefined) {   
-
-          notificationPush = { 
-            mongoId: data[0]._id,
-            category: getEventCategory(data[0].subtype),
-            vehicleLicense: data[0].vehicle_license,
-            name: getEventDescription(data[0].subtype),
-            icon: getEventIcon(data[0].subtype),
-            date: getEventDate(data[0].timestamp),
-            latitude: data[0].location.coordinates[1].toFixed(4),
-            longitude: data[0].location.coordinates[0].toFixed(4),
-            speed: data[0].speed.toFixed(1),
-            heading: data[0].heading.toFixed(1),
-            altitude: data[0].altitude.toFixed(0),
-            geocoding: data[0].geocoding,
-            battery: data[0].battery            
-          }
-          $scope.notification = notificationPush;  
-          if ($rootScope.eventIcon!=undefined)  
-            $scope.trustedHtmlIcon = $sce.trustAsHtml($rootScope.eventIcon[data[0].subtype].svg);
-      } 
-      
-    })
-    .error(function(data, status, headers,config){
-      $ionicLoading.hide();
-      $ionicLoading.show({
-        template: 'Error de red',
-        scope: $scope
-      });
-      $timeout(function() {
-        $ionicLoading.hide();
-        $state.go('login');
-      }, 1500);
-      
-    });
-
-    //console.log(notificationPush.vehicleLicense);
-    //$scope.notification = notificationPush;   
-  }
-  */
+  
   $scope.archiveSelectNotification = function(notificationId) { 
-    /*
-    var confirmPopup = $ionicPopup.confirm({
-     title: 'Confirmar',
-     template: '¿Deseas eliminar esta notificación?'
-   });
-   confirmPopup.then(function(res) {
-     if(res) {
-        archiveNotification ($http, notificationId, URL, APP);
-        $state.go('tab.notifications', {cache: false, mode: localStorage.getItem("group_notifications")});
-     } 
-   });
-   */
-
- 
 
 
     go_notificationId =  parseInt(localStorage.getItem("notificationSelected")) + 1;
@@ -560,9 +479,6 @@ $scope.setAsDefault = function() {
     localStorage.setItem("notificationSelected", go_notificationId);
     
     $rootScope.num_notifications = $rootScope.num_notifications - 1;    
-
-    //if ($rootScope.eventIcon!=undefined)  
-      //$scope.trustedHtmlIconEvent = $sce.trustAsHtml($rootScope.eventIcon[notifications[go_notificationId].eventType].svg);   
 
     archiveNotification ($http, notificationId, URL, APP);
     notifications.splice(go_notificationId-1, 1);
@@ -620,7 +536,6 @@ $scope.setAsDefault = function() {
 
     localStorage.setItem("mapmode", MAP_MODE.notification);
 
-    //$scope.titulo_mapa = localStorage.getItem("notificationSelected");          
     $state.go('tab.graphs');
 
   };
