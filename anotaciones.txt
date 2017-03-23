@@ -25,3 +25,9 @@ scp /Volumes/Macintosh HD/Users/Carlos/DeimosCloud/Manuales/KyrosAPP/KyrosApp_1_
 scp ./Users/Carlos/DeimosCloud/Manuales/KyrosAPP/KyrosApp_1_0.docx root@192.168.29.4:/home/kyros/www/files/app
 
 scp KyrosApp_1_0.docx root@192.168.29.4:/home/kyros/www/files/app
+
+
+
+---
+arrancar el servidor en background
+screen -d -m -L ionic serve --nolivereload --nobrowser

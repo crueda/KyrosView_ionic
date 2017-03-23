@@ -555,27 +555,11 @@ angular.module('main.map', [])
       });
 
     } else {
-      //$scope.titulo_mapa = "Mapa";
-      //console.log("titulo a:"+"Mapaa");
-      //var actualLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
       var actualLatLng = new google.maps.LatLng(41, -3);
       $scope.map.setCenter(actualLatLng);
       $scope.map.setZoom(15);
-      /*
-      var marker = new google.maps.Marker({
-          map: $scope.map,
-          animation: google.maps.Animation.DROP,
-          position: actualLatLng
-      });   
-      var infoWindow = new google.maps.InfoWindow({
-          content: "Estoy aqui"
-      });
-      google.maps.event.addListener(marker, 'click', function () {
-          infoWindow.open($scope.map, marker);
-      });*/ 
     }
-      
-     
+           
     });
 
  

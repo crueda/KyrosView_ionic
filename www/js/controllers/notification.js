@@ -120,6 +120,12 @@ var num_notifications = 0;
 angular.module('main.notification', [])
 .controller('NotificationsCtrl', function($rootScope, $scope, $state, $http, Notifications, $ionicPopup, $ionicLoading, $timeout, URL, APP, $sce) {
 
+    $translate(['MSG_CONFIRM_TITLE', 'MSG_CONFIRM_ARCHIVE_ALL']).then(function (translations) {
+      msg_confirm_title = translations.MSG_CONFIRM_TITLE;
+      msg_confirm_archive_all = translations.MSG_CONFIRM_ARCHIVE_ALL;
+    });
+
+
     $scope.archiveNotifications = function() {
 
     /*
@@ -130,11 +136,9 @@ angular.module('main.notification', [])
         ['Si','No']     // buttonLabels
     );
     */
-
-  
     var confirmPopup = $ionicPopup.confirm({
-     title: 'Confirmar',
-     template: 'Tienes ' + num_notifications + ' notificaciones.\r\n¿Deseas eliminarlas todas?'
+     title: msg_confirm_title,
+     template: msg_confirm_archive_all
    });
 
    confirmPopup.then(function(res) {
@@ -265,7 +269,7 @@ $ionicLoading.show({
              $scope.$broadcast('scroll.refreshComplete');
              //$state.go('login');
           }, 1500);
-          //$state.go('login');            
+          $state.go('login');            
         });
 
       //Stop the ion-refresher from spinning

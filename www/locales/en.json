@@ -50,7 +50,8 @@
   "SUNDAY": "Sun",
   "GENERAL": "General",
   "DAILY": "Daily",
-  "SHOW_EVENTS_MAP": "Show events on map"
-
+  "SHOW_EVENTS_MAP": "Show events on map",
+  "MSG_CONFIRM_TITLE": "Confirm",
+  "MSG_CONFIRM_ARCHIVE_ALL": "Do you want to delete ALL notifications?"
 
 }

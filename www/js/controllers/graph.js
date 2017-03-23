@@ -36,7 +36,8 @@ function getEventDescription(eventType) {
 angular.module('main.graphs', [])
 .controller('GraphCtrl', function($scope, $rootScope, $compile, $timeout, $http, $state, $ionicPopup, $ionicLoading, $cordovaGeolocation, APP, URL, MAP_MODE, $translate) {
 
-    $translate(['MSG_CONFIRM_COUNTERS', 'NO_EVENTS', 'NOTIFICATIONS', 'TRACKINGS', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY']).then(function (translations) {
+    $translate(['MSG_CONFIRM_TITLE', 'MSG_CONFIRM_COUNTERS', 'NO_EVENTS', 'NOTIFICATIONS', 'TRACKINGS', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY']).then(function (translations) {
+      msg_confirm_title = translations.MSG_CONFIRM_TITLE;
       msg_confirm = translations.MSG_CONFIRM_COUNTERS;
       msg_noevents = translations.NO_EVENTS;
       msg_trackings = translations.TRACKINGS;
@@ -106,7 +107,7 @@ angular.module('main.graphs', [])
 
 
     var confirmPopup = $ionicPopup.confirm({
-     title: 'Confirmar',
+     title: msg_confirm_title,
      template: msg_confirm
     });
     confirmPopup.then(function(res) {

@@ -50,7 +50,9 @@
   "SUNDAY": "Dom",
   "GENERAL": "General",
   "DAILY": "Diario",
-  "SHOW_EVENTS_MAP": "Ver eventos en mapa"
+  "SHOW_EVENTS_MAP": "Ver eventos en mapa",
+  "MSG_CONFIRM_TITLE": "Confirmar",
+  "MSG_CONFIRM_ARCHIVE_ALL": "¿Desea eliminar TODAS las notificaciones?"
 
 
 
