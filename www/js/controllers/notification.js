@@ -296,19 +296,8 @@ $scope.filterCategory = function(category) {
   }
 
   if (localStorage.getItem("username")=="") {
-
-      var alertPopup = $ionicPopup.alert({
-            title: '****',
-            template: '2->' +localStorage.getItem("username")
-        });
-
-    //$state.go('login');
+    $state.go('login');
   } else {
-
-var alertPopup = $ionicPopup.alert({
-            title: '****',
-            template: '33->' +localStorage.getItem("username")
-        });
 
  var max_notifications = 100;
   if (localStorage.getItem("max_show_notifications")!=undefined) {
