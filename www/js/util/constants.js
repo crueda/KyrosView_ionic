@@ -2,8 +2,8 @@ angular.module('main')
 
 .constant('APP', {
   version: 10,
-  api_base: 'http://localhost:3003'
-  //api_base: 'https://api.kyroslbs.com'
+  //api_base: 'http://localhost:3003'
+  api_base: 'https://api.kyroslbs.com'
 })
 
 .constant('MAP_MODE', {

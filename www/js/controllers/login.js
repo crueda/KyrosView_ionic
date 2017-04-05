@@ -59,7 +59,7 @@ angular.module('main.login', [])
     } else {
       $scope.data = {};      
     }
-    $scope.data = {username: 'jigo', password: 'dat1234'};
+    //$scope.data = {username: 'jigo', password: 'dat1234'};
 
     if (localStorage.getItem("check_remember")=="true") {
       $scope.settings = {
@@ -108,9 +108,9 @@ angular.module('main.login', [])
               });
             }
             else if (data.status=="ok") {
-              if (data.result[0].vehicle_license!=undefined) {
-                localStorage.setItem("vehicleLicense", data.result[0].vehicle_license);                  
+              if (data.result[0].device_id!=undefined) {
                 localStorage.setItem("deviceId", data.result[0].device_id);                  
+                localStorage.setItem("vehicleLicense", data.result[0].vehicle_license);                  
               } else {
                 localStorage.setItem("vehicleLicense", "");                  
                 localStorage.setItem("deviceId", 0);                  

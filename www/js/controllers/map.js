@@ -116,13 +116,13 @@ angular.module('main.map', [])
               template: 'No existen puntos de tracking'
           });          
         } else {  // vengo de un push
-          $state.go('login');   
+          //$state.go('login');   
         }
 
       }
       })
       .error(function(data, status, headers,config){
-         $state.go('login');  
+         //$state.go('login');  
       });
      }
   };
@@ -179,13 +179,13 @@ angular.module('main.map', [])
               template: 'No existen puntos de tracking'
           });          
         } else {  // vengo de un push
-          $state.go('login');   
+          //$state.go('login');   
         }
 
       }
       })
       .error(function(data, status, headers,config){
-         $state.go('login');  
+         //$state.go('login');  
       });
   };
 
@@ -314,6 +314,12 @@ angular.module('main.map', [])
       //var url = APP.api_base + URL.getNotification + "/" + localStorage.getItem("notificationPushMongoId");
       //$http.get(url)
       //.success(function(data, status, headers,config){  
+
+        /*
+    var alertPopup = $ionicPopup.alert({
+            title: '****en map',
+            template: '->' + localStorage.getItem("notificationPushEventType")
+        });*/
 
     var latLngNotification = new google.maps.LatLng(localStorage.getItem("notificationPushLatitude"), localStorage.getItem("notificationPushLongitude"));
     //var latLngNotification = new google.maps.LatLng(data[0].location.coordinates[1], data[0].location.coordinates[0]);

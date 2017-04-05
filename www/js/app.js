@@ -197,9 +197,10 @@ push.on('notification', function(data) {
     // data.image,
     // data.additionalData
     
-    /*var alertPopup = $ionicPopup.alert({
+    /*
+    var alertPopup = $ionicPopup.alert({
             title: '****',
-            template: '->' + data.additionalData.username + "-" + data.additionalData._id + "-" + data.additionalData.vehicle_license
+            template: '->' +data.additionalData.username
         });
     */
     /*
@@ -212,18 +213,16 @@ push.on('notification', function(data) {
 
 
     //$state.go('tab.notifications',  {cache: false, mode: localStorage.getItem("group_notifications")});      
-
-    //localStorage.setItem("notificationSelectedLatitude", data.additionalData.latitude);
-    //localStorage.setItem("notificationSelectedLongitude", data.additionalData.longitude);
-    localStorage.setItem("notificationPushMongoId", data.additionalData._id);
-    localStorage.setItem("notificationPushLongitude", data.additionalData.coordinates[0]);
-    localStorage.setItem("notificationPushLatitude", data.additionalData.coordinates[1]);
-    localStorage.setItem("notificationPushEventType", data.additionalData.event_type);
-    localStorage.setItem("notificationPushTimestamp", data.additionalData.timestamp);
-    localStorage.setItem("notificationSelectedVehicleLicense", data.additionalData.vehicle_license);
-    if (data.additionalData.username!=undefined) {
-        localStorage.setItem("username", data.additionalData.username);      
-    }
+    try {
+      localStorage.setItem("notificationPushMongoId", data.additionalData._id);
+      localStorage.setItem("username", data.additionalData.username);      
+      localStorage.setItem("notificationPushLongitude", data.additionalData.coordinates[0]);
+      localStorage.setItem("notificationPushLatitude", data.additionalData.coordinates[1]);
+      localStorage.setItem("notificationSelectedDeviceId", data.additionalData.device_id);
+      localStorage.setItem("notificationPushEventType", data.additionalData.event_type);
+      localStorage.setItem("notificationPushTimestamp", data.additionalData.timestamp);
+      localStorage.setItem("notificationSelectedVehicleLicense", data.additionalData.vehicle_license);
+    } catch (e) {}
 
     localStorage.setItem("mapmode", 3);
 

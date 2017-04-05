@@ -123,6 +123,7 @@ angular.module('main.graphs', [])
 
   $scope.resetCounters = function() {
 
+    var deviceId = getGraphDeviceId(MAP_MODE);  
 
     var confirmPopup = $ionicPopup.confirm({
      title: msg_confirm_title,
@@ -131,7 +132,7 @@ angular.module('main.graphs', [])
     confirmPopup.then(function(res) {
       if(res) {
         var vehicleLicense = getGraphVehicleLicense(MAP_MODE);
-        var url = APP.api_base + URL.resetGraphData + "/" + vehicleLicense;
+        var url = APP.api_base + URL.resetGraphData + "/" + deviceId;
         console.log(url);
         $http({
           method: 'GET',
@@ -252,6 +253,8 @@ angular.module('main.graphs', [])
       $scope.graph3_data = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]];
     }
 
+    var deviceId = getGraphDeviceId(MAP_MODE);  
+
     var urlReport = APP.api_base + URL.getReportDailyData + "/" + deviceId;
     console.log(url);
     $http({
@@ -296,12 +299,12 @@ angular.module('main.graphs', [])
     .error(function(data, status, headers,config){
       $ionicLoading.hide();
       $ionicLoading.show({
-        template: 'Error de red',
+        template: 'Vehículo por defecto sin datos',
           scope: $scope
         });
         $timeout(function() {
           $ionicLoading.hide();
-          $state.go('tab.notifications');
+          //$state.go('tab.notifications');
         }, 1500);
       });
 
@@ -311,12 +314,12 @@ angular.module('main.graphs', [])
   .error(function(data, status, headers,config){
     $ionicLoading.hide();
     $ionicLoading.show({
-      template: 'Error de red',
+      template: 'Vehículo por defecto sin datos',
         scope: $scope
       });
       $timeout(function() {
         $ionicLoading.hide();
-        $state.go('tab.notifications');
+        //$state.go('tab.notifications');
       }, 1500);
   });
 
