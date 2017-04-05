@@ -52,8 +52,7 @@ angular.module('main.map', [])
       var initDate = actualDate - (86400000/12)*8;
 
       var bounds = new google.maps.LatLngBounds();
-      var url = APP.api_base + URL.trackingVehicle + "/" + localStorage.getItem("notificationSelectedVehicleLicense");// + "?initDate=" + initDate + "&endDate=" + actualDate;
-      //console.log(url);
+      var url = APP.api_base + URL.trackingDevice + "/" + localStorage.getItem("notificationSelectedDeviceId");
       $http({
         method: 'POST',
         url: url,
@@ -128,6 +127,68 @@ angular.module('main.map', [])
      }
   };
 
+  $scope.historicDefault = function() {
+      var actualDate = new Date().getTime();
+      var initDate = actualDate - (86400000/12)*8;
+
+      var bounds = new google.maps.LatLngBounds();
+      var url = APP.api_base + URL.trackingDevice + "/" + localStorage.getItem("deviceId");
+      $http({
+        method: 'POST',
+        url: url,
+        data: {initDate: initDate, endDate: actualDate},
+        headers: {
+          'x-access': localStorage.getItem("token_api")
+        }}).success(function(data, status, headers,config){  
+        if (data.status=="ok" && data.result.length > 0) {
+        var pathCoordinates = [];
+        for (var i=0; i<data.result.length; i++) {
+ 
+          var point = {lat: data.result[i].location.coordinates[1], lng: data.result[i].location.coordinates[0]};
+          pathCoordinates.push(point);
+          var latLng = new google.maps.LatLng(data.result[i].location.coordinates[1], data.result[i].location.coordinates[0]);
+         
+         var image = {
+            url: 'img/beacon_ball_blue.gif',
+            anchor: new google.maps.Point(10, 10),
+            scaledSize: new google.maps.Size(20, 20)
+          };
+          var marker = new google.maps.Marker({
+              map: $scope.map,
+              icon: image,
+              //animation: google.maps.Animation.DROP,
+              position: latLng
+          });   
+                   
+          bounds.extend(latLng);
+
+        }
+        var historicPath = new google.maps.Polyline({
+          path: pathCoordinates,
+          strokeColor: '#0000FF',
+          strokeOpacity: 1.0,
+          strokeWeight: 3
+        });
+
+        historicPath.setMap($scope.map);
+        $scope.map.fitBounds(bounds);
+      } else {
+        if (status==200) {
+          var alertPopup = $ionicPopup.alert({
+              title: 'Tracking últimas 8 horas',
+              template: 'No existen puntos de tracking'
+          });          
+        } else {  // vengo de un push
+          $state.go('login');   
+        }
+
+      }
+      })
+      .error(function(data, status, headers,config){
+         $state.go('login');  
+      });
+  };
+
   var titulo = "";
   if (localStorage.getItem("mapmode") == MAP_MODE.push) { 
     titulo = localStorage.getItem("notificationSelectedVehicleLicense");
@@ -136,10 +197,10 @@ angular.module('main.map', [])
     titulo = localStorage.getItem("notificationSelectedVehicleLicense") + " - " + localStorage.getItem("notificationSelectedName");
   } 
   else if (localStorage.getItem("mapmode") == MAP_MODE.device) { 
-    titulo = localStorage.getItem("deviceSelected");
+    titulo = localStorage.getItem("vehicleSelected");
   }  
   else if (localStorage.getItem("mapmode") == MAP_MODE.report) { 
-    titulo = localStorage.getItem("deviceSelected");
+    titulo = localStorage.getItem("vehicleSelected");
   }  
   else { 
     titulo = localStorage.getItem("vehicleLicense");
@@ -512,10 +573,10 @@ angular.module('main.map', [])
       }
     }
 
-    else if (localStorage.getItem("vehicleLicense")!="") {    
+    else if (localStorage.getItem("deviceId")!=0) {    
 
       var bounds = new google.maps.LatLngBounds();
-      var url = APP.api_base + URL.tracking1vehicle + "/" + localStorage.getItem("vehicleLicense");
+      var url = APP.api_base + URL.tracking1device + "/" + localStorage.getItem("deviceId");
       $http({
         method: 'GET',
         url: url,
@@ -539,11 +600,55 @@ angular.module('main.map', [])
           content: data[0].alias
       });
      
-      google.maps.event.addListener(marker, 'click', function () {
-          //infoWindow.open($scope.map, marker);
-          //$state.go('tab.device-detail');
-      }); 
       bounds.extend(marker.position);
+
+            // InfoWindow content
+      var content = '<div id="iw-container">' +
+        '<div class="iw-title">' + "Mi vehículo" + '</div>' +
+        '<div class="iw-content">' +
+        '<div class="iw-subTitle">Matricula:</div>' +
+        '<p>' + localStorage.getItem("vehicleLicense") + '</p>' +
+        '<button class="button button-block button-balanced tooltipButton" ng-click="historicDefault()">Histórico 8h.</button>'+
+        '</div>' +
+        '<div class="iw-bottom-gradient"></div>' +
+        '</div>';
+
+      var compiled = $compile(content)($scope);
+      var infoWindow = new google.maps.InfoWindow({
+          content: compiled[0],
+          maxWidth: 180
+      });
+     
+      google.maps.event.addListener(marker, 'click', function () {
+          infoWindow.open($scope.map, marker);
+      }); 
+      google.maps.event.addListener($scope.map, 'click', function() {
+        infoWindow.close();
+      });
+     
+      google.maps.event.addListener(infoWindow, 'domready', function() {
+        var iwOuter = $('.gm-style-iw');
+        var iwBackground = iwOuter.prev();
+        iwBackground.children(':nth-child(2)').css({'display' : 'none'});
+        iwBackground.children(':nth-child(4)').css({'display' : 'none'});
+        iwOuter.parent().parent().css({left: '10px'});
+        iwBackground.children(':nth-child(1)').attr('style', function(i,s){ return s + 'left: 96px !important;'});
+        iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'left: 96px !important;'});
+        iwBackground.children(':nth-child(3)').find('div').children().css({'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 1px 6px', 'z-index' : '1'});
+        var iwCloseBtn = iwOuter.next();
+        iwCloseBtn.css({opacity: '1', right: '1px', top: '1px', border: '7px solid #48b5e9', 'border-radius': '23px', 'box-shadow': '0 0 5px #3990B9'});
+
+        if($('.iw-content').height() < 140){
+          $('.iw-bottom-gradient').css({display: 'none'});
+        } 
+
+        iwCloseBtn.mouseout(function(){
+          $(this).css({opacity: '1'});
+        });
+      });
+
+
+
        $scope.map.setCenter(bounds.getCenter());  
       $scope.map.setZoom(15);
 

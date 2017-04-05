@@ -23,7 +23,8 @@ angular.module('main.device', ['ionic'])
 .controller('DevicesCtrl', function($scope, $state, $http, DevicesDataService, $ionicLoading, $timeout, URL, APP) {
 
   $scope.selectDevice = function(device) {
-    localStorage.setItem("deviceSelected", device.vehicle_license); 
+    localStorage.setItem("vehicleSelected", device.vehicle_license); 
+    localStorage.setItem("deviceSelected", device.device_id);
     $state.go('tab.device-detail');
   }
 
@@ -65,7 +66,7 @@ angular.module('main.device', ['ionic'])
           });
         $timeout(function() {
              $ionicLoading.hide();
-             $state.go('login');
+             //$state.go('login');
           }, 1500);
     })
   }
@@ -81,11 +82,11 @@ angular.module('main.device', ['ionic'])
       maxWidth: 200,
       showDelay: 0
     });    
-    var url = APP.api_base + URL.getConfigNotifications + "/" + localStorage.getItem("username");// + "?vehicleLicense="+ localStorage.getItem("deviceSelected");
+    var url = APP.api_base + URL.getConfigNotifications + "/" + localStorage.getItem("username");
     $http({
       method: 'POST',
       url: url,
-      data: {vehicleLicense: localStorage.getItem("deviceSelected")},
+      data: {deviceId: localStorage.getItem("deviceSelected")},
       headers: {
         'x-access': localStorage.getItem("token_api")
       }})
@@ -129,13 +130,13 @@ angular.module('main.device', ['ionic'])
             });
             $timeout(function() {
                $ionicLoading.hide();
-               $state.go('login');
+               //$state.go('login');
             }, 1500);
       });
 
 
    var mapmode = MAP_MODE.device;
-   $scope.titulo_device = localStorage.getItem("deviceSelected");
+   $scope.titulo_device = localStorage.getItem("vehicleSelected");
 
    $scope.configNotificationChange = function(id, eventType) {
     for (var i=0; i<$scope.notificationsConfig.length; i++) {
@@ -146,11 +147,11 @@ angular.module('main.device', ['ionic'])
         if (config.enabled)
           enableConfig = 1;
         
-        var url = APP.api_base + URL.configEventChange;// + "?vehicleLicense=" + localStorage.getItem("deviceSelected") + "&username=" + localStorage.getItem("username") + "&eventType=" + eventType + "&enabled=" + enableConfig;
+        var url = APP.api_base + URL.configEventChange;
         $http({
           method: 'POST',
           url: url,
-          data: {username: localStorage.getItem("username"), vehicle_license: localStorage.getItem("deviceSelected"), eventType: event_type, enabled: enableConfig},
+          data: {username: localStorage.getItem("username"), deviceId: localStorage.getItem("deviceSelected"), eventType: event_type, enabled: enableConfig},
           headers: {
             'x-access': localStorage.getItem("token_api")
           }})
@@ -171,7 +172,7 @@ angular.module('main.device', ['ionic'])
    }
 
    $scope.showMapDevice = function() {
-    var url = APP.api_base + URL.tracking1vehicle + "/" + localStorage.getItem("deviceSelected");
+    var url = APP.api_base + URL.tracking1device + "/" + localStorage.getItem("deviceSelected");
     $http({
       method: 'GET',
       url: url,
@@ -180,6 +181,7 @@ angular.module('main.device', ['ionic'])
       }})
     .success(function(data, status, headers,config){  
       if (data[0]!=undefined) {
+        localStorage.setItem("deviceSelectedVehicleLicense", data[0].vehicle_license);  
         localStorage.setItem("deviceSelectedLatitude", data[0].location.coordinates[1]);  
         localStorage.setItem("deviceSelectedLongitude", data[0].location.coordinates[0]);  
         localStorage.setItem("deviceSelectedIcon", data[0].icon);  
@@ -198,12 +200,11 @@ angular.module('main.device', ['ionic'])
 
   $scope.setAsDefault = function() {
     var selectedVehicle = localStorage.getItem("deviceSelected");
-    var url = APP.api_base + URL.setDefaultVehicle;// + "?username=" + localStorage.getItem("username") + "&vehicleLicense=" + localStorage.getItem("deviceSelected");
-    //console.log(url);
+    var url = APP.api_base + URL.setDefaultVehicle;
     $http({
       method: 'POST',
       url: url,
-      data: {username: localStorage.getItem("username"), vehicleLicense: localStorage.getItem("deviceSelected")},
+      data: {username: localStorage.getItem("username"), deviceId: localStorage.getItem("deviceSelected")},
       headers: {
         'x-access': localStorage.getItem("token_api")
       }})
@@ -211,7 +212,7 @@ angular.module('main.device', ['ionic'])
       if (data[0]!=undefined) {
         //localStorage.setItem("defaultVehicleLicense", selectedVehicle);  
         localStorage.setItem("vehicleLicense", selectedVehicle);  
-        var urlTracking = APP.api_base + URL.tracking1vehicle + "/" + localStorage.getItem("deviceSelected");
+        var urlTracking = APP.api_base + URL.tracking1device + "/" + localStorage.getItem("deviceSelected");
         $http.get(urlTracking).success(function(data, status, headers,config){  
           if (data[0]!=undefined) {
             localStorage.setItem("deviceSelectedLatitude", data[0].location.coordinates[1]);  

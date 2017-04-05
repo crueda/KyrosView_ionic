@@ -10,7 +10,7 @@ chrome://inspect
 ---
 SUBIR APK:
 
-scp /Users/Carlos/Workspace/KyrosView/KyrosView_ionic/platforms/android/build/outputs/apk/android-debug.apk android-debug.apk root@192.168.29.4:/home/kyros/www/files/app/apk/mypush/
+scp /Users/Carlos/Workspace/Kyros/KyrosMyPush/platforms/android/build/outputs/apk/android-debug.apk root@192.168.29.4:/home/kyros/www/files/app/apk/mypush/
 
 ---
 SUBIR CHANGELOG:

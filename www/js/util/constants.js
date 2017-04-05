@@ -1,11 +1,9 @@
 angular.module('main')
 
 .constant('APP', {
-  version: 8,
-  //api_base: 'http://localhost:3003'
-  api_base: 'https://api.kyroslbs.com'
-  //api_base: 'https://view.kyroslbs.com'
-  //api_base: 'http://192.168.28.248:3000'
+  version: 10,
+  api_base: 'http://localhost:3003'
+  //api_base: 'https://api.kyroslbs.com'
 })
 
 .constant('MAP_MODE', {
@@ -24,16 +22,16 @@ angular.module('main')
   listDevices: '/api/app/monitorList',
   saveToken: '/api/app/notification/setToken',
   saveDeviceInfo: '/api/app/setDeviceInfo/user',
-  tracking1vehicle: '/api/app/tracking1/vehicle',
-  trackingVehicle: '/api/app/tracking/vehicle',
+  tracking1device: '/api/app/tracking1/device',
+  trackingDevice: '/api/app/tracking/device',
   setDefaultVehicle: '/api/app/vehicle/setAsDefault',
   configEventChange: '/api/app/notification/config/change',
   configUserPreferences: '/api/app/user',
   getConfigNotifications: '/api/app/notification/config/user',
   getStatusNotifications: '/api/app/notification/status/user',
-  getGraphData: '/api/app/graph/vehicle',
-  getReportDailyData: '/api/app/report_daily/vehicle',
-  resetGraphData: '/api/app/graph/reset/vehicle',
+  getGraphData: '/api/app/graph/device',
+  getReportDailyData: '/api/app/report_daily/device',
+  resetGraphData: '/api/app/graph/reset/device',
 
 
   //getIconsInfo: '/api/iconInfo',

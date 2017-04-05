@@ -175,7 +175,6 @@ angular.module('main.notification', [])
     url: url,
       data: {username: localStorage.getItem("username"), 
         max: max_notifications,
-        vehicleLicense: localStorage.getItem("deviceSelected"),
         group: localStorage.getItem("group_notifications")},
     headers: {
         'x-access': localStorage.getItem("token_api")
@@ -197,6 +196,7 @@ angular.module('main.notification', [])
           categoryDescription: getEventCategoryDescription(getEventCategory(data.result[i].subtype)),
           category: getEventCategory(data.result[i].subtype),
           vehicleLicense: data.result[i].vehicle_license,
+          deviceId: data.result[i].device_id,
           name: getEventDescription(data.result[i].subtype),
           icon: getEventIcon(data.result[i].subtype),
           date: getEventDate(data.result[i].timestamp),
@@ -264,7 +264,7 @@ angular.module('main.notification', [])
           $timeout(function() {
              $scope.$broadcast('scroll.refreshComplete');
              $ionicLoading.hide();
-             $state.go('login');
+             //$state.go('login');
           }, 1500);
         });
 
@@ -309,7 +309,7 @@ $scope.filterCategory = function(category) {
 
   //var url = APP.api_base + URL.getNotificationsLimit + "?username=crueda" + "&max=" + localStorage.getItem("max_show_notifications");
   //var url = URL.getNotificationsLimit + "?username=robertodat";
-  console.log(url);  
+  //console.log(url);  
   notifications = [];
   iconos = [];
   $ionicLoading.show({
@@ -326,7 +326,6 @@ $scope.filterCategory = function(category) {
     url: url,
     data: {username: localStorage.getItem("username"), 
         max: max_notifications,
-        vehicleLicense: localStorage.getItem("deviceSelected"),
         group: localStorage.getItem("group_notifications")},
     headers: {
         'x-access': localStorage.getItem("token_api")
@@ -341,7 +340,7 @@ $scope.filterCategory = function(category) {
         });
         $timeout(function() {
           $ionicLoading.hide();
-          $state.go('login');
+          //$state.go('login');
         }, 1500);        
       } else {
   
@@ -360,6 +359,7 @@ $scope.filterCategory = function(category) {
             categoryDescription: getEventCategoryDescription(getEventCategory(data.result[i].subtype)),
             category: getEventCategory(data.result[i].subtype),
             vehicleLicense: data.result[i].vehicle_license,
+            deviceId: data.result[i].device_id,
             name: getEventDescription(data.result[i].subtype),
             eventType: data.result[i].subtype,
             icon: getEventIcon(data.result[i].subtype),            
@@ -424,7 +424,7 @@ $scope.filterCategory = function(category) {
     });
     $timeout(function() {
       $ionicLoading.hide();
-      $state.go('login');
+      //$state.go('login');
     }, 1500);             
   });
   
@@ -437,6 +437,7 @@ $scope.setAsDefault = function() {
     $scope.notification = notifications[parseInt(localStorage.getItem("notificationSelected"))];
     localStorage.setItem("notificationSelected", $scope.notification.id);  
     localStorage.setItem("notificationSelectedVehicleLicense", $scope.notification.vehicleLicense);  
+    localStorage.setItem("notificationSelectedDeviceId", $scope.notification.deviceId);  
     localStorage.setItem("notificationSelectedLatitude", $scope.notification.latitude);  
     localStorage.setItem("notificationSelectedLongitude", $scope.notification.longitude);  
     localStorage.setItem("notificationSelectedIcon", $scope.notification.icon);  
@@ -445,14 +446,17 @@ $scope.setAsDefault = function() {
     localStorage.setItem("notificationSelectedDate", $scope.notification.date); 
 
 
-    var selectedVehicle = localStorage.getItem("notificationSelectedVehicleLicense");
-    localStorage.setItem("deviceSelected", selectedVehicle);
-    var url = APP.api_base + URL.setDefaultVehicle;// + "?username=" + localStorage.getItem("username") + "&vehicleLicense=" + localStorage.getItem("deviceSelected");
-    console.log(url);
+    var selectedDevice = localStorage.getItem("notificationSelectedDeviceId");
+    localStorage.setItem("deviceSelected", selectedDevice);
+    var url = APP.api_base + URL.setDefaultVehicle;
+    //console.log(url);
     $http({
       method: 'POST',
       url: url,
-      data: {username: localStorage.getItem("username"), vehicleLicense: localStorage.getItem("deviceSelected")},
+      data: {
+        username: localStorage.getItem("username"), 
+        deviceId: localStorage.getItem("deviceSelected")
+      },
       headers: {
         'x-access': localStorage.getItem("token_api")
       }})
@@ -527,6 +531,7 @@ $scope.setAsDefault = function() {
     $scope.notification = notifications[parseInt(localStorage.getItem("notificationSelected"))];
     localStorage.setItem("notificationSelected", $scope.notification.id);  
     localStorage.setItem("notificationSelectedVehicleLicense", $scope.notification.vehicleLicense);  
+    localStorage.setItem("notificationSelectedDeviceId", $scope.notification.deviceId);  
     localStorage.setItem("notificationSelectedLatitude", $scope.notification.latitude);  
     localStorage.setItem("notificationSelectedLongitude", $scope.notification.longitude);  
     localStorage.setItem("notificationSelectedIcon", $scope.notification.icon);  
@@ -546,6 +551,7 @@ $scope.setAsDefault = function() {
     $scope.notification = notifications[parseInt(localStorage.getItem("notificationSelected"))];
     localStorage.setItem("notificationSelected", $scope.notification.id);  
     localStorage.setItem("notificationSelectedVehicleLicense", $scope.notification.vehicleLicense);  
+    localStorage.setItem("notificationSelectedDeviceId", $scope.notification.deviceId);  
     localStorage.setItem("notificationSelectedLatitude", $scope.notification.latitude);  
     localStorage.setItem("notificationSelectedLongitude", $scope.notification.longitude);  
     localStorage.setItem("notificationSelectedIcon", $scope.notification.icon);  

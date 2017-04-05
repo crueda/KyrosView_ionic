@@ -16,12 +16,30 @@ function getGraphVehicleLicense(MAP_MODE) {
     vehicleLicense = localStorage.getItem("notificationSelectedVehicleLicense");
   } 
   else if (localStorage.getItem("mapmode") == MAP_MODE.device) { 
-    vehicleLicense = localStorage.getItem("deviceSelected");
+    vehicleLicense = localStorage.getItem("vehicleSelected");
   }  
   else { 
     vehicleLicense = localStorage.getItem("vehicleLicense");
   } 
   return vehicleLicense;
+}
+
+
+function getGraphDeviceId(MAP_MODE) {
+  var deviceId = 0;
+  if (localStorage.getItem("mapmode") == MAP_MODE.push) { 
+    deviceId = localStorage.getItem("notificationSelectedDeviceId");
+  } 
+  else if (localStorage.getItem("mapmode") == MAP_MODE.notification) { 
+    deviceId = localStorage.getItem("notificationSelectedDeviceId");
+  } 
+  else if (localStorage.getItem("mapmode") == MAP_MODE.device) { 
+    deviceId = localStorage.getItem("deviceSelected");
+  }  
+  else { 
+    deviceId = localStorage.getItem("deviceId");
+  } 
+  return deviceId;
 }
 
 function getEventDescription(eventType) {
@@ -143,6 +161,7 @@ angular.module('main.graphs', [])
   $scope.showRightArrow = true;
 
   var vehicleLicense = getGraphVehicleLicense(MAP_MODE);  
+  var deviceId = getGraphDeviceId(MAP_MODE);  
   $scope.titulo_graphs = vehicleLicense;  
   $scope.subtitulo_graphs = "Resumen global";  
 
@@ -154,8 +173,9 @@ angular.module('main.graphs', [])
     showDelay: 0
   });
 
-  localStorage.setItem("deviceSelected", vehicleLicense);
-  var url = APP.api_base + URL.getGraphData + "/" + vehicleLicense;
+  localStorage.setItem("vehicleSelected", vehicleLicense);
+  localStorage.setItem("deviceSelected", deviceId);
+  var url = APP.api_base + URL.getGraphData + "/" + deviceId;
   console.log(url);
   $http({
     method: 'GET',
@@ -232,7 +252,7 @@ angular.module('main.graphs', [])
       $scope.graph3_data = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]];
     }
 
-    var urlReport = APP.api_base + URL.getReportDailyData + "/" + vehicleLicense;
+    var urlReport = APP.api_base + URL.getReportDailyData + "/" + deviceId;
     console.log(url);
     $http({
       method: 'GET',
