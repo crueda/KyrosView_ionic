@@ -58,8 +58,8 @@ console.log("-->");
 
 .controller('TestCtrl', function($scope, $rootScope, $compile, $http, $state, $ionicPopup, $cordovaGeolocation) {
 
-  var options = {timeout: 10000, enableHighAccuracy: true};
-  $cordovaGeolocation.getCurrentPosition(options).then(function(position){    
+  //var options = {timeout: 10000, enableHighAccuracy: true};
+  //$cordovaGeolocation.getCurrentPosition(options).then(function(position){    
 
 
     var latLng = new google.maps.LatLng(41, -3);
@@ -98,7 +98,7 @@ console.log("-->");
           position: latLng
       });   
       var infoWindow = new google.maps.InfoWindow({
-          content: "Estoy aqui"
+          content: "Estoy aqui2"
       });
       google.maps.event.addListener(marker, 'click', function () {
           infoWindow.open($rootScope.map, marker);
@@ -108,7 +108,7 @@ console.log("-->");
     });
 
 
-});
+//});
        
 
 

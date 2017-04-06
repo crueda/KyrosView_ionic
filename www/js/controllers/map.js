@@ -208,8 +208,8 @@ angular.module('main.map', [])
 
   $scope.titulo_mapa = titulo;  
 
-  var options = {timeout: 10000, enableHighAccuracy: true};
-  $cordovaGeolocation.getCurrentPosition(options).then(function(position){
+  //var options = {timeout: 10000, enableHighAccuracy: true};
+  //$cordovaGeolocation.getCurrentPosition(options).then(function(position){
 
     $scope.$on('$destroy', function () {
       $scope.map = null;
@@ -311,18 +311,8 @@ angular.module('main.map', [])
     }
     else if (localStorage.getItem("mapmode") == MAP_MODE.push) {  
 
-      //var url = APP.api_base + URL.getNotification + "/" + localStorage.getItem("notificationPushMongoId");
-      //$http.get(url)
-      //.success(function(data, status, headers,config){  
-
-        /*
-    var alertPopup = $ionicPopup.alert({
-            title: '****en map',
-            template: '->' + localStorage.getItem("notificationPushEventType")
-        });*/
 
     var latLngNotification = new google.maps.LatLng(localStorage.getItem("notificationPushLatitude"), localStorage.getItem("notificationPushLongitude"));
-    //var latLngNotification = new google.maps.LatLng(data[0].location.coordinates[1], data[0].location.coordinates[0]);
         var image = {
           scaledSize: new google.maps.Size(40, 40),
           //url: 'data:image/svg+xml;utf-8,' + $sce.trustAsHtml($rootScope.eventIcon[data[0].subtype].svg) 
@@ -675,8 +665,8 @@ angular.module('main.map', [])
 
  
   }, function(error){
-    console.log("Could not get location");
-    if (localStorage.getItem("mapmode") == MAP_MODE.push) {  
+    //console.log("Could not get location");
+    //if (localStorage.getItem("mapmode") == MAP_MODE.push) {  
 
     $scope.$on('$destroy', function () {
       $scope.map = null;
@@ -762,11 +752,11 @@ angular.module('main.map', [])
 
     });
       
-    } else {
-      navigator.notification.alert("Servicio de localización requerido", null, "Kyros App", "Ok");      
-    }
+    //} else {
+    //  navigator.notification.alert("Servicio de localización requerido", null, "Kyros App", "Ok");      
+    //}
 
 
 
-  });
+ // });
 })
