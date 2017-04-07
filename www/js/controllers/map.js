@@ -654,12 +654,12 @@ angular.module('main.map', [])
 $timeout(function () {
       //console.log('timeout');
       google.maps.event.trigger($scope.map,'resize');     
-}, 500);
+}, 100);
 
 $timeout(function () {
       //console.log('timeout2');
       drawMapElements($scope, $rootScope, $timeout, $compile, $http, $state, $ionicPopup, URL, MAP_MODE, APP); 
-}, 1000);
+}, 150);
 
     var latLng = new google.maps.LatLng(40.416897, -3.703442);
       
