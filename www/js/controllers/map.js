@@ -69,11 +69,11 @@
       var content = '<div id="iw-container">' +
         '<div class="iw-title">' + localStorage.getItem("notificationSelectedName") + '</div>' +
         '<div class="iw-content">' +
-        '<div class="iw-subTitle">Matricula:</div>' +
+        '<div class="iw-subTitle">' + msg_vehicle_license + ':</div>' +
         '<p>' + localStorage.getItem("notificationSelectedVehicleLicense") + '</p>' +
-        '<div class="iw-subTitle">Fecha:</div>' +
+        '<div class="iw-subTitle">' + msg_date + ':</div>' +
         '<p>' + localStorage.getItem("notificationSelectedDate") + '</p>' + 
-        '<button class="button button-block button-balanced tooltipButton" ng-click="historic()">Histórico 8h.</button>'+
+        '<button class="button button-block button-balanced tooltipButton" ng-click="historic()">' + msg_historic + ' 8h.</button>'+
         '</div>' +
         '<div class="iw-bottom-gradient"></div>' +
         '</div>';
@@ -137,12 +137,12 @@
         '<div class="iw-title">' + getEventDescription(localStorage.getItem("notificationPushEventType")) + '</div>' +
         //'<div class="iw-title">' + getEventDescription(data[0].subtype) + '</div>' +
         '<div class="iw-content">' +
-        '<div class="iw-subTitle">Matricula:</div>' +
+        '<div class="iw-subTitle">' + msg_vehicle_license + ':</div>' +
         '<p>' + localStorage.getItem("notificationSelectedVehicleLicense") + '</p>' +
-        '<div class="iw-subTitle">Fecha:</div>' +
+        '<div class="iw-subTitle">' + msg_date + ':</div>' +
         '<p>'  + getEventDate(parseInt(localStorage.getItem("notificationPushTimestamp"))) + '</p>' + 
         //'<p>'  + getEventDate(parseInt(data[0].timestamp)) + '</p>' + 
-        '<button class="button button-block button-balanced tooltipButton" ng-click="historic()">Histórico 8h.</button>'+
+        '<button class="button button-block button-balanced tooltipButton" ng-click="historic()">' + msg_historic + ' 8h.</button>'+
         '</div>' +
         '<div class="iw-bottom-gradient"></div>' +
         '</div>';
@@ -214,8 +214,8 @@
       
       } else {
           var alertPopup = $ionicPopup.alert({
-            title: 'Mensaje',
-            template: 'No existen puntos de tracking'
+            title: msg_message,
+            template: msg_error_no_tracking
           });
           //var actualLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
           var latLng = new google.maps.LatLng(40.416897, -3.703442);
@@ -260,11 +260,11 @@
           if (t==0) {
             // InfoWindow content
             var content = '<div id="iw-container">' +
-              '<div class="iw-title">' + 'Inicio jornada' + '</div>' +
+              '<div class="iw-title">' + msg_init_work + '</div>' +
               '<div class="iw-content">' +
               '<div class="iw-subTitle">Coordenadas:</div>' +
               '<p>' + $rootScope.tracking[t].latitude.toFixed(4) + ',' + $rootScope.tracking[t].longitude.toFixed(4) + '</p>' +
-              '<div class="iw-subTitle">Fecha:</div>' +
+              '<div class="iw-subTitle">' + msg_date + ':</div>' +
               '<p>'  + getEventDate(parseInt($rootScope.tracking[t].timestamp)) + '</p>' + 
               '</div>' +
               '<div class="iw-bottom-gradient"></div>' +
@@ -280,11 +280,11 @@
 
             // InfoWindow content
             var content = '<div id="iw-container">' +
-              '<div class="iw-title">' + 'Fin jornada' + '</div>' +
+              '<div class="iw-title">' + msg_init_work + '</div>' +
               '<div class="iw-content">' +
               '<div class="iw-subTitle">Coordenadas:</div>' +
               '<p>' + $rootScope.tracking[t].latitude.toFixed(4) + ',' + $rootScope.tracking[t].longitude.toFixed(4) + '</p>' +
-              '<div class="iw-subTitle">Fecha:</div>' +
+              '<div class="iw-subTitle">' + msg_date + ':</div>' +
               '<p>'  + getEventDate(parseInt($rootScope.tracking[t].timestamp)) + '</p>' + 
               '</div>' +
               '<div class="iw-bottom-gradient"></div>' +
@@ -365,8 +365,8 @@
       
       } else {
           var alertPopup = $ionicPopup.alert({
-            title: 'Mensaje',
-            template: 'No existen puntos de tracking'
+            title: msg_message,
+            template: msg_error_no_tracking
           });
           //var actualLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
           var latLng = new google.maps.LatLng(40.416897, -3.703442);
@@ -406,11 +406,11 @@
 
             // InfoWindow content
       var content = '<div id="iw-container">' +
-        '<div class="iw-title">' + "Mi vehículo" + '</div>' +
+        '<div class="iw-title">' + msg_my_vehicle + '</div>' +
         '<div class="iw-content">' +
-        '<div class="iw-subTitle">Matricula:</div>' +
+        '<div class="iw-subTitle">' + msg_vehicle_license + ':</div>' +
         '<p>' + localStorage.getItem("vehicleLicense") + '</p>' +
-        '<button class="button button-block button-balanced tooltipButton" ng-click="historicDefault()">Histórico 8h.</button>'+
+        '<button class="button button-block button-balanced tooltipButton" ng-click="historicDefault()">' + msg_historic + ' 8h.</button>'+
         '</div>' +
         '<div class="iw-bottom-gradient"></div>' +
         '</div>';
@@ -472,7 +472,19 @@
   var infoWindowDict = {};
 
 angular.module('main.map', [])
-.controller('MapCtrl', function($scope, $rootScope, $timeout, $compile, $http, $state, $ionicPopup, $cordovaGeolocation, URL, MAP_MODE, APP, $sce) {
+.controller('MapCtrl', function($scope, $rootScope, $timeout, $compile, $http, $state, $ionicPopup, $cordovaGeolocation, $translate, URL, MAP_MODE, APP, $sce) {
+
+$translate(['MY_VEHICLE', 'VEHICLE_LICENSE', 'HISTORIC', 'MESSAGE', 'ERROR_NO_TRACKING', 'TRACKING_LAST_HOURS', 'DATE', 'INIT_WORK', 'END_WORK']).then(function (translations) {
+      msg_my_vehicle = translations.MY_VEHICLE;
+      msg_vehicle_license = translations.VEHICLE_LICENSE;
+      msg_historic = translations.HISTORIC;
+      msg_message = translations.MESSAGE;
+      msg_error_no_tracking = translations.ERROR_NO_TRACKING;
+      msg_tracking_last_hours = translations.TRACKING_LAST_HOURS;
+      msg_date = translations.DATE,
+      msg_init_work = translations.INIT_WORK;
+      msg_end_work = translations.END_WORK;
+    });
 
   $scope.historic = function() {
      if (localStorage.getItem("mapmode") == MAP_MODE.notification || localStorage.getItem("mapmode") == MAP_MODE.push) { 
@@ -540,8 +552,8 @@ angular.module('main.map', [])
       } else {
         if (status==200) {
           var alertPopup = $ionicPopup.alert({
-              title: 'Tracking últimas 8 horas',
-              template: 'No existen puntos de tracking'
+              title: msg_tracking_last_hours,
+              template: msg_error_no_tracking
           });          
         } else {  // vengo de un push
           //$state.go('login');   
@@ -603,8 +615,8 @@ angular.module('main.map', [])
       } else {
         if (status==200) {
           var alertPopup = $ionicPopup.alert({
-              title: 'Tracking últimas 8 horas',
-              template: 'No existen puntos de tracking'
+              title: msg_tracking_last_hours,
+              template: msg_error_no_tracking
           });          
         } else {  // vengo de un push
           //$state.go('login');   

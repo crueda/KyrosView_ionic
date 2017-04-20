@@ -56,41 +56,41 @@
   
     <ion-list  ng-show='showReport'>
 
-<div class="item ion-clock item-divider positive"> Tiempo</div>
+<div class="item ion-clock item-divider positive"> {{ 'TIME' | translate}}</div>
 
       <ion-item>
-        <b>Inicio de la jornada</b> <span class="item-note">{{startDate}}</span>
+        <b>{{ 'INIT_WORK' | translate}}</b> <span class="item-note">{{startDate}}</span>
         <br> <span class="item-note">{{startGeocoding}}</span>
       </ion-item>
       <ion-item>
-        <b>Fin de la jornada</b> <span class="item-note">{{endDate}}</span>
+        <b>{{ 'END_WORK' | translate}}</b> <span class="item-note">{{endDate}}</span>
         <br> <span class="item-note">{{endGeocoding}}</span>
       </ion-item>
       <ion-item>
-        <b>Duración</b> <span class="item-note">{{duration}}</span>
+        <b>{{ 'DURATION' | translate}}</b> <span class="item-note">{{duration}}</span>
       </ion-item>
 
 
 
-<div class="item ion-speedometer item-divider balanced"> Velocidad y distancia</div>
+<div class="item ion-speedometer item-divider balanced"> {{ 'SPEED_AND_DISTANCE' | translate}}</div>
 
       <ion-item>
-        <b>Velocidad media (Km/h)</b> <span class="item-note">{{averageSpeed}}</span>
+        <b>{{ 'AVG_SPEED' | translate}} (Km/h)</b> <span class="item-note">{{averageSpeed}}</span>
       </ion-item>
       <ion-item>
-        <b>Velocidad máxima (Km/h)</b> <span class="item-note">{{maxSpeed}}</span>
+        <b>{{ 'MAX_SPEED' | translate}} (Km/h)</b> <span class="item-note">{{maxSpeed}}</span>
       </ion-item>
       <ion-item>
-        <b>Distancia (Km)</b> <span class="item-note">{{distance}}</span>
+        <b>{{ 'DISTANCE' | translate}} (Km)</b> <span class="item-note">{{distance}}</span>
       </ion-item>
       <ion-item>
-        <b>Consumo (L)</b> <span class="item-note">{{consumption}}</span>
+        <b>{{ 'CONSUMPTION' | translate}} (L)</b> <span class="item-note">{{consumption}}</span>
       </ion-item>
       <ion-item>
-        <b>Emisión de CO2 (Kg)</b> <span class="item-note">{{co2}}</span>
+        <b>{{ 'C02' | translate}} (Kg)</b> <span class="item-note">{{co2}}</span>
       </ion-item>
 
-<div class="item ion-arrow-graph-up-right item-divider assertive"> Eventos</div>
+<div class="item ion-arrow-graph-up-right item-divider assertive"> {{ 'EVENTS' | translate}}</div>
 
       <ion-item  ng-repeat="event in events">
         <b>{{event.eventType}}</b> <span class="item-note">{{event.eventValue}}</span>
@@ -111,39 +111,39 @@
     <div class="list">
      <a class="item item-icon-left positive" href="#"><i class="icon ion-calendar"></i>Día actual</a>
      <ion-item class="ion-ios-speedometer">
-        <b>Velocidad media (Km/h)</b> <span class="item-note">{{daySpeed}}</span>
+        <b>{{ 'AVG_SPEED' | translate}} (Km/h)</b> <span class="item-note">{{daySpeed}}</span>
      </ion-item>
      <ion-item class="ion-android-globe">
-        <b>Distancia (Km)</b> <span class="item-note">{{dayDistance}}</span>
+        <b>{{ 'DISTANCE' | translate}} (Km)</b> <span class="item-note">{{dayDistance}}</span>
      </ion-item>
      <ion-item class="ion-beaker">
-        <b>Consumo (L)</b> <span class="item-note">{{dayConsumption}}</span>
+        <b>{{ 'CONSUMPTION' | translate}} (L)</b> <span class="item-note">{{dayConsumption}}</span>
      </ion-item>
     </div>
 
     <div class="list">
      <a class="item item-icon-left balanced" href="#"><i class="icon ion-calendar"></i>Semana actual</a>
      <ion-item class="ion-ios-speedometer">
-        <b>Velocidad media (Km/h)</b> <span class="item-note">{{weekSpeed}}</span>
+        <b>{{ 'AVG_SPEED' | translate}} (Km/h)</b> <span class="item-note">{{weekSpeed}}</span>
      </ion-item>
      <ion-item class="ion-android-globe">
-        <b>Distancia (Km)</b> <span class="item-note">{{weekDistance}}</span>
+        <b>{{ 'DISTANCE' | translate}} (Km)</b> <span class="item-note">{{weekDistance}}</span>
      </ion-item>
      <ion-item class="ion-beaker">
-        <b>Consumo (L)</b> <span class="item-note">{{weekConsumption}}</span>
+        <b>{{ 'CONSUMPTION' | translate}} (L)</b> <span class="item-note">{{weekConsumption}}</span>
      </ion-item>
     </div>
 
     <div class="list">
      <a class="item item-icon-left assertive" href="#"><i class="icon ion-calendar"></i>Mes actual</a>
      <ion-item class="ion-ios-speedometer">
-        <b>Velocidad media (Km/h)</b> <span class="item-note">{{monthSpeed}}</span>
+        <b>{{ 'AVG_SPEED' | translate}} (Km/h)</b> <span class="item-note">{{monthSpeed}}</span>
      </ion-item>
      <ion-item class="ion-android-globe">
-        <b>Distancia (Km)</b> <span class="item-note">{{monthDistance}}</span>
+        <b>{{ 'DISTANCE' | translate}} (Km)</b> <span class="item-note">{{monthDistance}}</span>
      </ion-item>
      <ion-item class="ion-beaker">
-        <b>Consumo (L)</b> <span class="item-note">{{monthConsumption}}</span>
+        <b>{{ 'CONSUMPTION' | translate}} (L)</b> <span class="item-note">{{monthConsumption}}</span>
      </ion-item class="ion-beaker">
     </div>
 

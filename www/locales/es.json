@@ -53,7 +53,28 @@
   "DAILY": "Diario",
   "SHOW_EVENTS_MAP": "Ver eventos en mapa",
   "MSG_CONFIRM_TITLE": "Confirmar",
-  "MSG_CONFIRM_ARCHIVE_ALL": "¿Desea eliminar TODAS las notificaciones?"
+  "MSG_CONFIRM_ARCHIVE_ALL": "¿Desea eliminar TODAS las notificaciones?",
+  "INIT_WORK": "Inicio de la jornada",
+  "END_WORK": "Fin de la jornada",
+  "TIME": "Tiempo",
+  "SPEED_AND_DISTANCE": "Velocidad y distancia",
+  "DURATION": "Duración",
+  "AVG_SPEED": "Velocidad media",
+  "MAX_SPEED": "Velocidad máxima",
+  "DISTANCE": "Distancia",
+  "CONSUMPTION": "Consumo",
+  "C02": "Emisión de CO2",
+  "EVENTS": "Eventos",
+  "DEVELOPED": "Desarrollado por",
+  "VERSION": "Version",
+  "MY_VEHICLE": "Mi vehículo",
+  "VEHICLE_LICENSE": "Matricula",
+  "HISTORIC": "Histórico",
+  "MESSAGE": "Mensaje",
+  "ERROR_NO_TRACKING": "No existen puntos de tracking",
+  "TRACKING_LAST_HOURS": "Tracking últimas 8 horas",
+  "DATE": "Fecha"
+
 
 
 
