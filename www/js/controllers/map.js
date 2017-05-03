@@ -73,7 +73,7 @@
         '<p>' + localStorage.getItem("notificationSelectedVehicleLicense") + '</p>' +
         '<div class="iw-subTitle">' + msg_date + ':</div>' +
         '<p>' + localStorage.getItem("notificationSelectedDate") + '</p>' + 
-        '<button class="button button-block button-balanced tooltipButton" ng-click="historic()">' + msg_historic + ' 8h.</button>'+
+        '<button class="button button-block button-balanced tooltipButton" ng-click="historic()">' + msg_historic + ' 12h.</button>'+
         '</div>' +
         '<div class="iw-bottom-gradient"></div>' +
         '</div>';
@@ -144,7 +144,7 @@
         '<div class="iw-subTitle">' + msg_date + ':</div>' +
         '<p>'  + getStrDate(parseInt(localStorage.getItem("notificationPushTimestamp"))) + '</p>' + 
         //'<p>'  + getStrDate(parseInt(data[0].timestamp)) + '</p>' + 
-        '<button class="button button-block button-balanced tooltipButton" ng-click="historic()">' + msg_historic + ' 8h.</button>'+
+        '<button class="button button-block button-balanced tooltipButton" ng-click="historic()">' + msg_historic + ' 12h.</button>'+
         '</div>' +
         '<div class="iw-bottom-gradient"></div>' +
         '</div>';
@@ -414,7 +414,7 @@
         '<p>' + localStorage.getItem("vehicleLicense") + '</p>' +
         '<div class="iw-subTitle">' + msg_date + ':</div>' +
         '<p>' + getStrDate(data[0].pos_date) + '</p>' + 
-        '<button class="button button-block button-balanced tooltipButton" ng-click="historicDefault()">' + msg_historic + ' 8h.</button>'+
+        '<button class="button button-block button-balanced tooltipButton" ng-click="historicDefault()">' + msg_historic + ' 12h.</button>'+
         '</div>' +
         '<div class="iw-bottom-gradient"></div>' +
         '</div>';
@@ -500,7 +500,7 @@ $translate(['MY_VEHICLE', 'VEHICLE_LICENSE', 'HISTORIC', 'MESSAGE', 'ERROR_NO_TR
          infoWindowOld.close();
 
       var actualDate = new Date().getTime();
-      var initDate = actualDate - (86400000/12)*8;
+      var initDate = actualDate - (86400000/12)*12;
 
       var bounds = new google.maps.LatLngBounds();
       var url = APP.api_base + URL.trackingDevice + "/" + localStorage.getItem("notificationSelectedDeviceId");
@@ -556,6 +556,7 @@ $translate(['MY_VEHICLE', 'VEHICLE_LICENSE', 'HISTORIC', 'MESSAGE', 'ERROR_NO_TR
 
               infoWindow.setContent(compiled[0]);
               infoWindow.open($scope.map, marker);
+              infoWindow.setPosition(this.position);
           });
 
       google.maps.event.addListener($scope.map, 'click', function() {
@@ -622,7 +623,7 @@ $translate(['MY_VEHICLE', 'VEHICLE_LICENSE', 'HISTORIC', 'MESSAGE', 'ERROR_NO_TR
          infoWindowOld.close();
 
       var actualDate = new Date().getTime();
-      var initDate = actualDate - (86400000/12)*8;
+      var initDate = actualDate - (86400000/12)*12;
 
       var bounds = new google.maps.LatLngBounds();
       var url = APP.api_base + URL.trackingDevice + "/" + localStorage.getItem("deviceId");
@@ -655,33 +656,29 @@ $translate(['MY_VEHICLE', 'VEHICLE_LICENSE', 'HISTORIC', 'MESSAGE', 'ERROR_NO_TR
               position: latLng
           });   
 
-          /*console.log(strDate);
-          var datePos = new Date(data.result[i].pos_date);
-          var hours = pad(datePos.getHours());
-          var minutes = pad(datePos.getMinutes());
-          var seconds = pad(datePos.getSeconds());*/
-
           var infoWindow = new google.maps.InfoWindow({
-            content: '',
-            maxWidth: 180
+             content: '',
+             maxWidth: 180,
+             pixelOffset: new google.maps.Size(0,0)
           });
 
 
           marker.addListener('click', function() {
-                  var content = '<div id="iw-container">' +
-        '<div class="iw-title">' + msg_historic + '</div>' +
-        '<div class="iw-content">' +
-        '<div class="iw-subTitle">' + msg_date + ':</div>' +
-        '<p>' + this.strDate + '</p>' + 
-        '<div class="iw-subTitle">' + msg_speed + ':</div>' +
-        '<p>' + this.speed + 'Km/h</p>' + 
-        '</div>' +
-        '<div class="iw-bottom-gradient"></div>' +
-        '</div>';
-      var compiled = $compile(content)($scope);
+            var content = '<div id="iw-container">' +
+            '<div class="iw-title">' + msg_historic + '</div>' +
+            '<div class="iw-content">' +
+            '<div class="iw-subTitle">' + msg_date + ':</div>' +
+            '<p>' + this.strDate + '</p>' + 
+            '<div class="iw-subTitle">' + msg_speed + ':</div>' +
+            '<p>' + this.speed + 'Km/h</p>' + 
+            '</div>' +
+            '<div class="iw-bottom-gradient"></div>' +
+            '</div>';
+            var compiled = $compile(content)($scope);
 
               infoWindow.setContent(compiled[0]);
               infoWindow.open($scope.map, marker);
+              infoWindow.setPosition(this.position);
           });
 
           google.maps.event.addListener($scope.map, 'click', function() {
