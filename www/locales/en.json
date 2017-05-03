@@ -73,7 +73,8 @@
   "MESSAGE": "Message",
   "ERROR_NO_TRACKING": "There are no tracking points",
   "TRACKING_LAST_HOURS": "Tracking last 8 hours",
-  "DATE": "Date"
+  "DATE": "Date",
+  "SPEED": "Speed"
 
 
 

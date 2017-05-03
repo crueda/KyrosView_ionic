@@ -19,7 +19,7 @@
     }
   }
 
-  function getEventDate(timestamp) {
+  function getStrDate(timestamp) {
     var date = new Date(timestamp);
     var year = date.getFullYear();
     var month = pad(date.getMonth() + 1);
@@ -84,6 +84,8 @@
           maxWidth: 180
       });
      
+      infoWindowOld = infoWindow;
+
       google.maps.event.addListener(marker, 'click', function () {
           infoWindow.open($scope.map, marker);
       }); 
@@ -140,8 +142,8 @@
         '<div class="iw-subTitle">' + msg_vehicle_license + ':</div>' +
         '<p>' + localStorage.getItem("notificationSelectedVehicleLicense") + '</p>' +
         '<div class="iw-subTitle">' + msg_date + ':</div>' +
-        '<p>'  + getEventDate(parseInt(localStorage.getItem("notificationPushTimestamp"))) + '</p>' + 
-        //'<p>'  + getEventDate(parseInt(data[0].timestamp)) + '</p>' + 
+        '<p>'  + getStrDate(parseInt(localStorage.getItem("notificationPushTimestamp"))) + '</p>' + 
+        //'<p>'  + getStrDate(parseInt(data[0].timestamp)) + '</p>' + 
         '<button class="button button-block button-balanced tooltipButton" ng-click="historic()">' + msg_historic + ' 8h.</button>'+
         '</div>' +
         '<div class="iw-bottom-gradient"></div>' +
@@ -265,7 +267,7 @@
               '<div class="iw-subTitle">Coordenadas:</div>' +
               '<p>' + $rootScope.tracking[t].latitude.toFixed(4) + ',' + $rootScope.tracking[t].longitude.toFixed(4) + '</p>' +
               '<div class="iw-subTitle">' + msg_date + ':</div>' +
-              '<p>'  + getEventDate(parseInt($rootScope.tracking[t].timestamp)) + '</p>' + 
+              '<p>'  + getStrDate(parseInt($rootScope.tracking[t].timestamp)) + '</p>' + 
               '</div>' +
               '<div class="iw-bottom-gradient"></div>' +
               '</div>';
@@ -285,7 +287,7 @@
               '<div class="iw-subTitle">Coordenadas:</div>' +
               '<p>' + $rootScope.tracking[t].latitude.toFixed(4) + ',' + $rootScope.tracking[t].longitude.toFixed(4) + '</p>' +
               '<div class="iw-subTitle">' + msg_date + ':</div>' +
-              '<p>'  + getEventDate(parseInt($rootScope.tracking[t].timestamp)) + '</p>' + 
+              '<p>'  + getStrDate(parseInt($rootScope.tracking[t].timestamp)) + '</p>' + 
               '</div>' +
               '<div class="iw-bottom-gradient"></div>' +
               '</div>';
@@ -404,12 +406,14 @@
      
       bounds.extend(marker.position);
 
-            // InfoWindow content
+      // InfoWindow content
       var content = '<div id="iw-container">' +
         '<div class="iw-title">' + msg_my_vehicle + '</div>' +
         '<div class="iw-content">' +
         '<div class="iw-subTitle">' + msg_vehicle_license + ':</div>' +
         '<p>' + localStorage.getItem("vehicleLicense") + '</p>' +
+        '<div class="iw-subTitle">' + msg_date + ':</div>' +
+        '<p>' + getStrDate(data[0].pos_date) + '</p>' + 
         '<button class="button button-block button-balanced tooltipButton" ng-click="historicDefault()">' + msg_historic + ' 8h.</button>'+
         '</div>' +
         '<div class="iw-bottom-gradient"></div>' +
@@ -421,6 +425,8 @@
           maxWidth: 180
       });
      
+      infoWindowOld = infoWindow;
+
       google.maps.event.addListener(marker, 'click', function () {
           infoWindow.open($scope.map, marker);
       }); 
@@ -469,12 +475,12 @@
   }
 
 
-  var infoWindowDict = {};
+  var infoWindowOld = null;
 
 angular.module('main.map', [])
 .controller('MapCtrl', function($scope, $rootScope, $timeout, $compile, $http, $state, $ionicPopup, $cordovaGeolocation, $translate, URL, MAP_MODE, APP, $sce) {
 
-$translate(['MY_VEHICLE', 'VEHICLE_LICENSE', 'HISTORIC', 'MESSAGE', 'ERROR_NO_TRACKING', 'TRACKING_LAST_HOURS', 'DATE', 'INIT_WORK', 'END_WORK']).then(function (translations) {
+$translate(['MY_VEHICLE', 'VEHICLE_LICENSE', 'HISTORIC', 'MESSAGE', 'ERROR_NO_TRACKING', 'TRACKING_LAST_HOURS', 'DATE', 'INIT_WORK', 'END_WORK', 'SPEED']).then(function (translations) {
       msg_my_vehicle = translations.MY_VEHICLE;
       msg_vehicle_license = translations.VEHICLE_LICENSE;
       msg_historic = translations.HISTORIC;
@@ -482,12 +488,17 @@ $translate(['MY_VEHICLE', 'VEHICLE_LICENSE', 'HISTORIC', 'MESSAGE', 'ERROR_NO_TR
       msg_error_no_tracking = translations.ERROR_NO_TRACKING;
       msg_tracking_last_hours = translations.TRACKING_LAST_HOURS;
       msg_date = translations.DATE,
+      msg_speed = translations.SPEED,
       msg_init_work = translations.INIT_WORK;
       msg_end_work = translations.END_WORK;
     });
 
   $scope.historic = function() {
      if (localStorage.getItem("mapmode") == MAP_MODE.notification || localStorage.getItem("mapmode") == MAP_MODE.push) { 
+
+      if (infoWindowOld!=null)
+         infoWindowOld.close();
+
       var actualDate = new Date().getTime();
       var initDate = actualDate - (86400000/12)*8;
 
@@ -518,26 +529,64 @@ $translate(['MY_VEHICLE', 'VEHICLE_LICENSE', 'HISTORIC', 'MESSAGE', 'ERROR_NO_TR
           var marker = new google.maps.Marker({
               map: $scope.map,
               icon: image,
+              strDate: getStrDate(data.result[i].pos_date),
+              speed: data.result[i].speed,
               //animation: google.maps.Animation.DROP,
               position: latLng
           });   
                    
-          bounds.extend(latLng);
-
-          /*
-          var datePos = new Date(data.result[i].pos_date);
-          var hours = pad(datePos.getHours());
-          var minutes = pad(datePos.getMinutes());
-          var seconds = pad(datePos.getSeconds());
-
-          infoWindowDict[marker] = new google.maps.InfoWindow({
-            content: hours + ":" + minutes + ":" + seconds,
+          var infoWindow = new google.maps.InfoWindow({
+            content: '',
             maxWidth: 180
           });
-          google.maps.event.addListener(marker, 'click', function () {
-              infoWindowDict[marker].open($scope.map, marker);
-          }); 
-          */
+
+
+          marker.addListener('click', function() {
+                  var content = '<div id="iw-container">' +
+        '<div class="iw-title">' + msg_historic + '</div>' +
+        '<div class="iw-content">' +
+        '<div class="iw-subTitle">' + msg_date + ':</div>' +
+        '<p>' + this.strDate + '</p>' + 
+        '<div class="iw-subTitle">' + msg_speed + ':</div>' +
+        '<p>' + this.speed + 'Km/h</p>' + 
+        '</div>' +
+        '<div class="iw-bottom-gradient"></div>' +
+        '</div>';
+        var compiled = $compile(content)($scope);
+
+              infoWindow.setContent(compiled[0]);
+              infoWindow.open($scope.map, marker);
+          });
+
+      google.maps.event.addListener($scope.map, 'click', function() {
+        infoWindow.close();
+      });
+
+         google.maps.event.addListener(infoWindow, 'domready', function() {
+              var iwOuter = $('.gm-style-iw');
+              var iwBackground = iwOuter.prev();
+              iwBackground.children(':nth-child(2)').css({'display' : 'none'});
+              iwBackground.children(':nth-child(4)').css({'display' : 'none'});
+              iwOuter.parent().parent().css({left: '10px'});
+              iwBackground.children(':nth-child(1)').attr('style', function(i,s){ return s + 'left: 96px !important;'});
+              iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'left: 96px !important;'});
+              iwBackground.children(':nth-child(3)').find('div').children().css({'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 1px 6px', 'z-index' : '1'});
+              var iwCloseBtn = iwOuter.next();
+              iwCloseBtn.css({opacity: '1', right: '1px', top: '1px', border: '7px solid #48b5e9', 'border-radius': '23px', 'box-shadow': '0 0 5px #3990B9'});
+
+              if($('.iw-content').height() < 140){
+                $('.iw-bottom-gradient').css({display: 'none'});
+              } 
+
+              iwCloseBtn.mouseout(function(){
+                $(this).css({opacity: '1'});
+              });
+            });
+
+          bounds.extend(latLng);
+
+
+
         }
         var historicPath = new google.maps.Polyline({
           path: pathCoordinates,
@@ -568,6 +617,10 @@ $translate(['MY_VEHICLE', 'VEHICLE_LICENSE', 'HISTORIC', 'MESSAGE', 'ERROR_NO_TR
   };
 
   $scope.historicDefault = function() {
+         
+      if (infoWindowOld!=null)
+         infoWindowOld.close();
+
       var actualDate = new Date().getTime();
       var initDate = actualDate - (86400000/12)*8;
 
@@ -596,10 +649,66 @@ $translate(['MY_VEHICLE', 'VEHICLE_LICENSE', 'HISTORIC', 'MESSAGE', 'ERROR_NO_TR
           var marker = new google.maps.Marker({
               map: $scope.map,
               icon: image,
+              strDate: getStrDate(data.result[i].pos_date),
+              speed: data.result[i].speed,
               //animation: google.maps.Animation.DROP,
               position: latLng
           });   
-                   
+
+          /*console.log(strDate);
+          var datePos = new Date(data.result[i].pos_date);
+          var hours = pad(datePos.getHours());
+          var minutes = pad(datePos.getMinutes());
+          var seconds = pad(datePos.getSeconds());*/
+
+          var infoWindow = new google.maps.InfoWindow({
+            content: '',
+            maxWidth: 180
+          });
+
+
+          marker.addListener('click', function() {
+                  var content = '<div id="iw-container">' +
+        '<div class="iw-title">' + msg_historic + '</div>' +
+        '<div class="iw-content">' +
+        '<div class="iw-subTitle">' + msg_date + ':</div>' +
+        '<p>' + this.strDate + '</p>' + 
+        '<div class="iw-subTitle">' + msg_speed + ':</div>' +
+        '<p>' + this.speed + 'Km/h</p>' + 
+        '</div>' +
+        '<div class="iw-bottom-gradient"></div>' +
+        '</div>';
+      var compiled = $compile(content)($scope);
+
+              infoWindow.setContent(compiled[0]);
+              infoWindow.open($scope.map, marker);
+          });
+
+          google.maps.event.addListener($scope.map, 'click', function() {
+            infoWindow.close();
+          });
+
+         google.maps.event.addListener(infoWindow, 'domready', function() {
+              var iwOuter = $('.gm-style-iw');
+              var iwBackground = iwOuter.prev();
+              iwBackground.children(':nth-child(2)').css({'display' : 'none'});
+              iwBackground.children(':nth-child(4)').css({'display' : 'none'});
+              iwOuter.parent().parent().css({left: '10px'});
+              iwBackground.children(':nth-child(1)').attr('style', function(i,s){ return s + 'left: 96px !important;'});
+              iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'left: 96px !important;'});
+              iwBackground.children(':nth-child(3)').find('div').children().css({'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 1px 6px', 'z-index' : '1'});
+              var iwCloseBtn = iwOuter.next();
+              iwCloseBtn.css({opacity: '1', right: '1px', top: '1px', border: '7px solid #48b5e9', 'border-radius': '23px', 'box-shadow': '0 0 5px #3990B9'});
+
+              if($('.iw-content').height() < 140){
+                $('.iw-bottom-gradient').css({display: 'none'});
+              } 
+
+              iwCloseBtn.mouseout(function(){
+                $(this).css({opacity: '1'});
+              });
+            });
+
           bounds.extend(latLng);
 
         }
@@ -695,104 +804,6 @@ $timeout(function () {
 
     });
 
- /*
-  }, function(error){
-    //console.log("Could not get location");
-    //if (localStorage.getItem("mapmode") == MAP_MODE.push) {  
-
-    $scope.$on('$destroy', function () {
-      $scope.map = null;
-    });
-
-    if ($scope.map ==null) {
-      var latLng = new google.maps.LatLng(40.416897, -3.703442);
-      var mapOptions = {
-        center: latLng,
-        zoom: 5,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      };
-      $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
-    }
- 
-*/
-
-    // Cuando el mapa esta cargado, pintar el vehiculo 
-    /*
-    google.maps.event.addListenerOnce($scope.map, 'idle', function(){
-
-      var latLngNotification = new google.maps.LatLng(localStorage.getItem("notificationPushLatitude"), localStorage.getItem("notificationPushLongitude"));
-      var image = {
-          scaledSize: new google.maps.Size(40, 40),
-          url: getEventIcon(localStorage.getItem("notificationPushEventType")),
-      };
-
-      var marker = new google.maps.Marker({
-          map: $scope.map,
-          icon: image,
-          animation: google.maps.Animation.DROP,
-          position: latLngNotification
-      });   
 
 
-      // InfoWindow content
-      var content = '<div id="iw-container">' +
-        '<div class="iw-title">' + getEventDescription(localStorage.getItem("notificationPushEventType")) + '</div>' +
-        '<div class="iw-content">' +
-        '<div class="iw-subTitle">Matricula:</div>' +
-        '<p>' + localStorage.getItem("notificationSelectedVehicleLicense") + '</p>' +
-        '<div class="iw-subTitle">Fecha:</div>' +
-        '<p>'  + getEventDate(parseInt(localStorage.getItem("notificationPushTimestamp"))) + '</p>' + 
-        '<button class="button button-block button-balanced tooltipButton" ng-click="historic()">Histórico 8h.</button>'+
-        '</div>' +
-        '<div class="iw-bottom-gradient"></div>' +
-        '</div>';
-
-      var compiled = $compile(content)($scope);
-      var infoWindow = new google.maps.InfoWindow({
-          content: compiled[0],
-          maxWidth: 180
-      });
-     
-      google.maps.event.addListener(marker, 'click', function () {
-          infoWindow.open($scope.map, marker);
-      }); 
-      google.maps.event.addListener($scope.map, 'click', function() {
-        infoWindow.close();
-      });
-     
-      google.maps.event.addListener(infoWindow, 'domready', function() {
-        var iwOuter = $('.gm-style-iw');
-        var iwBackground = iwOuter.prev();
-        iwBackground.children(':nth-child(2)').css({'display' : 'none'});
-        iwBackground.children(':nth-child(4)').css({'display' : 'none'});
-        iwOuter.parent().parent().css({left: '10px'});
-        iwBackground.children(':nth-child(1)').attr('style', function(i,s){ return s + 'left: 96px !important;'});
-        iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'left: 96px !important;'});
-        iwBackground.children(':nth-child(3)').find('div').children().css({'box-shadow': 'rgba(72, 181, 233, 0.6) 0px 1px 6px', 'z-index' : '1'});
-        var iwCloseBtn = iwOuter.next();
-        iwCloseBtn.css({opacity: '1', right: '1px', top: '1px', border: '7px solid #48b5e9', 'border-radius': '23px', 'box-shadow': '0 0 5px #3990B9'});
-
-        if($('.iw-content').height() < 140){
-          $('.iw-bottom-gradient').css({display: 'none'});
-        } 
-
-        iwCloseBtn.mouseout(function(){
-          $(this).css({opacity: '1'});
-        });
-      });
-      
-      $scope.map.setCenter(latLngNotification);  
-      $scope.map.setZoom(15);
-
-    });
-
-    */
-      
-    //} else {
-    //  navigator.notification.alert("Servicio de localización requerido", null, "Kyros App", "Ok");      
-    //}
-
-
-
- // });
 })

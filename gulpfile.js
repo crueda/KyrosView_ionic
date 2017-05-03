@@ -2,7 +2,8 @@ var gulp = require('gulp');
 var scp = require('gulp-scp');
 var markdown = require('gulp-markdown');
 var rename = require('gulp-rename');
-
+var rsync = require("rsyncwrapper");
+var gutil = require('gulp-util');
 
 gulp.task('default', function() {
   // place code for your default task here
@@ -23,4 +24,17 @@ gulp.task('gen-changelog', function () {
 
 // --------------------------------------------------------------------------------
 
+
+gulp.task('pro1', function() {
+  rsync({
+    ssh: true,
+    src: '/Users/Carlos/Workspace/Kyros/KyrosMyPush/www',
+    dest: 'root@192.168.28.136:/opt/KyrosMyPush/www',
+    recursive: true,
+    syncDest: true,
+    args: ['--verbose']
+  }, function(error, stdout, stderr, cmd) {
+      gutil.log(stdout);
+  });
+});
 
