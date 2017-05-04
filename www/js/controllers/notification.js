@@ -66,7 +66,7 @@ var num_notifications = 0;
   }
 
   //todo
-  function archiveAllNotification ($http, $scope, URL, APP) {
+  function archiveAllNotification ($http, $scope, $ionicPopup, URL, APP) {
     //console.log('You are not sure');
     var url = APP.api_base + URL.archiveAllNotifications + "/" + localStorage.getItem("username");
     console.log(url);
@@ -77,14 +77,21 @@ var num_notifications = 0;
         'x-access': localStorage.getItem("token_api")
       }})
     .success(function(data, status, headers,config){            
-      
-      notifications = [];
-      $scope.notifications = notifications;
-      $rootScope.num_notifications = 0;
-      if (ionic.Platform.isIOS()) {
-        $scope.top_bubble = 24;
+      if (data=="ok") {
+        notifications = [];
+        $scope.notifications = notifications;
+        $rootScope.num_notifications = 0;
+        if (ionic.Platform.isIOS()) {
+          $scope.top_bubble = 24;
+        } else {
+          $scope.top_bubble = 6;            
+        }        
       } else {
-        $scope.top_bubble = 6;            
+          var alertPopup = $ionicPopup.alert({
+            title: 'Error',
+            template: msg_error_archive_all
+          });
+
       }
 
       })
@@ -112,7 +119,7 @@ var num_notifications = 0;
   function onConfirm(buttonIndex) {
     //alert('You selected button ' + buttonIndex);
     if (buttonIndex==1) {
-      archiveAllNotification ($http, $scope, URL, APP);
+      archiveAllNotification ($http, $scope, $ionicPopup, URL, APP);
     }
   }
 
@@ -120,9 +127,10 @@ var num_notifications = 0;
 angular.module('main.notification', [])
 .controller('NotificationsCtrl', function($rootScope, $scope, $state, $http, Notifications, $ionicPopup, $ionicLoading, $timeout, URL, APP, $sce, $translate) {
 
-    $translate(['MSG_CONFIRM_TITLE', 'MSG_CONFIRM_ARCHIVE_ALL']).then(function (translations) {
+    $translate(['MSG_CONFIRM_TITLE', 'MSG_CONFIRM_ARCHIVE_ALL', 'MSG_ERROR_ARCHIVE_ALL']).then(function (translations) {
       msg_confirm_title = translations.MSG_CONFIRM_TITLE;
       msg_confirm_archive_all = translations.MSG_CONFIRM_ARCHIVE_ALL;
+      msg_error_archive_all = translations.MSG_ERROR_ARCHIVE_ALL;
     });
 
 
@@ -143,7 +151,7 @@ angular.module('main.notification', [])
 
      confirmPopup.then(function(res) {
        if(res) {
-          archiveAllNotification ($http, $scope, URL, APP);
+          archiveAllNotification ($http, $scope, $ionicPopup, URL, APP);
        } 
      });   
     }

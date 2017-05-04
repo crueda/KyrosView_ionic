@@ -74,8 +74,8 @@
   "ERROR_NO_TRACKING": "No existen puntos de tracking",
   "TRACKING_LAST_HOURS": "Tracking últimas 8 horas",
   "DATE": "Fecha",
-  "SPEED": "Velocidad"
-
+  "SPEED": "Velocidad",
+  "MSG_ERROR_ARCHIVE_ALL": "Se ha producido un error, intentelo de nuevo más tarde"
 
 
 

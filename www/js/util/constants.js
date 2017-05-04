@@ -3,6 +3,7 @@ angular.module('main')
 .constant('APP', {
   version: 10,
   //api_base: 'http://localhost:3003'
+  //api_base: 'https://demos-api.kyroslbs.com'
   api_base: 'https://api.kyroslbs.com'
 })
 
@@ -32,18 +33,4 @@ angular.module('main')
   getGraphData: '/api/app/graph/device',
   getReportDailyData: '/api/app/report_daily/device',
   resetGraphData: '/api/app/graph/reset/device',
-
-
-  //getIconsInfo: '/api/iconInfo',
-  //getAllIcons: '/api/allicons',
-
-  //getNotification: '/api/app/push/notification',
-  //getIcon: '/api/icon',
-  //getIcons: '/api/icons',
-  //configNotificationsEnable: '/api/app/notification/enable/user',
-  //configNotificationsDisable: '/api/app/notification/disable/user',
-  //treeDevices: '/api/app/monitor',
-  //configEventsAdd: '/api/app/notification/config/add',
-  //configEventsRemove: '/api/app/notification/config/remove',
-  //getStatusNotificationsUserVehicle: '/api/app/notification/status'
 });
