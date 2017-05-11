@@ -134,99 +134,84 @@ angular.module('main', ['ionic', 'main.intro', 'main.controllers', 'main.graphs'
     localStorage.setItem("token_api", "");      
     localStorage.setItem("username", "");
     localStorage.setItem("max_show_notifications", 50);
+        localStorage.setItem("notificationPushMongoId", "");
+        localStorage.setItem("username", "");      
+        localStorage.setItem("notificationPushLongitude", "");      
+        localStorage.setItem("notificationPushLatitude", "");      
+        localStorage.setItem("notificationSelectedDeviceId", "");      
+        localStorage.setItem("notificationPushEventType", "");      
+        localStorage.setItem("notificationPushTimestamp", "");      
+        localStorage.setItem("notificationSelectedVehicleLicense", "");
+        localStorage.setItem("mapmode", 0);      
+        localStorage.setItem("token", "");      
+        localStorage.setItem("token_api", "");      
+        localStorage.setItem("username", "");
+        localStorage.setItem("max_show_notifications", 50);
+        localStorage.setItem("deviceId", "");                
+        localStorage.setItem("vehicleLicense", "");               
+        localStorage.setItem("notificationSelected", "");  
+        localStorage.setItem("deviceSelected", "");  
+        localStorage.setItem("group_notifications", "1");
+        localStorage.setItem("max_show_notifications", "100");
 
-  //Soporte SMS
-  /*
- if ( isIPad || isIOS || isAndroid || isWindowsPhone) {
-  SMS.startWatch(function(){
-    console.log('Watching SMS');
-  }, function(){
-    console.log('Not Watching SMS');
-  });
-
-    document.addEventListener('onSMSArrive', function(e){
-      var data = e.data;
-      var alertPopup = $ionicPopup.alert({
-            title: '*SMS*',
-            template: '->:' + data
-      });
-      $smsarrive.periksa(data);
+    var push = PushNotification.init({
+        "android": {
+            //"senderID": "379445772580"
+            "senderID": "972815935814"
+            
+        },
+        browser: {
+            pushServiceURL: 'http://push.api.phonegap.com/v1/push'
+        },
+        "ios": {
+            "alert": "true",
+            "badge": "true",
+            "sound": "true"
+        },
+        "windows": {}
     });
-  }*/
 
-var push = PushNotification.init({
-    "android": {
-        //"senderID": "379445772580"
-        "senderID": "972815935814"
-        
-    },
-    browser: {
-        pushServiceURL: 'http://push.api.phonegap.com/v1/push'
-    },
-    "ios": {
-        "alert": "true",
-        "badge": "true",
-        "sound": "true"
-    },
-    "windows": {}
-});
-
-push.on('registration', function(data) {
+  push.on('registration', function(data) {
   localStorage.setItem("token", data.registrationId); 
   
-  /*if (localStorage.getItem("token")!=null && localStorage.getItem("token")!="") {
-                  saveToken($http, URL);
-              }*/
-
-
-    // data.registrationId
-  /*
-     var alertPopup = $ionicPopup.alert({
-            title: '**',
-            template: '2:' + data.registrationId
-        });
-    */   
-
 });
 
 push.on('notification', function(data) {
-    // data.message,
-    // data.title,
-    // data.count,
-    // data.sound,
-    // data.image,
-    // data.additionalData
-    
-    /*
-    var alertPopup = $ionicPopup.alert({
-            title: '****',
-            template: '->' +data.additionalData.username
-        });
-    */
-    /*
-    localStorage.setItem("notificationSelectedVehicleLicense", data.additionalData.vehicle_license);
-    localStorage.setItem("notificationPushMongoId", data.additionalData._id);
-    //$state.go('tab.map', {cache: false});
-    $state.go('tab.notification-detail',  {cache: false});
-    */
+
+
+    // Comprobar el tipo de push recibido
+    // 1-> nueva notificacion
+    // 2-> nueva version de la app disponible
+    if (data.additionalData.tag==1) {
+
+      //$state.go('tab.notifications',  {cache: false, mode: localStorage.getItem("group_notifications")});      
+      try {
+        localStorage.setItem("notificationPushMongoId", data.additionalData._id);
+        localStorage.setItem("username", data.additionalData.username);      
+        localStorage.setItem("notificationPushLongitude", data.additionalData.coordinates[0]);
+        localStorage.setItem("notificationPushLatitude", data.additionalData.coordinates[1]);
+        localStorage.setItem("notificationSelectedDeviceId", data.additionalData.device_id);
+        localStorage.setItem("notificationPushEventType", data.additionalData.event_type);
+        localStorage.setItem("notificationPushTimestamp", data.additionalData.timestamp);
+        localStorage.setItem("notificationSelectedVehicleLicense", data.additionalData.vehicle_license);
+      } catch (e) {}
+
+      localStorage.setItem("mapmode", 3);
+
+      $state.go('tab.map');
+    } else if (data.additionalData.tag==2) {
+
+
+      // Borrar datos?
+        //localStorage.setItem("check_remember", "false");         
+        //localStorage.setItem("login_username", "");      
+        //localStorage.setItem("login_password", "");          
+
+        window.open(data.additionalData.url, '_system'); 
 
 
 
-    //$state.go('tab.notifications',  {cache: false, mode: localStorage.getItem("group_notifications")});      
-    try {
-      localStorage.setItem("notificationPushMongoId", data.additionalData._id);
-      localStorage.setItem("username", data.additionalData.username);      
-      localStorage.setItem("notificationPushLongitude", data.additionalData.coordinates[0]);
-      localStorage.setItem("notificationPushLatitude", data.additionalData.coordinates[1]);
-      localStorage.setItem("notificationSelectedDeviceId", data.additionalData.device_id);
-      localStorage.setItem("notificationPushEventType", data.additionalData.event_type);
-      localStorage.setItem("notificationPushTimestamp", data.additionalData.timestamp);
-      localStorage.setItem("notificationSelectedVehicleLicense", data.additionalData.vehicle_license);
-    } catch (e) {}
-
-    localStorage.setItem("mapmode", 3);
-
-    $state.go('tab.map');
+    }
 
 
 });

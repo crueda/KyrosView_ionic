@@ -27,7 +27,8 @@ function saveDeviceInfo ($http, URL, APP) {
       device_uuid: localStorage.getItem("device_uuid"), 
       device_height: localStorage.getItem("device_height"), 
       device_width: localStorage.getItem("device_width"), 
-      device_language: localStorage.getItem("device_language") 
+      device_language: localStorage.getItem("device_language"),
+      app_version: APP.version
     },
     headers: {
         'x-access': localStorage.getItem("token_api")
