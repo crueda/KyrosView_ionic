@@ -112,6 +112,8 @@ angular.module('main.login', [])
               if (data.result[0].device_id!=undefined) {
                 localStorage.setItem("deviceId", data.result[0].device_id);                  
                 localStorage.setItem("vehicleLicense", data.result[0].vehicle_license);                  
+                localStorage.setItem("lastAppVersion", data.result[0].last_app_version);                  
+                localStorage.setItem("lastAppUrl", data.result[0].last_app_url);
               } else {
                 localStorage.setItem("vehicleLicense", "");                  
                 localStorage.setItem("deviceId", 0);                  

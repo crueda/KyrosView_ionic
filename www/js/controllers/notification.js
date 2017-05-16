@@ -1,6 +1,7 @@
 notifications = [];
 iconos = [];
 var num_notifications = 0;
+var lastNotificationTimestamp = 0;
 
  function pad(value) {
     if(value < 10) {
@@ -65,6 +66,64 @@ var num_notifications = 0;
     return strDate;
   }
 
+  function getLastNotifications($http, URL, APP) {
+      // Comprobar si hay notificaciones nuevas
+      //console.log("Chequear notificaciones nuevas para timestamp: "+ lastNotificationTimestamp)
+      var url = APP.api_base + URL.getLastNotifications;
+      $http({
+      method: 'POST',
+      url: url,
+        data: {username: localStorage.getItem("username"), 
+          timestamp: lastNotificationTimestamp},
+        headers: {
+          'x-access': localStorage.getItem("token_api")
+      }})
+      .success(function(data, status, headers,config){
+        if (data.result!=undefined) {
+          for (var i=0; i<data.result.length; i++) {
+
+            //console.log("Notificacion encontrada!")
+
+            if (data.result[i].location!=undefined) {
+              lat = data.result[i].location.coordinates[1].toFixed(4);
+              lon = data.result[i].location.coordinates[0].toFixed(4);            
+            } else {
+              lat = 0;
+              lon = 0;                        
+            }
+
+          notification = { mongoId: data.result[i]._id,
+            id: i,
+            categoryDescription: getEventCategoryDescription(getEventCategory(data.result[i].subtype)),
+            category: getEventCategory(data.result[i].subtype),
+            vehicleLicense: data.result[i].vehicle_license,
+            deviceId: data.result[i].device_id,
+            name: getEventDescription(data.result[i].subtype),
+            icon: getEventIcon(data.result[i].subtype),
+            date: getEventDate(data.result[i].timestamp),
+            eventType: data.result[i].subtype,
+            latitude: lat,
+            longitude: lon,
+            speed: data.result[i].speed.toFixed(1),
+            heading: data.result[i].heading.toFixed(1),
+            altitude: data.result[i].altitude.toFixed(0),
+            geocoding: data.result[i].geocoding,
+            battery: data.result[i].battery          
+          }
+          notifications.splice(0, 0, notification);
+          //notifications.push(notification);
+          //notifications.splice(0, 1);
+          if (i==0){
+            lastNotificationTimestamp = data.result[i].timestamp;
+          }
+          }
+        }
+      })
+      .error(function(data, status, headers,config){
+      });
+
+  }
+
   //todo
   function archiveAllNotification ($http, $scope, $ionicPopup, URL, APP) {
     //console.log('You are not sure');
@@ -125,7 +184,7 @@ var num_notifications = 0;
 
  
 angular.module('main.notification', [])
-.controller('NotificationsCtrl', function($rootScope, $scope, $state, $http, Notifications, $ionicPopup, $ionicLoading, $timeout, URL, APP, $sce, $translate) {
+.controller('NotificationsCtrl', function($rootScope, $scope, $state, $http, ClockSrv, Notifications, $ionicPopup, $ionicLoading, $timeout, URL, APP, $sce, $translate) {
 
     $translate(['MSG_CONFIRM_TITLE', 'MSG_CONFIRM_ARCHIVE_ALL', 'MSG_ERROR_ARCHIVE_ALL']).then(function (translations) {
       msg_confirm_title = translations.MSG_CONFIRM_TITLE;
@@ -133,6 +192,10 @@ angular.module('main.notification', [])
       msg_error_archive_all = translations.MSG_ERROR_ARCHIVE_ALL;
     });
 
+
+    ClockSrv.startClock(function(){
+      getLastNotifications($http, URL, APP);
+    });
 
     $scope.archiveNotifications = function() {
 
@@ -218,6 +281,9 @@ angular.module('main.notification', [])
           battery: data.result[i].battery          
         }
         notifications.push(notification);
+        if (i==0) {
+          lastNotificationTimestamp = data.result[i].timestamp;
+        }
         //iconos.push($sce.trustAsHtml($rootScope.eventIcon[data.result[i].subtype].svg));
           /*
           if ($rootScope.eventIcon!=undefined)  
@@ -381,6 +447,9 @@ $scope.filterCategory = function(category) {
 
           }
           notifications.push(notification);
+          if (i==0) {
+            lastNotificationTimestamp = data.result[i].timestamp;            
+          }
 
           eventType = data.result[i].subtype;
           //913

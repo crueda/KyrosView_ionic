@@ -75,7 +75,9 @@
   "TRACKING_LAST_HOURS": "Tracking últimas 8 horas",
   "DATE": "Fecha",
   "SPEED": "Velocidad",
-  "MSG_ERROR_ARCHIVE_ALL": "Se ha producido un error, intentelo de nuevo más tarde"
+  "MSG_ERROR_ARCHIVE_ALL": "Se ha producido un error, intentelo de nuevo más tarde",
+  "CONFIG_UPDATE": "Actualizar",
+  "APP_IN_LAST_VERSION": "La aplicación instalada se encuentra en su última versión"
 
 
 

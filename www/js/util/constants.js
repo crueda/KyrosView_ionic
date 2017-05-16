@@ -1,7 +1,8 @@
 angular.module('main')
 
 .constant('APP', {
-  version: '1.2',
+  version: '1.4',
+  version_date: '15/05/2017',
   //api_base: 'http://localhost:3003'
   //api_base: 'https://demos-api.kyroslbs.com'
   api_base: 'https://api.kyroslbs.com'
@@ -20,6 +21,7 @@ angular.module('main')
   archiveNotification: '/api/app/notification/archive',
   archiveAllNotifications: '/api/app/notification/archive/user',
   getNotificationsLimit: '/api/app/notificationLimit',
+  getLastNotifications: '/api/app/notificationLast',
   listDevices: '/api/app/monitorList',
   saveToken: '/api/app/notification/setToken',
   saveDeviceInfo: '/api/app/setDeviceInfo/user',
@@ -29,8 +31,9 @@ angular.module('main')
   configEventChange: '/api/app/notification/config/change',
   configUserPreferences: '/api/app/user',
   getConfigNotifications: '/api/app/notification/config/user',
-  getStatusNotifications: '/api/app/notification/status/user',
+  getConfigUser: '/api/app/config/user',
   getGraphData: '/api/app/graph/device',
   getReportDailyData: '/api/app/report_daily/device',
   resetGraphData: '/api/app/graph/reset/device',
+  //getStatusNotifications: '/api/app/notification/status/user',
 });

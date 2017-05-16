@@ -18,50 +18,32 @@
     </li>
 
 
-    <!--li class="item item-toggle">
-    <span translate="CONFIG_GROUP"></span>
-     
-     <label class="toggle toggle-calm">
-       <input type="checkbox" ng-model="settings.enableGroupNotifications" ng-change="configChange()">
-       <div class="track">
-         <div class="handle"></div>
-       </div>
-     </label>
-  </li-->
-
-
-<label class="item item-input item-select">
-    <div class="input-label" translate="CONFIG_NUM_NOTIFICATIONS">
-    </div>
-    <select ng-model="optionSelected" ng-change="configChangeNumNotifications(optionSelected)">
-      <option value="10">10</option>
-      <option value="25">25</option>
-      <option value="50">50</option>
-      <option value="75">75</option>
-      <option value="100">100</option>
-    </select>
+  <label class="item item-input item-select">
+      <div class="input-label" translate="CONFIG_NUM_NOTIFICATIONS">
+      </div>
+      <select ng-model="dataNotifications.index" ng-options="itemsNotifications.indexOf(item) as item for item in itemsNotifications" ng-change="configChangeNumNotifications()">
+      </select>
   </label>
+      
 
-
-<label class="item item-input item-select">
-    <div class="input-label" translate="LANGUAGE">
-    </div>
-    <select ng-model="key" ng-change="switchLanguage(key)">
-      <option value="es" translate="CONFIG_ES"></option>
-      <option value="en" translate="CONFIG_EN"></option>
-    </select>
+  <label class="item item-input item-select">
+      <div class="input-label" translate="LANGUAGE">
+      </div>
+      <select ng-model="dataLanguage.index" ng-options="itemsLanguage.indexOf(item) as item for item in itemsLanguage" ng-change="switchLanguage()">
+      </select>
   </label>
-
 
 
     </ion-list>
     
     <br>
 
-    <button class="button button-block button-assertive" ng-click="logout()"><span translate="CONFIG_LOGOUT"></span></button>
+    <button class="button button-block button-balanced" ng-click="updateApp()" ng-show='!lastVersion'><span translate="CONFIG_UPDATE"></span></button>
+    <button class="button button-block button-calm" ng-click="updateApp()" ng-show='lastVersion'><span translate="CONFIG_UPDATE"></span></button>
 
 
     <br>
+    <button class="button button-block button-assertive" ng-click="logout()"><span translate="CONFIG_LOGOUT"></span></button>
     <br>
     <br>
     <br>
@@ -69,7 +51,7 @@
     <div class="row">
     <div class="col">
         <div class="text-center">
-            <h5 style="text-align: center;">{{'VERSION' | translate}} 1.0 - 05/04/2017</h5>
+            <h5 style="text-align: center;">{{'VERSION' | translate}} {{version}} - {{version_date}}</h5>
         </div>
         <div class="text-center">
             <h6 style="text-align: center;">{{'DEVELOPED' | translate}}: <b>Elecnor-Deimos LBS</b></h6>

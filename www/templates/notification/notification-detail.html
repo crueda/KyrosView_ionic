@@ -17,28 +17,7 @@
   <button class="button ion-ios-arrow-forward" ng-click="goNextNotification()"></button>            
 </ion-header-bar>
 
-<!--div class="bar bar-subheader">
-<button class="button ion-ios-arrow-back" ng-click="goPreviousNotification()">
-  </button></div>
-  <div class="col"><h4><b>{{notification.name}}</b></h4></div>
-  <div class="col"><button class="button ion-ios-arrow-forward" ng-click="goNextNotification()"></button></div>
 
-</div-->
-
-    
-       
-
-<!--ks-swiper-container initial-slide="3" speed="2000" loop="true" show-nav-buttons="false" slides-per-view="3" space-between="5" pagination-clickable="false" override-parameters="{effect: 'coverflow',coverflow: {rotate: 50,stretch: 0,depth: 100,modifier: 1,slideShadows : false}}">
-    <ks-swiper-slide class="swiper-slide">
-        <img ng-src="img/events/stop.svg" width="100%">
-        <img ng-src="img/events/stop.svg" width="100%">
-        <img ng-src="img/events/stop.svg" width="100%">
-        <img ng-src="img/events/stop.svg" width="100%">
-        <img ng-src="img/events/stop.svg" width="100%">
-    </ks-swiper-slide>            
-</ks-swiper-container-->
-
-        
   
 
   <ion-content class="padding has-header has-subheader">
@@ -72,9 +51,7 @@
         <b>Coordenadas</b> <span class="item-note">{{notification.latitude}}, {{notification.longitude}}</span>
       </ion-item>
 
-    <!--ion-toggle  ng-model=notification.value ng-change="notificationArchiveChange()" toggle-class="toggle-calm">
-        Archivar
-    </ion-toggle-->
+
 
     </ion-list>
 
@@ -83,10 +60,6 @@
     <button class="button button-block button-royal" ng-click="showGraphsDevice()">{{'SHOW_ACTIVITY' | translate}}</button>
 
     <button class="button button-block button-calm" ng-click="setAsDefault()">{{'SELECT_VEHICLE' | translate}}</button>
-
-<!--script>
-$("#aaa").toggleClass("scaling-svg-detail");
-</script-->
 
     
 
