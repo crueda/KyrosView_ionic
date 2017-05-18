@@ -28,7 +28,7 @@ gulp.task('gen-changelog', function () {
 gulp.task('pro1', function() {
   rsync({
     ssh: true,
-    src: '/Users/Carlos/Workspace/Kyros/KyrosMyPush/www',
+    src: '/Users/Carlos/Workspace/Kyros/KyrosMyPush/platforms/browser/www',
     dest: 'root@192.168.28.136:/opt/KyrosMyPush/www',
     recursive: true,
     syncDest: true,
@@ -38,3 +38,15 @@ gulp.task('pro1', function() {
   });
 });
 
+gulp.task('pro2', function() {
+  rsync({
+    ssh: true,
+    src: '/Users/Carlos/Workspace/Kyros/KyrosMyPush/platforms/browser/www',
+    dest: 'root@192.168.28.137:/opt/KyrosMyPush/www',
+    recursive: true,
+    syncDest: true,
+    args: ['--verbose']
+  }, function(error, stdout, stderr, cmd) {
+      gutil.log(stdout);
+  });
+});
