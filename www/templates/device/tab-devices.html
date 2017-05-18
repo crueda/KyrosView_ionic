@@ -22,7 +22,7 @@
 
   <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="device in data.devices | orderBy:'name_order'" type="item-text-wrap" ng-click="selectDevice(device);">
     
-    <img ng-src="img/devices/{{device.icon_real_time}}">
+    <img ng-src="img/devices/{{device.icon_real_time}}" onerror="this.src='img/kyros.svg'">
     <h2>{{device.vehicle_license}}</h2>
     <p>{{device.alias}}</p>
     <i class="icon ion-chevron-right icon-accessory"></i>

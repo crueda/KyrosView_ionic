@@ -29,7 +29,7 @@ gulp.task('pro1', function() {
   rsync({
     ssh: true,
     src: '/Users/Carlos/Workspace/Kyros/KyrosMyPush/platforms/browser/www',
-    dest: 'root@192.168.28.136:/opt/KyrosMyPush/www',
+    dest: 'root@192.168.28.136:/opt/KyrosMyPush',
     recursive: true,
     syncDest: true,
     args: ['--verbose']
@@ -42,7 +42,7 @@ gulp.task('pro2', function() {
   rsync({
     ssh: true,
     src: '/Users/Carlos/Workspace/Kyros/KyrosMyPush/platforms/browser/www',
-    dest: 'root@192.168.28.137:/opt/KyrosMyPush/www',
+    dest: 'root@192.168.28.137:/opt/KyrosMyPush',
     recursive: true,
     syncDest: true,
     args: ['--verbose']

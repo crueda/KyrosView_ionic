@@ -198,13 +198,24 @@
           //anchor: new google.maps.Point(20, 20),
           scaledSize: new google.maps.Size(50, 50)
         };
+        var imageNull = {
+          url: 'img/devices/kyros.svg',
+          scaledSize: new google.maps.Size(50, 50)
+        };
         var marker = new google.maps.Marker({
             map: $scope.map,
             icon: image,
             animation: google.maps.Animation.DROP,
             position: latLngDevice
         });   
-
+        var i = new Image();
+        i.src = 'img/devices/' + localStorage.getItem("deviceSelectedIcon");
+        i.onload = function () {
+          marker.setIcon(icon); 
+        }
+        i.onerror = function () {
+          marker.setIcon(imageNull); //This displays brick colored standard marker icon in case image is not found.
+        }
        
         google.maps.event.addListener(marker, 'click', function () {
             //infoWindow.open($scope.map, marker);
@@ -394,12 +405,26 @@
           //anchor: new google.maps.Point(15, 15),
           scaledSize: new google.maps.Size(50, 50)
         };
+        var imageNull = {
+          url: 'img/devices/kyros.svg',
+          scaledSize: new google.maps.Size(50, 50)
+        };
       var marker = new google.maps.Marker({
           map: $scope.map,
           icon: image,
           animation: google.maps.Animation.DROP,
           position: latLngVehicle
       });   
+      var i = new Image();
+      i.src = 'img/devices/' + data[0].icon;
+      i.onload = function () {
+        marker.setIcon(icon); 
+      }
+      i.onerror = function () {
+        //marker.setIcon(null); 
+        marker.setIcon(imageNull); 
+      }
+
       var infoWindow = new google.maps.InfoWindow({
           content: data[0].alias
       });
