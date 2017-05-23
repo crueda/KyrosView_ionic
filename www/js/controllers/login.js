@@ -51,6 +51,7 @@ angular.module('main.login', [])
     //navigator.notification.alert("Versión : " + APP.version, null, "Kyros App", "Ok");
     var alertPopup = $ionicPopup.alert({
       title: 'Kyros App',
+      //title: 'Kyros App - Demos',
       template: 'Versión: ' + APP.version
     });
   }

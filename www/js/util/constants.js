@@ -1,10 +1,10 @@
 angular.module('main')
 
 .constant('APP', {
-  version: '1.4',
-  version_date: '15/05/2017',
-  api_base: 'http://localhost:3003'
-  //api_base: 'https://demos-api.kyroslbs.com'
+  version: '1.5',
+  version_date: '23/05/2017',
+  //api_base: 'http://localhost:3003'
+  api_base: 'https://api-demos.kyroslbs.com'
   //api_base: 'https://api.kyroslbs.com'
 })
 
