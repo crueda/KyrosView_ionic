@@ -4,8 +4,8 @@ angular.module('main')
   version: '1.5',
   version_date: '23/05/2017',
   //api_base: 'http://localhost:3003'
-  api_base: 'https://api-demos.kyroslbs.com'
-  //api_base: 'https://api.kyroslbs.com'
+  //api_base: 'https://api-demos.kyroslbs.com'
+  api_base: 'https://api.kyroslbs.com'
 })
 
 .constant('MAP_MODE', {

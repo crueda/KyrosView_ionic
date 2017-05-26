@@ -66,11 +66,11 @@ angular.module('main.config', [])
   $scope.dataNotifications = {};
   $scope.dataNotifications.index = 0;
 
-  if (localStorage.getItem("language")=='es') {
-    $scope.itemsLanguage = ["Español", "Inglés"];
+  if (localStorage.getItem("language")=='en') {
+    $scope.itemsLanguage = ["Spanish", "English"];
   }
   else {
-    $scope.itemsLanguage = ["Spanish", "English"];
+    $scope.itemsLanguage = ["Español", "Inglés"];
   }
   $scope.dataLanguage = {};
   $scope.dataLanguage.index = 0;
